@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<testng-results skipped="0" failed="0" ignored="0" total="2" passed="2">
+  <reporter-output>
+  </reporter-output>
+  <suite name="Suite" duration-ms="80" started-at="2018-09-14T12:06:25Z" finished-at="2018-09-14T12:06:25Z">
+    <groups>
+    </groups>
+    <test name="Test" duration-ms="80" started-at="2018-09-14T12:06:25Z" finished-at="2018-09-14T12:06:25Z">
+      <class name="com.test.DemoA">
+        <test-method status="PASS" signature="TestMethof()[pri:0, instance:com.test.DemoA@1081592]" name="TestMethof" duration-ms="3" started-at="2018-09-14T12:06:25Z" finished-at="2018-09-14T12:06:25Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method>
+        <!-- TestMethof -->
+      </class>
+      <!-- com.test.DemoA -->
+      <class name="com.test.Demo2">
+        <test-method status="PASS" signature="SetTest()[pri:0, instance:com.test.Demo2@16a51ab]" name="SetTest" is-config="true" duration-ms="20" started-at="2018-09-14T12:06:25Z" finished-at="2018-09-14T12:06:25Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method>
+        <!-- SetTest -->
+        <test-method status="PASS" signature="SetTest()[pri:0, instance:com.test.DemoA@1081592]" name="SetTest" is-config="true" duration-ms="1" started-at="2018-09-14T12:06:25Z" finished-at="2018-09-14T12:06:25Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method>
+        <!-- SetTest -->
+        <test-method status="PASS" signature="TestMethof()[pri:0, instance:com.test.Demo2@16a51ab]" name="TestMethof" duration-ms="7" started-at="2018-09-14T12:06:25Z" finished-at="2018-09-14T12:06:25Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method>
+        <!-- TestMethof -->
+        <test-method status="PASS" signature="AfterTheTest()[pri:0, instance:com.test.Demo2@16a51ab]" name="AfterTheTest" is-config="true" duration-ms="1" started-at="2018-09-14T12:06:25Z" finished-at="2018-09-14T12:06:25Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method>
+        <!-- AfterTheTest -->
+        <test-method status="PASS" signature="AfterTheTest()[pri:0, instance:com.test.DemoA@1081592]" name="AfterTheTest" is-config="true" duration-ms="0" started-at="2018-09-14T12:06:25Z" finished-at="2018-09-14T12:06:25Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method>
+        <!-- AfterTheTest -->
+      </class>
+      <!-- com.test.Demo2 -->
+    </test>
+    <!-- Test -->
+  </suite>
+  <!-- Suite -->
+</testng-results>

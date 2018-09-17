@@ -1,0 +1,55 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v2.1",
+    "signature": "db703bf4ba32e09d5ac3cbbab6074498fa5a568c"
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v2.1": {
+      "GingerTestNgPluginConsole/1.0.0": {
+        "dependencies": {
+          "Ginger.Plugin.Core": "2.6.3",
+          "GingerCoreNET": "3.0.0.0"
+        },
+        "runtime": {
+          "GingerTestNgPluginConsole.dll": {}
+        }
+      },
+      "Ginger.Plugin.Core/2.6.3": {
+        "runtime": {
+          "lib/netstandard2.0/GingerPluginCore.dll": {
+            "assemblyVersion": "2.6.3.0",
+            "fileVersion": "2.6.3.0"
+          }
+        }
+      },
+      "GingerCoreNET/3.0.0.0": {
+        "runtime": {
+          "GingerCoreNET.dll": {
+            "assemblyVersion": "3.0.0.0",
+            "fileVersion": "3.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "GingerTestNgPluginConsole/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Ginger.Plugin.Core/2.6.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-rA9JuMJ2v7B4cHK8m3jSdoQyF1fR87VhjkcOWCkCBk4FcA/R+d8ab9N9w/b1JpJAdHcIuHt3cVier6aJkwRCrA==",
+      "path": "ginger.plugin.core/2.6.3",
+      "hashPath": "ginger.plugin.core.2.6.3.nupkg.sha512"
+    },
+    "GingerCoreNET/3.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
