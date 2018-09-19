@@ -498,7 +498,8 @@
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
-          "Ginger.Plugin.Core": "2.6.3"
+          "Ginger.Plugin.Core": "2.6.3",
+          "System.Xml.XmlDocument": "4.3.0"
         },
         "compile": {
           "bin/placeholder/GingerTestNgPlugin.dll": {}

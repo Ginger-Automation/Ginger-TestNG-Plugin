@@ -1,7 +1,7 @@
 {
   "Id": "TestNg",
   "Version": "1.0.0",
-  "ProjectUrl": "git\\PACt...",
+  "ProjectUrl": "https://github.com/Ginger-Automation/Ginger-TestNG-Plugin",
   "Description": "PACT",
-  "Summary": "PACT can simulate and ..."
+  "Summary": "TestNg Integration For Ginger"
 }

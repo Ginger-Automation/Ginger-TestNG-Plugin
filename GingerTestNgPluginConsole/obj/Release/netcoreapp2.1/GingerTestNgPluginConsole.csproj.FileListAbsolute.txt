@@ -1,3 +1,4 @@
+C:\Users\mohdkhan\source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\bin\Release\netcoreapp2.1\Ginger.PluginPackage.json
 C:\Users\mohdkhan\source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\bin\Release\netcoreapp2.1\GingerTestNgPluginConsole.deps.json
 C:\Users\mohdkhan\source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\bin\Release\netcoreapp2.1\GingerTestNgPluginConsole.runtimeconfig.json
 C:\Users\mohdkhan\source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\bin\Release\netcoreapp2.1\GingerTestNgPluginConsole.runtimeconfig.dev.json
@@ -13,4 +14,3 @@ C:\Users\mohdkhan\source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\ob
 C:\Users\mohdkhan\source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\obj\Release\netcoreapp2.1\GingerTestNgPluginConsole.csproj.CopyComplete
 C:\Users\mohdkhan\source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\obj\Release\netcoreapp2.1\GingerTestNgPluginConsole.dll
 C:\Users\mohdkhan\source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\obj\Release\netcoreapp2.1\GingerTestNgPluginConsole.pdb
-C:\Users\mohdkhan\source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\bin\Release\netcoreapp2.1\Ginger.PluginPackage.json

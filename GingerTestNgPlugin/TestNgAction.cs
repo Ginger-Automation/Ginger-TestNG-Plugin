@@ -2,20 +2,31 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Diagnostics;
+using GingerTestNgPlugin;
 
 namespace StandAloneActions
 {
     [GingerService("TestNG", "Execute TestNG scripts from Ginger")]
-    public class TestNgAction : IGingerService
+    public class TestNgAction : IGingerService, IStandAloneAction
     {
-        [GingerAction("ReadExcelCell", "Read From Excel")]
-    /*    public void ReadExcelCell(GingerAction GA,List<Tuple<string,string>> TextToreplace, string FileName, string testNglocation, string Java)
+        [GingerAction("RunTestNgSuite", "Run TestNG Suite from XMl")]
+ 
+        public void RunTestNgSuite(GingerAction GA,string TestNgXMlName,string ProjectLocation,string LibraryFolder,string JavaLocation,Dictionary<string,string>UserParameters)
         {
-            
-        }*/
-        public void ReadExcelCell(GingerAction GA,string tst)
-        {
-            GA.AddOutput(" tst",tst);
+            string TestNgxmlPath;
+            if(ProjectLocation.EndsWith("\\"))
+            {
+                TestNgxmlPath = ProjectLocation + TestNgXMlName;
+            }
+            else
+            {
+
+                TestNgxmlPath = ProjectLocation + "\\"+TestNgXMlName;
+            }
+            string TestNGXML = System.IO.File.ReadAllText(TestNgxmlPath);
+            TestNGSuite Suite = new TestNGSuite(TestNGXML);
+            TestNGReport Report = Suite.Execute(TestNgXMlName,ProjectLocation,LibraryFolder,"");
 
         }
     }

@@ -1638,7 +1638,8 @@
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
-          "Ginger.Plugin.Core": "2.6.3"
+          "Ginger.Plugin.Core": "2.6.3",
+          "System.Xml.XmlDocument": "4.3.0"
         },
         "compile": {
           "bin/placeholder/GingerTestNgPlugin.dll": {}
@@ -5853,6 +5854,7 @@
             "version": "[15.8.0, )"
           },
           "Microsoft.NETCore.App": {
+            "suppressParent": "All",
             "target": "Package",
             "version": "[2.1.0, )",
             "autoReferenced": true

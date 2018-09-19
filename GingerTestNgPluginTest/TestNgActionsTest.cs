@@ -27,15 +27,16 @@ namespace GingerTestNgPluginTest
             string xml = Suite.GetTextNGXml();
            
         }
-
+        [TestMethod]
         public void Execute()
         {
-            string TestNgXmll = System.IO.File.ReadAllText(@"C:\sandbox\TestNGxml.xml");
+            string TestNgXmll = System.IO.File.ReadAllText(@"C:\Users\mohdkhan\eclipse-workspace\SeleniumTestNg\testng.xml");
 
             TestNGSuite Suite = new TestNGSuite(TestNgXmll);
             string xml = Suite.GetTextNGXml();
 
-            Suite.Execute("", "", @"C:\Users\mohdkhan\eclipse-workspace\TestNGDemo\testng.xml");
+       
+        TestNGReport Report=    Suite.Execute("testng.xml", @"C:\Users\mohdkhan\eclipse-workspace\SeleniumTestNg",@"C:\eclipse\plugins","");
         }
     }
 }
