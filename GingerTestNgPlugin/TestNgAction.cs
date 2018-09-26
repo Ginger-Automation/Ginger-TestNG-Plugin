@@ -21,7 +21,7 @@ namespace StandAloneActions
         /// <param name="FreeCommand"></param>
         [GingerAction("RunTestNgSuite", "Run TestNG Suite from XMl")]
 
-        public void RunTestNgSuite(GingerAction GA, string TestNgXMlName, string ProjectLocation, string LibraryFolder, string JavaLocation)
+        public void RunTestNgSuite(IGingerAction GA, string TestNgXMlName, string ProjectLocation, string LibraryFolder, string JavaLocation)
         {
             try
             {
@@ -62,7 +62,7 @@ namespace StandAloneActions
         }
 
         [GingerAction("Run TestNg with Maven", "Run TestNg suites as part of Maven Build with Surefire")]
-        public void RunTestNgWithMaven(GingerAction GA, string TestNgSuiteXML, string WorkingDirectory, string MavenBinDirectory,string MavenSettingsFile, string Commandlinearguments)
+        public void RunTestNgWithMaven(IGingerAction GA, string TestNgSuiteXML, string WorkingDirectory, string MavenBinDirectory,string MavenSettingsFile, string Commandlinearguments)
         {
             StringBuilder FreeCommand = new StringBuilder("");
             if(!string.IsNullOrEmpty(MavenBinDirectory))
@@ -103,7 +103,7 @@ namespace StandAloneActions
 
 
         [GingerAction("Run TestNg with Free COmmand", "Run TestNg with Free COmmand")]
-        public void RunTestNgFreeCommand(GingerAction GA, string Freecommand, string WorkingDirectory, string ReportsDirectory, string MavenSettingsFile, string Commandlinearguments)
+        public void RunTestNgFreeCommand(IGingerAction GA, string Freecommand, string WorkingDirectory, string ReportsDirectory, string MavenSettingsFile, string Commandlinearguments)
         {
             TestNGReport Report = TestNGSuite.Execute(Freecommand, WorkingDirectory,ReportsDirectory);
             ProcessTestNGReport(GA, Report);
@@ -114,7 +114,7 @@ namespace StandAloneActions
             /// </summary>
             /// <param name="GA"></param>
             /// <param name="Report"></param>
-            public static void ProcessTestNGReport(GingerAction GA, TestNGReport Report)
+            public static void ProcessTestNGReport(IGingerAction GA, TestNGReport Report)
         {
             if (Report.Failed > 0)
             {
