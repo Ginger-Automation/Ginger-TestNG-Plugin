@@ -5,8 +5,8 @@ C:\Users\mohdkhan\source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\bi
 C:\Users\mohdkhan\source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\bin\Release\netcoreapp2.1\GingerTestNgPluginConsole.dll
 C:\Users\mohdkhan\source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\bin\Release\netcoreapp2.1\GingerTestNgPluginConsole.pdb
 C:\Users\mohdkhan\source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\bin\Release\netcoreapp2.1\GingerCoreNET.dll
-C:\Users\mohdkhan\source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\bin\Release\netcoreapp2.1\GingerTestNgPlugin.dll
-C:\Users\mohdkhan\source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\bin\Release\netcoreapp2.1\GingerTestNgPlugin.pdb
+C:\Users\mohdkhan\source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\bin\Release\netcoreapp2.1\TestNG.GingerPlugin.dll
+C:\Users\mohdkhan\source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\bin\Release\netcoreapp2.1\TestNG.GingerPlugin.pdb
 C:\Users\mohdkhan\source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\obj\Release\netcoreapp2.1\GingerTestNgPluginConsole.csprojAssemblyReference.cache
 C:\Users\mohdkhan\source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\obj\Release\netcoreapp2.1\GingerTestNgPluginConsole.csproj.CoreCompileInputs.cache
 C:\Users\mohdkhan\source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\obj\Release\netcoreapp2.1\GingerTestNgPluginConsole.AssemblyInfoInputs.cache

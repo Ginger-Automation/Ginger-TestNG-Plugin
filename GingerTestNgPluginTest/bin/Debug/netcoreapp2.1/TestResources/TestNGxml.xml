@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Purchase Accessory">
+  <parameter name="executionLevel" value="fit" />
+  <parameter name="custIDSelectionMode" value="Automatic" />
+  <parameter name="scid" value="CC" />
+  <listeners>
+    <listener class-name="org.uncommons.reportng.HTMLReporter" />
+    <listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+    <listener class-name="framework.testautomation.commons.testngListeners.TestNGCustomReportListner" />
+  </listeners>
+  <test name="Automation_Setup">
+    <parameter name="executionLevel" value="fit" />
+    <parameter name="propertyFileName" value="FITenvironment" />
+    <classes>
+      <class name="amdocs.initialSetup.AutomationSetup">
+        <methods>
+          <include name="initialAutomationSetup" />
+        </methods>
+      </class>
+    </classes>
+  </test>
+  <test name="Create UserIndividualCC">
+    <parameter name="userName" value="UserIndividualCC" />
+    <parameter name="customerSubType" value="Individual" />
+    <parameter name="salesChannel" value="CC" />
+    <classes>
+      <class name="authentication.a3s.CreateA3SUser">
+        <methods>
+          <include name="createUser" />
+          <include name="loginUser" />
+        </methods>
+      </class>
+    </classes>
+  </test>
+  <test name="E2E Flow1_Purchase Accessories_test2">
+    <!-- ##################Parameters for Category############### -->
+    <parameter name="salesChannel" value="Call Center" />
+    <parameter name="cartQuantity" value="1" />
+    <parameter name="quantity" value="4" />
+    <parameter name="BA_action" value="add" />
+    <classes>
+      <class name="productofferingdiscovery.GetCategory">
+        <methods>
+          <include name="getAllCategories" />
+        </methods>
+      </class>
+      <class name="productofferingdiscovery.SearchProductOffering">
+        <parameter name="categoryName" value="Other Products" />
+        <parameter name="pageSize" value="10" />
+        <methods>
+          <include name="searchProductOfferingForGivenCategoryId_E2E" />
+        </methods>
+      </class>
+      <class name="productofferingdiscovery.ProductOfferingDetails">
+        <parameter name="productOfferingName" value="iPhone 7 Case Rose Gold" />
+        <parameter name="productOfferingid" value="7ff44ecc4f2945e1bbfdf97d61db7b13"></parameter>
+        <methods>
+          <include name="SanityProductOfferingDetailsForGivenProductOfferingId_E2E" />
+        </methods>
+      </class>
+      <class name="shoppingcart.POST_ShopingCart">
+        <methods>
+          <include name="CreateCart_E2E" />
+        </methods>
+      </class>
+      <class name="shoppingcart.GET_ShoppingCartRetrieve">
+        <methods>
+          <include name="retrieveShoppingCart_E2E" />
+        </methods>
+      </class>
+      <class name="shoppingcart.POST_ShoppingCartCheckout">
+        <methods>
+          <include name="checkoutShoppingCartE2E" />
+        </methods>
+      </class>
+      <class name="productordering.ProductOrderingRetreiveOrder">
+        <methods>
+          <include name="retreiveOrder_E2E" />
+        </methods>
+      </class>
+      <class name="productordering.ProductOrderingManageBillingAccount">
+        <methods>
+          <include name="manageBillingAccount_OrderLevel" />
+        </methods>
+      </class>
+      <class name="productordering.ProductOrderingSubmitOrder">
+        <methods>
+          <include name="submitOrder" />
+        </methods>
+      </class>
+    </classes>
+  </test>
+</suite>

@@ -20,8 +20,8 @@ namespace GingerTestNgPluginConsole
             
 
             GingerNode gingerNode = new GingerNode(new TestNgAction());
-            gingerNode.StartGingerNode("TestNg1 1", SocketHelper.GetLocalHostIP(), 15001);
-
+           gingerNode.StartGingerNode("TestNg1 1", SocketHelper.GetLocalHostIP(), 15001);
+            Console.ReadLine();
            
         }
 

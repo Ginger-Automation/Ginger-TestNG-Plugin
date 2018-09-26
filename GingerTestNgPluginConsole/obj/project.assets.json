@@ -494,18 +494,17 @@
           "lib/netstandard1.3/System.Xml.XmlDocument.dll": {}
         }
       },
-      "GingerTestNgPlugin/1.0.0": {
+      "TestNG.GingerPlugin/1.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
-          "Ginger.Plugin.Core": "2.6.3",
           "System.Xml.XmlDocument": "4.3.0"
         },
         "compile": {
-          "bin/placeholder/GingerTestNgPlugin.dll": {}
+          "bin/placeholder/TestNG.GingerPlugin.dll": {}
         },
         "runtime": {
-          "bin/placeholder/GingerTestNgPlugin.dll": {}
+          "bin/placeholder/TestNG.GingerPlugin.dll": {}
         }
       }
     }
@@ -2291,18 +2290,18 @@
         "system.xml.xmldocument.nuspec"
       ]
     },
-    "GingerTestNgPlugin/1.0.0": {
+    "TestNG.GingerPlugin/1.0.0": {
       "type": "project",
-      "path": "../GingerTestNgPlugin/GingerTestNgPlugin.csproj",
-      "msbuildProject": "../GingerTestNgPlugin/GingerTestNgPlugin.csproj"
+      "path": "../GingerTestNgPlugin/TestNG.GingerPlugin.csproj",
+      "msbuildProject": "../GingerTestNgPlugin/TestNG.GingerPlugin.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.1": [
       "Ginger.Plugin.Core >= 2.6.3",
-      "GingerTestNgPlugin >= 1.0.0",
       "Microsoft.NETCore.App >= 2.1.0",
-      "System.Xml.XmlDocument >= 4.3.0"
+      "System.Xml.XmlDocument >= 4.3.0",
+      "TestNG.GingerPlugin >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -2335,8 +2334,8 @@
       "frameworks": {
         "netcoreapp2.1": {
           "projectReferences": {
-            "C:\\Users\\mohdkhan\\source\\Repos\\Ginger-TestNG-Plugin\\GingerTestNgPlugin\\GingerTestNgPlugin.csproj": {
-              "projectPath": "C:\\Users\\mohdkhan\\source\\Repos\\Ginger-TestNG-Plugin\\GingerTestNgPlugin\\GingerTestNgPlugin.csproj"
+            "C:\\Users\\mohdkhan\\source\\Repos\\Ginger-TestNG-Plugin\\GingerTestNgPlugin\\TestNG.GingerPlugin.csproj": {
+              "projectPath": "C:\\Users\\mohdkhan\\source\\Repos\\Ginger-TestNG-Plugin\\GingerTestNgPlugin\\TestNG.GingerPlugin.csproj"
             }
           }
         }

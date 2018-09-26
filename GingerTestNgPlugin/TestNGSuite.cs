@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Text;
+
 using System.Xml;
 using static GingerTestNgPlugin.NGProperties;
 
@@ -219,53 +219,136 @@ namespace GingerTestNgPlugin
         #endregion
 
         #region Execution
-        string DataBuffer = "";
-        string ErrorBuffer = "";
-        public TestNGReport Execute(string TestNgXML, string ProjectLocation, string LibraryFolder, string JavaLocation)
+        static string DataBuffer = "";
+        static string ErrorBuffer = "";
+   
+
+        static protected void AddData(string outLine)
+        {
+            DataBuffer += outLine;
+        }
+      static  protected void AddError(string outLine)
+        {
+            ErrorBuffer += outLine;
+        }
+
+        /// <summary>
+        /// Run Test NG Suites with TestNG XML
+        /// </summary>
+        /// <param name="TestNgXML"></param>
+        /// <param name="ProjectLocation"></param>
+        /// <param name="LibraryFolder"></param>
+        /// <param name="JavaLocation"></param>
+        /// <returns></returns>
+        public static TestNGReport Execute(string TestNgXML, string ProjectLocation, string LibraryFolder, string JavaLocation)
         {
 
-            DateTime BeginTime = DateTime.Now;
-            string ReportFilePath;
-            ProcessStartInfo NgInfor = new ProcessStartInfo();
-            NgInfor.WorkingDirectory = @"C:\Users\mohdkhan\eclipse-workspace\SeleniumTestNg";
-
-            NgInfor.RedirectStandardError = true;
-            NgInfor.RedirectStandardOutput = true;
-
+          
+           
+           
 
             if (LibraryFolder.EndsWith("\\"))
             {
                 LibraryFolder = LibraryFolder + "*";
             }
-            else if(!LibraryFolder.EndsWith("\\*"))
+            else if (!LibraryFolder.EndsWith("\\*"))
             {
                 LibraryFolder = LibraryFolder + "\\*";
 
             }
+            string ProjectBin;
 
-            //report file needed to be set first
-            if(ProjectLocation.EndsWith("\\"))
+          string ReportFilePath;
+            if (ProjectLocation.EndsWith("\\"))
             {
                 ReportFilePath = ProjectLocation + @"test-output\testng-results.xml";
-                ProjectLocation = ProjectLocation + "bin";
+                ProjectBin = ProjectLocation + "bin";
 
             }
             else
             {
                 ReportFilePath = ProjectLocation + @"\test-output\testng-results.xml";
-                ProjectLocation = ProjectLocation + "\\bin";
-  
+                ProjectBin = ProjectLocation + "\\bin";
+
             }
+            string CommandLineArguments ="java"+ @" -cp " + LibraryFolder + ";" + ProjectBin + " org.testng.TestNG " + TestNgXML;
+
+            return Execute(CommandLineArguments, ProjectLocation);
+          
+
+        }
+
+        public static TestNGReport Execute(string FreeCommand,string WorkingDirectory,string reportSUbdirectory=null)
+        {
+            DateTime BeginTime = DateTime.Now;
+            string ReportFilePath;
+            if (WorkingDirectory.EndsWith("\\"))
+            {
+                ReportFilePath = string.IsNullOrEmpty(reportSUbdirectory) ? WorkingDirectory + @"test-output\testng-results.xml" : WorkingDirectory + reportSUbdirectory + @"\testng-results.xml";
+
+            }
+            else
+            {
+                ReportFilePath = string.IsNullOrEmpty(reportSUbdirectory) ? WorkingDirectory + @"\test-output\testng-results.xml" : WorkingDirectory + "\\"+reportSUbdirectory + @"\testng-results.xml";
 
 
-            
 
-            NgInfor.Arguments = @"-cp " + LibraryFolder + ";" + ProjectLocation + " org.testng.TestNG " + TestNgXML;
+            }
+            ProcessStartInfo NgInfor = new ProcessStartInfo();
+            NgInfor.RedirectStandardError = true;
+            NgInfor.RedirectStandardOutput = true;
 
-            NgInfor.FileName = System.Environment.GetEnvironmentVariable("JAVA_HOME") + @"\bin\java.exe";
+
+            NgInfor.WorkingDirectory = WorkingDirectory;
+            string FilePath = FreeCommand;
+            char[] delimiters = { ' ', };
+            string[] FileCommand = FreeCommand.Split(delimiters, 2);
+                FilePath = FileCommand[0];
+            string Arguments = FileCommand[1];
+
+
+            if (!File.Exists(FilePath))
+            {
+                foreach (string DirPath in Environment.GetEnvironmentVariable("PATH").Split(';'))
+                {
+                    string Dir = DirPath.EndsWith("\\") ? DirPath : DirPath + "\\";
+                    string TempPath = Dir + FilePath;
+                    if (File.Exists(TempPath))
+                    {
+                      string extension= Path.GetExtension(TempPath);
+                        if (string.IsNullOrEmpty(extension))
+                        {
+                            if (File.Exists(TempPath + ".cmd"))
+                            {
+                                TempPath = TempPath + ".cmd";
+                            }
+
+                           else   if (File.Exists(TempPath + ".bat"))
+                                {
+                                TempPath = TempPath + ".bat";
+                            }
+                            else if (File.Exists(TempPath + ".exe"))
+                            {
+                                TempPath = TempPath + ".exe";
+                            }
+                        }
+                        FilePath = TempPath;
+
+                        break;
+                    }
+
+                }
+            }
+            NgInfor.Arguments = Arguments;
+
+
+
+
+            NgInfor.FileName = FilePath;
+
+
 
             Process TestNgProcess = new Process();
-
             TestNgProcess.OutputDataReceived += (proc, outLine) => { AddData(outLine.Data + "\n"); };
             TestNgProcess.ErrorDataReceived += (proc, outLine) => { AddError(outLine.Data + "\n"); };
             TestNgProcess.StartInfo = NgInfor;
@@ -274,38 +357,34 @@ namespace GingerTestNgPlugin
             TestNgProcess.BeginErrorReadLine();
             TestNgProcess.WaitForExit();
             DateTime Endtime = File.GetLastWriteTime(ReportFilePath);
+
+
+
+
             try
             {
-             
+
 
                 if ((Endtime - BeginTime).TotalMilliseconds < 0)
                 {
                     throw new InvalidOperationException("TestNg Execution Failed");
                 }
-               
+
 
             }
 
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 if ((Endtime - BeginTime).TotalMilliseconds < 0)
                 {
-                    throw new InvalidOperationException("TestNg Execution Failed",ex);
+                    throw new InvalidOperationException("TestNg Execution Failed", ex);
                 }
             }
+
+
+
             return TestNGReport.LoadfromXMl(ReportFilePath);
-
         }
-
-        protected void AddData(string outLine)
-        {
-            DataBuffer += outLine;
-        }
-        protected void AddError(string outLine)
-        {
-            ErrorBuffer += outLine;
-        }
-
         #endregion
 
         #region ReportMethods

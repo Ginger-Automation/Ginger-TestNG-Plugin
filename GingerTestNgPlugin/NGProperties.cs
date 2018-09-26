@@ -9,7 +9,8 @@ namespace GingerTestNgPlugin
         public enum eNGStatus
         {
             PASS,
-            FAIL
+            FAIL,
+            SKIP
         }
     }
 }

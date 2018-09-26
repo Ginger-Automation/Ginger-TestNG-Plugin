@@ -1814,9 +1814,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\mohdkhan\\source\\Repos\\Ginger-TestNG-Plugin\\GingerTestNgPlugin\\GingerTestNgPlugin.csproj",
-      "projectName": "GingerTestNgPlugin",
-      "projectPath": "C:\\Users\\mohdkhan\\source\\Repos\\Ginger-TestNG-Plugin\\GingerTestNgPlugin\\GingerTestNgPlugin.csproj",
+      "projectUniqueName": "C:\\Users\\mohdkhan\\source\\Repos\\Ginger-TestNG-Plugin\\GingerTestNgPlugin\\TestNG.GingerPlugin.csproj",
+      "projectName": "TestNG.GingerPlugin",
+      "projectPath": "C:\\Users\\mohdkhan\\source\\Repos\\Ginger-TestNG-Plugin\\GingerTestNgPlugin\\TestNG.GingerPlugin.csproj",
       "packagesPath": "C:\\Users\\mohdkhan\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\mohdkhan\\source\\Repos\\Ginger-TestNG-Plugin\\GingerTestNgPlugin\\obj\\",
       "projectStyle": "PackageReference",
