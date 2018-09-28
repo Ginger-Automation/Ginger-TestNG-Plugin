@@ -92,7 +92,7 @@ namespace GingerTestNgPluginTest
 
             TestNGSuite Suite = new TestNGSuite(TestNgXmll);
             string xml = Suite.GetTextNGXml();
-            TNA.RunTestNgSuite(GA, @"testng.xml", @"C:\Users\mohdkhan\eclipse-workspace\SeleniumTestNg", @"C:\eclipse\plugins",String.Empty);
+            TNA.RunTestNgSuite(GA, @"testng.xml", @"C:\Users\mohdkhan\eclipse-workspace\SeleniumTestNg", @"C:\eclipse\plugins",String.Empty,"True");
 
             TestNGReport Report = TestNGSuite.Execute("testng.xml", @"C:\Users\mohdkhan\eclipse-workspace\SeleniumTestNg", @"C:\eclipse\plugins", "");
         }

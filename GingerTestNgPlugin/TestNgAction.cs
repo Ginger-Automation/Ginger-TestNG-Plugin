@@ -21,8 +21,14 @@ namespace StandAloneActions
         /// <param name="FreeCommand"></param>
         [GingerAction("RunTestNgSuite", "Run TestNG Suite from XMl")]
 
-        public void RunTestNgSuite(IGingerAction GA, string TestNgXMlName, string ProjectLocation, string LibraryFolder, string JavaLocation)
+        public void RunTestNgSuite(IGingerAction GA, string TestNgXMlName, string ProjectLocation, string LibraryFolder, string JavaLocation,string ShowMethodDetails)
         {
+
+            bool AddmethodDetailstoOutput = false;
+            if(!string.IsNullOrEmpty(ShowMethodDetails) && ShowMethodDetails.ToUpper()=="TRUE")
+            {
+                AddmethodDetailstoOutput = true;
+            }
             try
             {
 
@@ -41,12 +47,12 @@ namespace StandAloneActions
                     }
                     string TestNGXML = System.IO.File.ReadAllText(TestNgxmlPath);
             
-                    Report = TestNGSuite.Execute(TestNgXMlName, ProjectLocation, LibraryFolder, "");
+                    Report = TestNGSuite.Execute(TestNgXMlName, ProjectLocation, LibraryFolder, JavaLocation);
        
 
              
 
-                ProcessTestNGReport(GA, Report);
+                ProcessTestNGReport(GA, Report, AddmethodDetailstoOutput);
             }
 
 
@@ -62,8 +68,14 @@ namespace StandAloneActions
         }
 
         [GingerAction("Run TestNg with Maven", "Run TestNg suites as part of Maven Build with Surefire")]
-        public void RunTestNgWithMaven(IGingerAction GA, string TestNgSuiteXML, string WorkingDirectory, string MavenBinDirectory,string MavenSettingsFile, string Commandlinearguments)
+        public void RunTestNgWithMaven(IGingerAction GA, string TestNgSuiteXML, string WorkingDirectory, string MavenBinDirectory,string MavenSettingsFile, string Commandlinearguments,string ShowMethodDetails)
         {
+
+            bool AddmethodDetailstoOutput = false;
+            if (!string.IsNullOrEmpty(ShowMethodDetails) && ShowMethodDetails.ToUpper() == "TRUE")
+            {
+                AddmethodDetailstoOutput = true;
+            }
             StringBuilder FreeCommand = new StringBuilder("");
             if(!string.IsNullOrEmpty(MavenBinDirectory))
             {
@@ -97,16 +109,38 @@ namespace StandAloneActions
                 FreeCommand.Append(Commandlinearguments);
             }
 
-            TestNGReport Report = TestNGSuite.Execute(FreeCommand.ToString(), WorkingDirectory, @"target\surefire-reports");
-            ProcessTestNGReport(GA, Report);
+              TestNGReport Report = TestNGSuite.Execute(FreeCommand.ToString(), WorkingDirectory, @"target\surefire-reports");
+            
+           
+            ProcessTestNGReport(GA, Report,AddmethodDetailstoOutput);
         }
 
-
-        [GingerAction("Run TestNg with Free COmmand", "Run TestNg with Free COmmand")]
-        public void RunTestNgFreeCommand(IGingerAction GA, string Freecommand, string WorkingDirectory, string ReportsDirectory, string MavenSettingsFile, string Commandlinearguments)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="GA"></param>
+        /// <param name="Freecommand"></param>
+        /// <param name="WorkingDirectory"></param>
+        /// <param name="ReportsDirectory"></param>
+        /// <param name="MavenSettingsFile"></param>
+        /// <param name="Commandlinearguments"></param>
+        /// <param name="ShowMethodDetails"></param>
+        [GingerAction("Run TestNg with Free Command", "Run TestNg with Free Command")]
+        public void RunTestNgFreeCommand(IGingerAction GA, string Freecommand, string WorkingDirectory, string ReportsDirectory, string MavenSettingsFile, string Commandlinearguments, string ShowMethodDetails)
         {
-            TestNGReport Report = TestNGSuite.Execute(Freecommand, WorkingDirectory,ReportsDirectory);
-            ProcessTestNGReport(GA, Report);
+
+            bool AddmethodDetailstoOutput = false;
+            if (!string.IsNullOrEmpty(ShowMethodDetails) && ShowMethodDetails.ToUpper() == "TRUE")
+            {
+                AddmethodDetailstoOutput = true;
+            }
+        
+             TestNGReport Report = TestNGSuite.Execute(Freecommand, WorkingDirectory,ReportsDirectory);
+
+             ProcessTestNGReport(GA, Report, AddmethodDetailstoOutput);
+            GA.AddOutput("test", "text");
+            GA.AddExInfo("test");
+            GA.AddError("action faile test");
         }
 
             /// <summary>
@@ -114,26 +148,26 @@ namespace StandAloneActions
             /// </summary>
             /// <param name="GA"></param>
             /// <param name="Report"></param>
-            public static void ProcessTestNGReport(IGingerAction GA, TestNGReport Report)
+            public static void ProcessTestNGReport(IGingerAction GA, TestNGReport Report,bool AddMethoudDetailsToOutput)
         {
             if (Report.Failed > 0)
             {
                 GA.AddError("TestNg Execution Failed");
             }
-            GA.AddOutput("Passed", Report.Passed);
+            GA.AddOutput("Passed",Report.Passed,"TEST");
             GA.AddOutput("Failed", Report.Failed);
             GA.AddOutput("Ignored", Report.Ignored);
             GA.AddOutput("Skipped", Report.Skipped);
 
             foreach (TestNGSuite TNS in Report.Suites)
             {
-                GA.AddOutput(TNS.Name + "-Duration", TNS.Duration);
+                GA.AddOutput(TNS.Name, TNS.Duration, "Duration");
                 foreach (NGTest Ntest in TNS.Tests)
                 {
 
                     string TestPreFix = TNS.Name + "|" + Ntest.Name;
 
-                    GA.AddOutput(TestPreFix + "-Duration", Ntest.Duration);
+                    GA.AddOutput(TestPreFix, Ntest.Duration,"Duration");
                     if (!String.IsNullOrEmpty(Ntest.NgException))
                     {
                         GA.AddExInfo(Environment.NewLine);
@@ -148,24 +182,28 @@ namespace StandAloneActions
                         GA.AddExInfo(Ntest.NGStackTrace);
                         GA.AddExInfo(Environment.NewLine);
                     }
-                    foreach (NGClass NClass in Ntest.Classes)
+
+                    if (AddMethoudDetailsToOutput)
                     {
-
-
-                        foreach (NGMethod Nm in NClass.Methods)
+                        foreach (NGClass NClass in Ntest.Classes)
                         {
-                            string MethodPrefix = TestPreFix + "|" + NClass.Name + "|" + Nm.Name;
 
-                            GA.AddOutput(MethodPrefix, Nm.Status);
-                            GA.AddOutput(MethodPrefix + "-Duration", Nm.Duration);
 
+                            foreach (NGMethod Nm in NClass.Methods)
+                            {
+                                string MethodPrefix = TestPreFix + "|" + NClass.Name + "|" + Nm.Name;
+
+                                GA.AddOutput(MethodPrefix, Nm.Status, "Status");
+                                GA.AddOutput(MethodPrefix, Nm.Duration, "Duration");
+
+                            }
                         }
                     }
                 }
 
 
             }
-
+            
         }
     }
 }

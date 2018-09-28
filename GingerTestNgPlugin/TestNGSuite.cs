@@ -226,9 +226,11 @@ namespace GingerTestNgPlugin
         static protected void AddData(string outLine)
         {
             DataBuffer += outLine;
+            Console.WriteLine(outLine);
         }
       static  protected void AddError(string outLine)
         {
+            Console.WriteLine(outLine);
             ErrorBuffer += outLine;
         }
 
@@ -243,13 +245,17 @@ namespace GingerTestNgPlugin
         public static TestNGReport Execute(string TestNgXML, string ProjectLocation, string LibraryFolder, string JavaLocation)
         {
 
-          
-           
-           
+
+
+
 
             if (LibraryFolder.EndsWith("\\"))
             {
                 LibraryFolder = LibraryFolder + "*";
+            }
+            if (!JavaLocation.EndsWith("\\"))
+            {
+                JavaLocation = JavaLocation + "\\";
             }
             else if (!LibraryFolder.EndsWith("\\*"))
             {
@@ -258,7 +264,7 @@ namespace GingerTestNgPlugin
             }
             string ProjectBin;
 
-          string ReportFilePath;
+            string ReportFilePath;
             if (ProjectLocation.EndsWith("\\"))
             {
                 ReportFilePath = ProjectLocation + @"test-output\testng-results.xml";
@@ -271,8 +277,15 @@ namespace GingerTestNgPlugin
                 ProjectBin = ProjectLocation + "\\bin";
 
             }
-            string CommandLineArguments ="java"+ @" -cp " + LibraryFolder + ";" + ProjectBin + " org.testng.TestNG " + TestNgXML;
-
+            string CommandLineArguments;
+            if (string.IsNullOrEmpty(JavaLocation))
+            {
+                CommandLineArguments = "java" + @" -cp " + LibraryFolder + ";" + ProjectBin + " org.testng.TestNG " + TestNgXML;
+            }
+            else
+            {
+                CommandLineArguments=JavaLocation+ "java.exe" + @" -cp " + LibraryFolder + ";" + ProjectBin + " org.testng.TestNG " + TestNgXML;
+            }
             return Execute(CommandLineArguments, ProjectLocation);
           
 
@@ -313,28 +326,33 @@ namespace GingerTestNgPlugin
                 {
                     string Dir = DirPath.EndsWith("\\") ? DirPath : DirPath + "\\";
                     string TempPath = Dir + FilePath;
-                    if (File.Exists(TempPath))
-                    {
+      
                       string extension= Path.GetExtension(TempPath);
                         if (string.IsNullOrEmpty(extension))
                         {
                             if (File.Exists(TempPath + ".cmd"))
                             {
                                 TempPath = TempPath + ".cmd";
-                            }
+
+                           
+                        }
 
                            else   if (File.Exists(TempPath + ".bat"))
                                 {
                                 TempPath = TempPath + ".bat";
-                            }
+
+                            break;
+                        }
                             else if (File.Exists(TempPath + ".exe"))
                             {
                                 TempPath = TempPath + ".exe";
-                            }
-                        }
-                        FilePath = TempPath;
 
-                        break;
+                        }
+                        if (File.Exists(TempPath))
+                        {
+                            FilePath = TempPath;
+                            break;
+                        }
                     }
 
                 }
