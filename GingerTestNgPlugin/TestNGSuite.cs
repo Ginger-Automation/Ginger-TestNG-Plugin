@@ -253,7 +253,7 @@ namespace GingerTestNgPlugin
             {
                 LibraryFolder = LibraryFolder + "*";
             }
-            if (!JavaLocation.EndsWith("\\"))
+            if (!JavaLocation.EndsWith("\\")&& !string.IsNullOrEmpty(JavaLocation))
             {
                 JavaLocation = JavaLocation + "\\";
             }
@@ -283,8 +283,8 @@ namespace GingerTestNgPlugin
                 CommandLineArguments = "java" + @" -cp " + LibraryFolder + ";" + ProjectBin + " org.testng.TestNG " + TestNgXML;
             }
             else
-            {
-                CommandLineArguments=JavaLocation+ "java.exe" + @" -cp " + LibraryFolder + ";" + ProjectBin + " org.testng.TestNG " + TestNgXML;
+            { //TODO: Quick dirty solution to allow spliting filepath and arguments
+                CommandLineArguments =JavaLocation+ "java.exe;" + @" -cp " + LibraryFolder + ";" + ProjectBin + " org.testng.TestNG " + TestNgXML;
             }
             return Execute(CommandLineArguments, ProjectLocation);
           
@@ -314,8 +314,17 @@ namespace GingerTestNgPlugin
 
             NgInfor.WorkingDirectory = WorkingDirectory;
             string FilePath = FreeCommand;
-            char[] delimiters = { ' ', };
-            string[] FileCommand = FreeCommand.Split(delimiters, 2);
+            string[] FileCommand;
+            //TODO: Quick dirty solution to allow spliting filepath and arguments
+            char[] delimiters = { ';', };
+            FileCommand = FreeCommand.Split(delimiters, 2);
+            if (FileCommand.Length != 2)
+            {
+
+                char[] delimiters2 = { ' ', };
+                FileCommand = FreeCommand.Split(delimiters2, 2);
+
+            }
                 FilePath = FileCommand[0];
             string Arguments = FileCommand[1];
 
