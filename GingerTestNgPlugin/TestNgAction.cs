@@ -106,7 +106,7 @@ namespace StandAloneActions
 
             if (!string.IsNullOrEmpty(Commandlinearguments))
             {
-                FreeCommand.Append(Commandlinearguments);
+                FreeCommand.Append(" "+Commandlinearguments);
             }
 
               TestNGReport Report = TestNGSuite.Execute(FreeCommand.ToString(), WorkingDirectory, @"target\surefire-reports");
