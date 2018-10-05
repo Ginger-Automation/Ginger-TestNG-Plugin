@@ -3,5 +3,6 @@
   "Version": "1.0.0",
   "ProjectUrl": "https://github.com/Ginger-Automation/Ginger-TestNG-Plugin",
   "Description": "PACT",
-  "Summary": "TestNg Integration For Ginger"
+  "Summary": "TestNg Integration For Ginger",
+  "StartupDLL": "GingerTestNgPluginConsole.dll"
 }

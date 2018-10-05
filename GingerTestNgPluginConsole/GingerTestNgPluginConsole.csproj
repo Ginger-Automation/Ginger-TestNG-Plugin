@@ -20,6 +20,9 @@
     <None Update="Ginger.PluginPackage.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="GingerCoreNET.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="GingerCoreNET.pdb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

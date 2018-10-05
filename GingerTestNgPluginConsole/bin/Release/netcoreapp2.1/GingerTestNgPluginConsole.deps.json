@@ -1,27 +1,25 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.1",
-    "signature": "9f01e4007c91b6ea685dc5d497ec4a72fe70fd20"
+    "signature": "ccbfd4aca0f22306c7db031f888096fb02833364"
   },
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v2.1": {
       "GingerTestNgPluginConsole/1.0.0": {
         "dependencies": {
-          "Ginger.Plugin.Core": "2.6.3",
-          "System.Xml.XmlDocument": "4.3.0",
-          "TestNG.GingerPlugin": "1.0.0",
-          "GingerCoreNET": "3.0.0.0"
+          "Ginger.Plugin.Core": "2.6.6",
+          "System.Xml.XmlDocument": "4.3.0"
         },
         "runtime": {
           "GingerTestNgPluginConsole.dll": {}
         }
       },
-      "Ginger.Plugin.Core/2.6.3": {
+      "Ginger.Plugin.Core/2.6.6": {
         "runtime": {
           "lib/netstandard2.0/GingerPluginCore.dll": {
-            "assemblyVersion": "2.6.3.0",
-            "fileVersion": "2.6.3.0"
+            "assemblyVersion": "2.6.6.0",
+            "fileVersion": "2.6.6.0"
           }
         }
       },
@@ -166,23 +164,6 @@
           "System.Threading": "4.3.0",
           "System.Xml.ReaderWriter": "4.3.0"
         }
-      },
-      "TestNG.GingerPlugin/1.0.0": {
-        "dependencies": {
-          "Ginger.Plugin.Core": "2.6.3",
-          "System.Xml.XmlDocument": "4.3.0"
-        },
-        "runtime": {
-          "TestNG.GingerPlugin.dll": {}
-        }
-      },
-      "GingerCoreNET/3.0.0.0": {
-        "runtime": {
-          "GingerCoreNET.dll": {
-            "assemblyVersion": "3.0.0.0",
-            "fileVersion": "3.0.0.0"
-          }
-        }
       }
     }
   },
@@ -192,12 +173,12 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Ginger.Plugin.Core/2.6.3": {
+    "Ginger.Plugin.Core/2.6.6": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-rA9JuMJ2v7B4cHK8m3jSdoQyF1fR87VhjkcOWCkCBk4FcA/R+d8ab9N9w/b1JpJAdHcIuHt3cVier6aJkwRCrA==",
-      "path": "ginger.plugin.core/2.6.3",
-      "hashPath": "ginger.plugin.core.2.6.3.nupkg.sha512"
+      "sha512": "sha512-F3+tcXs1n5auK9gpUhpyZjtHP+8sUEJlL+D6HRzAweVL3MvPkDbdMdv+ob9rtXROmc6V82xrFUJLRR2ok6gSBQ==",
+      "path": "ginger.plugin.core/2.6.6",
+      "hashPath": "ginger.plugin.core.2.6.6.nupkg.sha512"
     },
     "System.Collections/4.3.0": {
       "type": "package",
@@ -345,16 +326,6 @@
       "sha512": "sha512-lJ8AxvkX7GQxpC6GFCeBj8ThYVyQczx2+f/cWHJU8tjS7YfI6Cv6bon70jVEgs2CiFbmmM8b9j1oZVx0dSI2Ww==",
       "path": "system.xml.xmldocument/4.3.0",
       "hashPath": "system.xml.xmldocument.4.3.0.nupkg.sha512"
-    },
-    "TestNG.GingerPlugin/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "GingerCoreNET/3.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
     }
   }
 }

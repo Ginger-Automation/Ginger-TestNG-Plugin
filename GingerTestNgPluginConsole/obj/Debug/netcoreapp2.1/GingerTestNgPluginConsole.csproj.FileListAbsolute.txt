@@ -25,3 +25,7 @@ C:\Users\yaronwe\Source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\obj
 C:\Users\yaronwe\Source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\obj\Debug\netcoreapp2.1\GingerTestNgPluginConsole.AssemblyInfo.cs
 C:\Users\yaronwe\Source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\obj\Debug\netcoreapp2.1\GingerTestNgPluginConsole.dll
 C:\Users\yaronwe\Source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\obj\Debug\netcoreapp2.1\GingerTestNgPluginConsole.pdb
+C:\Users\yaronwe\Source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\obj\Debug\netcoreapp2.1\GingerTestNgPluginConsole.csprojAssemblyReference.cache
+C:\Users\yaronwe\Source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\bin\Debug\netcoreapp2.1\GingerCoreNET.pdb
+C:\Users\yaronwe\Source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\bin\Debug\netcoreapp2.1\GingerCoreNET.dll
+C:\Users\yaronwe\Source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\obj\Debug\netcoreapp2.1\GingerTestNgPluginConsole.csproj.CopyComplete
