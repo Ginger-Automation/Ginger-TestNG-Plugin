@@ -2,7 +2,7 @@
   "version": 3,
   "targets": {
     ".NETCoreApp,Version=v2.1": {
-      "Ginger.Plugin.Core/2.6.3": {
+      "Ginger.Plugin.Core/2.6.6": {
         "type": "package",
         "compile": {
           "lib/netstandard2.0/GingerPluginCore.dll": {}
@@ -1638,6 +1638,7 @@
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
+          "Ginger.Plugin.Core": "2.6.6",
           "System.Xml.XmlDocument": "4.3.0"
         },
         "compile": {
@@ -1650,13 +1651,13 @@
     }
   },
   "libraries": {
-    "Ginger.Plugin.Core/2.6.3": {
-      "sha512": "rA9JuMJ2v7B4cHK8m3jSdoQyF1fR87VhjkcOWCkCBk4FcA/R+d8ab9N9w/b1JpJAdHcIuHt3cVier6aJkwRCrA==",
+    "Ginger.Plugin.Core/2.6.6": {
+      "sha512": "F3+tcXs1n5auK9gpUhpyZjtHP+8sUEJlL+D6HRzAweVL3MvPkDbdMdv+ob9rtXROmc6V82xrFUJLRR2ok6gSBQ==",
       "type": "package",
-      "path": "ginger.plugin.core/2.6.3",
+      "path": "ginger.plugin.core/2.6.6",
       "files": [
         ".signature.p7s",
-        "ginger.plugin.core.2.6.3.nupkg.sha512",
+        "ginger.plugin.core.2.6.6.nupkg.sha512",
         "ginger.plugin.core.nuspec",
         "lib/netstandard2.0/GingerPluginCore.dll"
       ]
@@ -5777,7 +5778,7 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.1": [
-      "Ginger.Plugin.Core >= 2.6.3",
+      "Ginger.Plugin.Core >= 2.6.6",
       "GingerTestHelper >= 1.0.4",
       "MSTest.TestAdapter >= 1.3.2",
       "MSTest.TestFramework >= 1.3.2",
@@ -5788,23 +5789,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\mohdkhan\\.nuget\\packages\\": {},
+    "C:\\Users\\yaronwe\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\mohdkhan\\source\\Repos\\Ginger-TestNG-Plugin\\GingerTestNgPluginTest\\GingerTestNgPluginTest.csproj",
+      "projectUniqueName": "C:\\Users\\yaronwe\\Source\\Repos\\Ginger-TestNG-Plugin\\GingerTestNgPluginTest\\GingerTestNgPluginTest.csproj",
       "projectName": "GingerTestNgPluginTest",
-      "projectPath": "C:\\Users\\mohdkhan\\source\\Repos\\Ginger-TestNG-Plugin\\GingerTestNgPluginTest\\GingerTestNgPluginTest.csproj",
-      "packagesPath": "C:\\Users\\mohdkhan\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\mohdkhan\\source\\Repos\\Ginger-TestNG-Plugin\\GingerTestNgPluginTest\\obj\\",
+      "projectPath": "C:\\Users\\yaronwe\\Source\\Repos\\Ginger-TestNG-Plugin\\GingerTestNgPluginTest\\GingerTestNgPluginTest.csproj",
+      "packagesPath": "C:\\Users\\yaronwe\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\yaronwe\\Source\\Repos\\Ginger-TestNG-Plugin\\GingerTestNgPluginTest\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\mohdkhan\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\yaronwe\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -5812,13 +5813,13 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "https://api.nuget.org/v3/index.json": {}
+        "https://www.nuget.org/api/v2/": {}
       },
       "frameworks": {
         "netcoreapp2.1": {
           "projectReferences": {
-            "C:\\Users\\mohdkhan\\source\\Repos\\Ginger-TestNG-Plugin\\GingerTestNgPlugin\\TestNG.GingerPlugin.csproj": {
-              "projectPath": "C:\\Users\\mohdkhan\\source\\Repos\\Ginger-TestNG-Plugin\\GingerTestNgPlugin\\TestNG.GingerPlugin.csproj"
+            "C:\\Users\\yaronwe\\Source\\Repos\\Ginger-TestNG-Plugin\\GingerTestNgPlugin\\TestNG.GingerPlugin.csproj": {
+              "projectPath": "C:\\Users\\yaronwe\\Source\\Repos\\Ginger-TestNG-Plugin\\GingerTestNgPlugin\\TestNG.GingerPlugin.csproj"
             }
           }
         }
@@ -5834,7 +5835,7 @@
         "dependencies": {
           "Ginger.Plugin.Core": {
             "target": "Package",
-            "version": "[2.6.3, )"
+            "version": "[2.6.6, )"
           },
           "GingerTestHelper": {
             "target": "Package",
