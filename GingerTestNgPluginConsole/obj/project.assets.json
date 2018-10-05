@@ -493,20 +493,6 @@
         "runtime": {
           "lib/netstandard1.3/System.Xml.XmlDocument.dll": {}
         }
-      },
-      "TestNG.GingerPlugin/1.0.0": {
-        "type": "project",
-        "framework": ".NETStandard,Version=v2.0",
-        "dependencies": {
-          "Ginger.Plugin.Core": "2.6.6",
-          "System.Xml.XmlDocument": "4.3.0"
-        },
-        "compile": {
-          "bin/placeholder/TestNG.GingerPlugin.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/TestNG.GingerPlugin.dll": {}
-        }
       }
     }
   },
@@ -2290,19 +2276,13 @@
         "system.xml.xmldocument.4.3.0.nupkg.sha512",
         "system.xml.xmldocument.nuspec"
       ]
-    },
-    "TestNG.GingerPlugin/1.0.0": {
-      "type": "project",
-      "path": "../GingerTestNgPlugin/TestNG.GingerPlugin.csproj",
-      "msbuildProject": "../GingerTestNgPlugin/TestNG.GingerPlugin.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.1": [
       "Ginger.Plugin.Core >= 2.6.6",
       "Microsoft.NETCore.App >= 2.1.0",
-      "System.Xml.XmlDocument >= 4.3.0",
-      "TestNG.GingerPlugin >= 1.0.0"
+      "System.Xml.XmlDocument >= 4.3.0"
     ]
   },
   "packageFolders": {
@@ -2334,11 +2314,7 @@
       },
       "frameworks": {
         "netcoreapp2.1": {
-          "projectReferences": {
-            "C:\\Users\\yaronwe\\Source\\Repos\\Ginger-TestNG-Plugin\\GingerTestNgPlugin\\TestNG.GingerPlugin.csproj": {
-              "projectPath": "C:\\Users\\yaronwe\\Source\\Repos\\Ginger-TestNG-Plugin\\GingerTestNgPlugin\\TestNG.GingerPlugin.csproj"
-            }
-          }
+          "projectReferences": {}
         }
       },
       "warningProperties": {

@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GingerTestNgPlugin\TestNG.GingerPlugin.csproj" />
+    <ProjectReference Include="..\GingerTestNgPluginConsole\GingerTestNgPluginConsole.csproj" />
   </ItemGroup>
 
   <ItemGroup>

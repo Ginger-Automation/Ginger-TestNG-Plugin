@@ -1,9 +1,0 @@
-C:\Users\mohdkhan\source\Repos\Ginger-TestNG-Plugin\GingerTestNgPlugin\bin\Debug\netstandard2.0\TestNG.GingerPlugin.deps.json
-C:\Users\mohdkhan\source\Repos\Ginger-TestNG-Plugin\GingerTestNgPlugin\bin\Debug\netstandard2.0\TestNG.GingerPlugin.dll
-C:\Users\mohdkhan\source\Repos\Ginger-TestNG-Plugin\GingerTestNgPlugin\bin\Debug\netstandard2.0\TestNG.GingerPlugin.pdb
-C:\Users\mohdkhan\source\Repos\Ginger-TestNG-Plugin\GingerTestNgPlugin\obj\Debug\netstandard2.0\TestNG.GingerPlugin.csprojAssemblyReference.cache
-C:\Users\mohdkhan\source\Repos\Ginger-TestNG-Plugin\GingerTestNgPlugin\obj\Debug\netstandard2.0\TestNG.GingerPlugin.csproj.CoreCompileInputs.cache
-C:\Users\mohdkhan\source\Repos\Ginger-TestNG-Plugin\GingerTestNgPlugin\obj\Debug\netstandard2.0\TestNG.GingerPlugin.AssemblyInfoInputs.cache
-C:\Users\mohdkhan\source\Repos\Ginger-TestNG-Plugin\GingerTestNgPlugin\obj\Debug\netstandard2.0\TestNG.GingerPlugin.AssemblyInfo.cs
-C:\Users\mohdkhan\source\Repos\Ginger-TestNG-Plugin\GingerTestNgPlugin\obj\Debug\netstandard2.0\TestNG.GingerPlugin.dll
-C:\Users\mohdkhan\source\Repos\Ginger-TestNG-Plugin\GingerTestNgPlugin\obj\Debug\netstandard2.0\TestNG.GingerPlugin.pdb

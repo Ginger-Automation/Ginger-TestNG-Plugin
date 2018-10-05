@@ -1634,18 +1634,19 @@
           "lib/netstandard1.3/System.Xml.XPath.XmlDocument.dll": {}
         }
       },
-      "TestNG.GingerPlugin/1.0.0": {
+      "GingerTestNgPluginConsole/1.0.0": {
         "type": "project",
-        "framework": ".NETStandard,Version=v2.0",
+        "framework": ".NETCoreApp,Version=v2.1",
         "dependencies": {
           "Ginger.Plugin.Core": "2.6.6",
+          "Microsoft.NETCore.App": "2.1.0",
           "System.Xml.XmlDocument": "4.3.0"
         },
         "compile": {
-          "bin/placeholder/TestNG.GingerPlugin.dll": {}
+          "bin/placeholder/GingerTestNgPluginConsole.dll": {}
         },
         "runtime": {
-          "bin/placeholder/TestNG.GingerPlugin.dll": {}
+          "bin/placeholder/GingerTestNgPluginConsole.dll": {}
         }
       }
     }
@@ -5770,22 +5771,22 @@
         "system.xml.xpath.xmldocument.nuspec"
       ]
     },
-    "TestNG.GingerPlugin/1.0.0": {
+    "GingerTestNgPluginConsole/1.0.0": {
       "type": "project",
-      "path": "../GingerTestNgPlugin/TestNG.GingerPlugin.csproj",
-      "msbuildProject": "../GingerTestNgPlugin/TestNG.GingerPlugin.csproj"
+      "path": "../GingerTestNgPluginConsole/GingerTestNgPluginConsole.csproj",
+      "msbuildProject": "../GingerTestNgPluginConsole/GingerTestNgPluginConsole.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.1": [
       "Ginger.Plugin.Core >= 2.6.6",
       "GingerTestHelper >= 1.0.4",
+      "GingerTestNgPluginConsole >= 1.0.0",
       "MSTest.TestAdapter >= 1.3.2",
       "MSTest.TestFramework >= 1.3.2",
       "Microsoft.NET.Test.Sdk >= 15.8.0",
       "Microsoft.NETCore.App >= 2.1.0",
-      "System.Xml.XmlDocument >= 4.3.0",
-      "TestNG.GingerPlugin >= 1.0.0"
+      "System.Xml.XmlDocument >= 4.3.0"
     ]
   },
   "packageFolders": {
@@ -5818,8 +5819,8 @@
       "frameworks": {
         "netcoreapp2.1": {
           "projectReferences": {
-            "C:\\Users\\yaronwe\\Source\\Repos\\Ginger-TestNG-Plugin\\GingerTestNgPlugin\\TestNG.GingerPlugin.csproj": {
-              "projectPath": "C:\\Users\\yaronwe\\Source\\Repos\\Ginger-TestNG-Plugin\\GingerTestNgPlugin\\TestNG.GingerPlugin.csproj"
+            "C:\\Users\\yaronwe\\Source\\Repos\\Ginger-TestNG-Plugin\\GingerTestNgPluginConsole\\GingerTestNgPluginConsole.csproj": {
+              "projectPath": "C:\\Users\\yaronwe\\Source\\Repos\\Ginger-TestNG-Plugin\\GingerTestNgPluginConsole\\GingerTestNgPluginConsole.csproj"
             }
           }
         }

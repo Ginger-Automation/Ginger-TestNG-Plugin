@@ -11,10 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GingerTestNgPlugin\TestNG.GingerPlugin.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="GingerCoreNET">
       <HintPath>GingerCoreNET.dll</HintPath>
     </Reference>

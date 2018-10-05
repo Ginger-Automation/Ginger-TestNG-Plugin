@@ -86,7 +86,7 @@ namespace GingerTestNgPluginTest
         public void ExecuteActionTest()
         {
             GingerAction GA = new GingerAction();
-            TestNgAction TNA = new TestNgAction();
+            TestNgService TNA = new TestNgService();
         
             string TestNgXmll = System.IO.File.ReadAllText(@"C:\Users\mohdkhan\eclipse-workspace\SeleniumTestNg\testng.xml");
 

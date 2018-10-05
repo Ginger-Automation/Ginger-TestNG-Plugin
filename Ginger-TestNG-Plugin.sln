@@ -3,14 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestNG.GingerPlugin", "GingerTestNgPlugin\TestNG.GingerPlugin.csproj", "{1FE764EA-DDB0-4572-AC20-87AF1E6DAE58}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GingerTestNgPluginTest", "GingerTestNgPluginTest\GingerTestNgPluginTest.csproj", "{AAAC9D60-0D71-42D5-8033-8D9F9563FCD2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GingerTestNgPluginConsole", "GingerTestNgPluginConsole\GingerTestNgPluginConsole.csproj", "{BAD2F1A2-9C34-4063-A0B0-93680B742674}"
-	ProjectSection(ProjectDependencies) = postProject
-		{1FE764EA-DDB0-4572-AC20-87AF1E6DAE58} = {1FE764EA-DDB0-4572-AC20-87AF1E6DAE58}
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,10 +13,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1FE764EA-DDB0-4572-AC20-87AF1E6DAE58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1FE764EA-DDB0-4572-AC20-87AF1E6DAE58}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1FE764EA-DDB0-4572-AC20-87AF1E6DAE58}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1FE764EA-DDB0-4572-AC20-87AF1E6DAE58}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AAAC9D60-0D71-42D5-8033-8D9F9563FCD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AAAC9D60-0D71-42D5-8033-8D9F9563FCD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AAAC9D60-0D71-42D5-8033-8D9F9563FCD2}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -14,3 +14,14 @@ C:\Users\mohdkhan\source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\ob
 C:\Users\mohdkhan\source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\obj\Debug\netcoreapp2.1\GingerTestNgPluginConsole.csproj.CopyComplete
 C:\Users\mohdkhan\source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\obj\Debug\netcoreapp2.1\GingerTestNgPluginConsole.dll
 C:\Users\mohdkhan\source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\obj\Debug\netcoreapp2.1\GingerTestNgPluginConsole.pdb
+C:\Users\yaronwe\Source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\bin\Debug\netcoreapp2.1\Ginger.PluginPackage.json
+C:\Users\yaronwe\Source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\bin\Debug\netcoreapp2.1\GingerTestNgPluginConsole.deps.json
+C:\Users\yaronwe\Source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\bin\Debug\netcoreapp2.1\GingerTestNgPluginConsole.runtimeconfig.json
+C:\Users\yaronwe\Source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\bin\Debug\netcoreapp2.1\GingerTestNgPluginConsole.runtimeconfig.dev.json
+C:\Users\yaronwe\Source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\bin\Debug\netcoreapp2.1\GingerTestNgPluginConsole.dll
+C:\Users\yaronwe\Source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\bin\Debug\netcoreapp2.1\GingerTestNgPluginConsole.pdb
+C:\Users\yaronwe\Source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\obj\Debug\netcoreapp2.1\GingerTestNgPluginConsole.csproj.CoreCompileInputs.cache
+C:\Users\yaronwe\Source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\obj\Debug\netcoreapp2.1\GingerTestNgPluginConsole.AssemblyInfoInputs.cache
+C:\Users\yaronwe\Source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\obj\Debug\netcoreapp2.1\GingerTestNgPluginConsole.AssemblyInfo.cs
+C:\Users\yaronwe\Source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\obj\Debug\netcoreapp2.1\GingerTestNgPluginConsole.dll
+C:\Users\yaronwe\Source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\obj\Debug\netcoreapp2.1\GingerTestNgPluginConsole.pdb

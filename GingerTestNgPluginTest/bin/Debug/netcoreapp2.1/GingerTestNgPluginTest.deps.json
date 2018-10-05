@@ -1,30 +1,30 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.1",
-    "signature": "3844f69298d6dde573ddc484726e0859a075a69b"
+    "signature": "389294999f48d9faa41cea68007ea4e93894a447"
   },
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v2.1": {
       "GingerTestNgPluginTest/1.0.0": {
         "dependencies": {
-          "Ginger.Plugin.Core": "2.6.3",
+          "Ginger.Plugin.Core": "2.6.6",
           "GingerTestHelper": "1.0.4",
+          "GingerTestNgPluginConsole": "1.0.0",
           "MSTest.TestAdapter": "1.3.2",
           "MSTest.TestFramework": "1.3.2",
           "Microsoft.NET.Test.Sdk": "15.8.0",
-          "System.Xml.XmlDocument": "4.3.0",
-          "TestNG.GingerPlugin": "1.0.0"
+          "System.Xml.XmlDocument": "4.3.0"
         },
         "runtime": {
           "GingerTestNgPluginTest.dll": {}
         }
       },
-      "Ginger.Plugin.Core/2.6.3": {
+      "Ginger.Plugin.Core/2.6.6": {
         "runtime": {
           "lib/netstandard2.0/GingerPluginCore.dll": {
-            "assemblyVersion": "2.6.3.0",
-            "fileVersion": "2.6.3.0"
+            "assemblyVersion": "2.6.6.0",
+            "fileVersion": "2.6.6.0"
           }
         }
       },
@@ -1031,12 +1031,13 @@
           }
         }
       },
-      "TestNG.GingerPlugin/1.0.0": {
+      "GingerTestNgPluginConsole/1.0.0": {
         "dependencies": {
+          "Ginger.Plugin.Core": "2.6.6",
           "System.Xml.XmlDocument": "4.3.0"
         },
         "runtime": {
-          "TestNG.GingerPlugin.dll": {}
+          "GingerTestNgPluginConsole.dll": {}
         }
       }
     }
@@ -1047,12 +1048,12 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Ginger.Plugin.Core/2.6.3": {
+    "Ginger.Plugin.Core/2.6.6": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-rA9JuMJ2v7B4cHK8m3jSdoQyF1fR87VhjkcOWCkCBk4FcA/R+d8ab9N9w/b1JpJAdHcIuHt3cVier6aJkwRCrA==",
-      "path": "ginger.plugin.core/2.6.3",
-      "hashPath": "ginger.plugin.core.2.6.3.nupkg.sha512"
+      "sha512": "sha512-F3+tcXs1n5auK9gpUhpyZjtHP+8sUEJlL+D6HRzAweVL3MvPkDbdMdv+ob9rtXROmc6V82xrFUJLRR2ok6gSBQ==",
+      "path": "ginger.plugin.core/2.6.6",
+      "hashPath": "ginger.plugin.core.2.6.6.nupkg.sha512"
     },
     "GingerTestHelper/1.0.4": {
       "type": "package",
@@ -1551,7 +1552,7 @@
       "path": "system.xml.xpath.xmldocument/4.0.1",
       "hashPath": "system.xml.xpath.xmldocument.4.0.1.nupkg.sha512"
     },
-    "TestNG.GingerPlugin/1.0.0": {
+    "GingerTestNgPluginConsole/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
