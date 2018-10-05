@@ -36,3 +36,6 @@ C:\Users\yaronwe\Source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginTest\obj\De
 C:\Users\yaronwe\Source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginTest\bin\Debug\netcoreapp2.1\Ginger.PluginPackage.json
 C:\Users\yaronwe\Source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginTest\bin\Debug\netcoreapp2.1\GingerTestNgPluginConsole.dll
 C:\Users\yaronwe\Source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginTest\bin\Debug\netcoreapp2.1\GingerTestNgPluginConsole.pdb
+C:\Users\yaronwe\Source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginTest\bin\Debug\netcoreapp2.1\Ginger.PluginPackage.Actions.json
+C:\Users\yaronwe\Source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginTest\bin\Debug\netcoreapp2.1\GingerCoreNET.dll
+C:\Users\yaronwe\Source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginTest\bin\Debug\netcoreapp2.1\GingerCoreNET.pdb

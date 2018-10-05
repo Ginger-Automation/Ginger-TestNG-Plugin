@@ -9,7 +9,8 @@
       "GingerTestNgPluginConsole/1.0.0": {
         "dependencies": {
           "Ginger.Plugin.Core": "2.6.6",
-          "System.Xml.XmlDocument": "4.3.0"
+          "System.Xml.XmlDocument": "4.3.0",
+          "GingerCoreNET": "3.0.0.0"
         },
         "runtime": {
           "GingerTestNgPluginConsole.dll": {}
@@ -163,6 +164,14 @@
           "System.Text.Encoding": "4.3.0",
           "System.Threading": "4.3.0",
           "System.Xml.ReaderWriter": "4.3.0"
+        }
+      },
+      "GingerCoreNET/3.0.0.0": {
+        "runtime": {
+          "GingerCoreNET.dll": {
+            "assemblyVersion": "3.0.0.0",
+            "fileVersion": "3.0.0.0"
+          }
         }
       }
     }
@@ -326,6 +335,11 @@
       "sha512": "sha512-lJ8AxvkX7GQxpC6GFCeBj8ThYVyQczx2+f/cWHJU8tjS7YfI6Cv6bon70jVEgs2CiFbmmM8b9j1oZVx0dSI2Ww==",
       "path": "system.xml.xmldocument/4.3.0",
       "hashPath": "system.xml.xmldocument.4.3.0.nupkg.sha512"
+    },
+    "GingerCoreNET/3.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
     }
   }
 }

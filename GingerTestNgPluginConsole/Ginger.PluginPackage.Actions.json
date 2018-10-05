@@ -1,0 +1,106 @@
+[
+  {
+    "InputValues": [
+      {
+        "Param": "GA",
+        "ParamTypeName": "IGingerAction"
+      },
+      {
+        "Param": "TestNgXMlName",
+        "ParamTypeName": "String"
+      },
+      {
+        "Param": "ProjectLocation",
+        "ParamTypeName": "String"
+      },
+      {
+        "Param": "LibraryFolder",
+        "ParamTypeName": "String"
+      },
+      {
+        "Param": "JavaLocation",
+        "ParamTypeName": "String"
+      },
+      {
+        "Param": "ShowMethodDetails",
+        "ParamTypeName": "String"
+      }
+    ],
+    "ID": "RunTestNgSuite",
+    "PluginID": "TestNG",
+    "ServiceID": "TestNG",
+    "Description": "Run TestNG Suite from XMl"
+  },
+  {
+    "InputValues": [
+      {
+        "Param": "GA",
+        "ParamTypeName": "IGingerAction"
+      },
+      {
+        "Param": "TestNgSuiteXML",
+        "ParamTypeName": "String"
+      },
+      {
+        "Param": "WorkingDirectory",
+        "ParamTypeName": "String"
+      },
+      {
+        "Param": "MavenBinDirectory",
+        "ParamTypeName": "String"
+      },
+      {
+        "Param": "MavenSettingsFile",
+        "ParamTypeName": "String"
+      },
+      {
+        "Param": "Commandlinearguments",
+        "ParamTypeName": "String"
+      },
+      {
+        "Param": "ShowMethodDetails",
+        "ParamTypeName": "String"
+      }
+    ],
+    "ID": "Run TestNg with Maven",
+    "PluginID": "TestNG",
+    "ServiceID": "TestNG",
+    "Description": "Run TestNg suites as part of Maven Build with Surefire"
+  },
+  {
+    "InputValues": [
+      {
+        "Param": "GA",
+        "ParamTypeName": "IGingerAction"
+      },
+      {
+        "Param": "Freecommand",
+        "ParamTypeName": "String"
+      },
+      {
+        "Param": "WorkingDirectory",
+        "ParamTypeName": "String"
+      },
+      {
+        "Param": "ReportsDirectory",
+        "ParamTypeName": "String"
+      },
+      {
+        "Param": "MavenSettingsFile",
+        "ParamTypeName": "String"
+      },
+      {
+        "Param": "Commandlinearguments",
+        "ParamTypeName": "String"
+      },
+      {
+        "Param": "ShowMethodDetails",
+        "ParamTypeName": "String"
+      }
+    ],
+    "ID": "Run TestNg with Free Command",
+    "PluginID": "TestNG",
+    "ServiceID": "TestNG",
+    "Description": "Run TestNg with Free Command"
+  }
+]
