@@ -26,9 +26,9 @@
         "ParamTypeName": "String"
       }
     ],
-    "ID": "RunTestNgSuite",
-    "PluginID": "TestNG",
-    "ServiceID": "TestNG",
+    "ActionId": "RunTestNgSuite",
+    "PluginId": "TestNG",
+    "ServiceId": "TestNG",
     "Description": "Run TestNG Suite from XMl"
   },
   {
@@ -62,9 +62,9 @@
         "ParamTypeName": "String"
       }
     ],
-    "ID": "Run TestNg with Maven",
-    "PluginID": "TestNG",
-    "ServiceID": "TestNG",
+    "ActionId": "Run TestNg with Maven",
+    "PluginId": "TestNG",
+    "ServiceId": "TestNG",
     "Description": "Run TestNg suites as part of Maven Build with Surefire"
   },
   {
@@ -98,9 +98,9 @@
         "ParamTypeName": "String"
       }
     ],
-    "ID": "Run TestNg with Free Command",
-    "PluginID": "TestNG",
-    "ServiceID": "TestNG",
+    "ActionId": "Run TestNg with Free Command",
+    "PluginId": "TestNG",
+    "ServiceId": "TestNG",
     "Description": "Run TestNg with Free Command"
   }
 ]
