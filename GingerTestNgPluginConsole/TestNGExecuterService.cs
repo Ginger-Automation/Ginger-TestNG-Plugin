@@ -8,7 +8,7 @@ using System.Text;
 namespace GingerTestNgPluginConsole
 {
     [GingerService("TestNGExecuter", "Trigger TestNG Tests Execution by Ginger")]
-    public class TestNGExecuterService //: IStandAloneAction, IGingerService  //TODO: Fix Interfaces after updating Ginger.Plugin.Core
+    public class TestNGExecuterService   
     {
         /// <summary>
         /// Execute TestNG Suite based on TestNG XML
@@ -81,7 +81,7 @@ namespace GingerTestNgPluginConsole
             testNgExecuter.XmlTestsToExecute= XmlTestsToExecute;
 
             testNgExecuter.TestGroupsToInclude = TestGroupsToInclude;
-            testNgExecuter.TestGroupsToExclude= TestGroupsToExclude;            
+            testNgExecuter.TestGroupsToExclude= TestGroupsToExclude;
         }
     }
 }

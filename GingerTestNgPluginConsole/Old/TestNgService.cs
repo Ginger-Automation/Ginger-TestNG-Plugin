@@ -7,7 +7,7 @@ using GingerTestNgPlugin;
 
 namespace StandAloneActions
 {
-    [GingerService("TestNG", "Execute TestNG scripts from Ginger")]
+    //[GingerService("TestNG", "Execute TestNG scripts from Ginger")]
     public class TestNgService //: IStandAloneAction, IGingerService
     {
         /// <summary>
