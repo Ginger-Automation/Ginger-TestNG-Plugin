@@ -1,6 +1,7 @@
 using Amdocs.Ginger.Plugin.Core;
 using GingerTestHelper;
 using GingerTestNgPlugin;
+using GingerTestNgPluginConsole;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StandAloneActions;
 using System;
@@ -10,6 +11,86 @@ namespace GingerTestNgPluginTest
     [TestClass]
     public class TestNgActionsTest
     {
+        [TestMethod]
+        public void Play()
+        {
+            string a = Path.GetFullPath(@"C:\Users/menik\Documents\MENIK05/Work Projects");
+
+            string b = Path.GetFullPath(null);
+        }
+
+        [TestMethod]
+        public void TestConfigurationsSet()
+        {
+            //Arrange
+            TestNGExecuterService service = new TestNGExecuterService();
+            GingerAction GA = new GingerAction();
+
+            //Act
+            
+
+            //Assert            
+            Assert.AreEqual(null, GA.Errors, "No Errors");
+        }
+
+        //[TestMethod]
+        //public void StartServer()
+        //{
+        //    //Arrange
+        //    PACTService service = new PACTService();
+        //    GingerAction GA = new GingerAction();
+
+
+        //    //Act
+        //    service.StartPACTServer(GA, 1234);
+
+        //    //Assert
+        //    //Assert.AreEqual("PACT Mock Server Started on port: 1234 http://localhost:1234", GA.ExInfo, "Exinfo message");
+        //    Assert.AreEqual(null, GA.Errors, "No Errors");
+
+        //}
+
+        //[TestMethod]
+        //public void LoadInteractionsFile()
+        //{
+        //    //Arrange
+        //    PACTService service = new PACTService();
+        //    GingerAction GA = new GingerAction();
+        //    service.StartPACTServer(GA, 5555);
+        //    GingerAction GA2 = new GingerAction();
+        //    string fileName = TestResources.GetTestResourcesFile("Sample.PACT.json");
+
+        //    //Act
+        //    service.LoadInteractionsFile(GA2, fileName);
+
+        //    //Assert
+        //    //Assert.AreEqual("PACT Mock Server Started on port: 5555 http://localhost:5555", GA.ExInfo, "Exinfo message");
+        //    Assert.AreEqual(null, GA2.Errors, "No Errors");
+
+        //}
+
+
+        //[TestMethod]
+        //public void ClearInteractions()
+        //{
+        //    //Arrange
+        //    PACTService service = new PACTService();
+        //    GingerAction GA = new GingerAction();
+        //    service.StartPACTServer(GA, 6677);
+        //    GingerAction GA2 = new GingerAction();
+        //    string fileName = TestResources.GetTestResourcesFile("Sample.PACT.json");
+        //    service.LoadInteractionsFile(GA2, fileName);
+
+        //    //Act
+        //    GingerAction GA3 = new GingerAction();
+        //    service.ClearInteractions(GA3);
+
+        //    //Assert            
+        //    Assert.AreEqual(null, GA2.Errors, "No Errors");
+
+        //}
+
+
         [TestMethod]
         public void Sandbox()
         {
@@ -63,13 +144,13 @@ namespace GingerTestNgPluginTest
         [TestMethod]
         public void ExecuteWithXML()
         {
-            string TestNgXmll = System.IO.File.ReadAllText(@"C:\Users\mohdkhan\eclipse-workspace\SeleniumTestNg\testng.xml");
+            string TestNgXmll = System.IO.File.ReadAllText(@"C:\Users\menik\eclipse-workspace\Learn-TestNG\src\Groups\testng.xml");
 
             TestNGSuite Suite = new TestNGSuite(TestNgXmll);
             string xml = Suite.GetTextNGXml();
 
 
-            TestNGReport Report = TestNGSuite.Execute("testng.xml", @"C:\Users\mohdkhan\eclipse-workspace\SeleniumTestNg", @"C:\eclipse\plugins", "");
+            TestNGReport Report = TestNGSuite.Execute("testng.xml", @"C:\Users\menik\eclipse-workspace\Learn-TestNG\bin", @"C:\Users\menik\.p2\pool\plugins\*", "");
         }
 
         [TestMethod]

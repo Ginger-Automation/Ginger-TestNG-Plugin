@@ -9,8 +9,8 @@ namespace GingerTestNgPluginConsole
         static void Main(string[] args)
         {
             Console.WriteLine("Starting Ginger TestNg Plugin");
-            
-            GingerNodeStarter.StartNode(new TestNgService(), "TestNg Service 1");
+
+            //GingerNodeStarter.StartNode(new TestNGExecuterService(), "TestNG Execution Service"); //TODO: Fix StartNode after updating Ginger.Plugin.Core
 
             Console.ReadKey();
            

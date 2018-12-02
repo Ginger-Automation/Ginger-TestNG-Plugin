@@ -10,8 +10,8 @@ namespace GingerTestNgPlugin
 {
     public class TestNGSuite
     {
-        public readonly List<NGTest> Tests;
-        public readonly List<NGParameter> Parameters;
+        public readonly List<TestNGTest> Tests;
+        public readonly List<TestNGTestParameter> Parameters;
         public readonly List<string> Listeners;
         public readonly string Name;
         public readonly bool IsCreatedFromReport;
@@ -28,8 +28,8 @@ namespace GingerTestNgPlugin
         ///</summary>
         public TestNGSuite(string XmlString)
         {
-            Tests = new List<NGTest>();
-            Parameters = new List<NGParameter>();
+            Tests = new List<TestNGTest>();
+            Parameters = new List<TestNGTestParameter>();
             XmlDocument TestNgXml = new XmlDocument();
             TestNgXml.LoadXml(XmlString);
             if (TestNgXml.DocumentType.SystemId.Contains(@"http://testng.org/testng-1.0.dtd"))
@@ -46,7 +46,7 @@ namespace GingerTestNgPlugin
                 foreach (XmlElement Test in TestNgXml.GetElementsByTagName("test"))
                 {
 
-                    NGTest Ngt = new NGTest
+                    TestNGTest Ngt = new TestNGTest
                     {
                         Name = Test.Attributes.GetNamedItem("name").Value,
                         Parameters = GetNgParametersFromXmlElement(Test),
@@ -61,12 +61,12 @@ namespace GingerTestNgPlugin
             }
         }
         #region Parsing
-        private List<NGClass> GetNGClassesFromXmlElement(XmlElement test)
+        private List<TestNGTestClass> GetNGClassesFromXmlElement(XmlElement test)
         {
-            List<NGClass> NgParameters = new List<NGClass>();
+            List<TestNGTestClass> NgParameters = new List<TestNGTestClass>();
             foreach (XmlElement NgClassXMl in test.GetElementsByTagName("class"))
             {
-                NGClass NgC = new NGClass
+                TestNGTestClass NgC = new TestNGTestClass
                 {
                     Name = NgClassXMl.Attributes.GetNamedItem("name").Value,
                     Parameters = GetNgParametersFromXmlElement(NgClassXMl),
@@ -78,13 +78,13 @@ namespace GingerTestNgPlugin
             return NgParameters;
         }
 
-        private List<NGMethod> GetNgMethods(XmlElement ngClassXMl)
+        private List<TestNGTestMethod> GetNgMethods(XmlElement ngClassXMl)
         {
-            List<NGMethod> NgMethods = new List<NGMethod>();
+            List<TestNGTestMethod> NgMethods = new List<TestNGTestMethod>();
 
             foreach (XmlElement Xm in ngClassXMl.GetElementsByTagName("include"))
             {
-                NGMethod Nmethod= new NGMethod
+                TestNGTestMethod Nmethod= new TestNGTestMethod
                 {
                   Name=  Xm.Attributes.GetNamedItem("name").Value,
                 };
@@ -93,14 +93,14 @@ namespace GingerTestNgPlugin
             return NgMethods;
         }
 
-        private List<NGParameter> GetNgParametersFromXmlElement(XmlElement test)
+        private List<TestNGTestParameter> GetNgParametersFromXmlElement(XmlElement test)
         {
-            List<NGParameter> NgParameters = new List<NGParameter>();
+            List<TestNGTestParameter> NgParameters = new List<TestNGTestParameter>();
             foreach (XmlElement parameter in test.GetElementsByTagName("parameter"))
             {
                 if (parameter.ParentNode.Equals(test))
                 {
-                    NGParameter NgP = new NGParameter
+                    TestNGTestParameter NgP = new TestNGTestParameter
                     {
                         Name = parameter.Attributes.GetNamedItem("name").Value,
                         Value = parameter.Attributes.GetNamedItem("value").Value,
@@ -163,7 +163,7 @@ namespace GingerTestNgPlugin
             }
 
 
-            foreach (NGTest Test in Tests)
+            foreach (TestNGTest Test in Tests)
             {
                 XmlElement NgTest = xml.CreateElement("test");
                 NgTest.SetAttribute("name", Test.Name);
@@ -174,14 +174,14 @@ namespace GingerTestNgPlugin
 
 
                 XmlElement Classes = xml.CreateElement("classes");
-                foreach (NGClass NGC in Test.Classes)
+                foreach (TestNGTestClass NGC in Test.Classes)
                 {
                     XmlElement NgClassElement = xml.CreateElement("class");
                     NgClassElement.SetAttribute("name", NGC.Name);
                     if (NGC.Methods.Count > 0)
                     {
                         XmlElement methods = xml.CreateElement("methods");
-                        foreach (NGMethod NgMethod in NGC.Methods)
+                        foreach (TestNGTestMethod NgMethod in NGC.Methods)
                         {
                             XmlElement method = xml.CreateElement("include");
                             method.SetAttribute("name", NgMethod.Name);
@@ -203,9 +203,9 @@ namespace GingerTestNgPlugin
             return xml.OuterXml;
         }
 
-        private void AddParametersToXMl(List<NGParameter> parameters, XmlElement Parent, XmlDocument xml)
+        private void AddParametersToXMl(List<TestNGTestParameter> parameters, XmlElement Parent, XmlDocument xml)
         {
-            foreach (NGParameter Parameter in parameters)
+            foreach (TestNGTestParameter Parameter in parameters)
             {
                 XmlElement NgParam = xml.CreateElement("parameter");
                 NgParam.SetAttribute("name", Parameter.Name);
@@ -244,11 +244,6 @@ namespace GingerTestNgPlugin
         /// <returns></returns>
         public static TestNGReport Execute(string TestNgXML, string ProjectLocation, string LibraryFolder, string JavaLocation)
         {
-
-
-
-
-
             if (LibraryFolder.EndsWith("\\"))
             {
                 LibraryFolder = LibraryFolder + "*";
@@ -424,7 +419,7 @@ namespace GingerTestNgPlugin
 
         private TestNGSuite(string XmlString, bool FromReportXMl)
         {
-            Tests = new List<NGTest>();
+            Tests = new List<TestNGTest>();
             if (!FromReportXMl)
             {
                 throw new NotSupportedException("Please use other constructor");
@@ -439,15 +434,15 @@ namespace GingerTestNgPlugin
             FinishedAt = DateTime.Parse(Suite.DocumentElement.GetAttribute("finished-at").ToString());
             foreach (XmlElement NTest in Suite.GetElementsByTagName("test"))
             {
-                List<NGClass> NgClasses = new List<NGClass>();
-                NGTest Test = new NGTest
+                List<TestNGTestClass> NgClasses = new List<TestNGTestClass>();
+                TestNGTest Test = new TestNGTest
                 {
                     Name = NTest.GetAttribute("name").ToString(),
 
 
-                    Duration = Int32.Parse(NTest.GetAttribute("duration-ms").ToString()),
-                    StartedAt = DateTime.Parse(NTest.GetAttribute("started-at").ToString()),
-                    FinishedAt = DateTime.Parse(NTest.GetAttribute("finished-at").ToString()),
+                    ExecutionDurationMS = Int32.Parse(NTest.GetAttribute("duration-ms").ToString()),
+                    ExecutionStartTime = DateTime.Parse(NTest.GetAttribute("started-at").ToString()),
+                    ExecutionEndTime = DateTime.Parse(NTest.GetAttribute("finished-at").ToString()),
 
                 };
 
@@ -456,21 +451,21 @@ namespace GingerTestNgPlugin
                 {
 
 
-                    NGClass TestNgClass = new NGClass
+                    TestNGTestClass TestNgClass = new TestNGTestClass
                     {
                         Name = NClass.GetAttribute("name").ToString(),
                     };
-                    List<NGMethod> TestNGMethods = new List<NGMethod>();
+                    List<TestNGTestMethod> TestNGMethods = new List<TestNGTestMethod>();
                     foreach (XmlElement NGTestM in Suite.GetElementsByTagName("test-method"))
                     {
-                        NGMethod NM = new NGMethod
+                        TestNGTestMethod NM = new TestNGTestMethod
                         {
                             Name = NGTestM.GetAttribute("name").ToString(),
-                            Status = (eNGStatus)Enum.Parse(typeof(eNGStatus), NGTestM.GetAttribute("status").ToString(), true),
-                            Signature = NGTestM.GetAttribute("signature-at").ToString(),
-                            Duration = Int32.Parse(NGTestM.GetAttribute("duration-ms").ToString()),
-                            StartedAt = DateTime.Parse(NGTestM.GetAttribute("started-at").ToString()),
-                            FinishedAt = DateTime.Parse(NGTestM.GetAttribute("finished-at").ToString()),
+                            ExecutionStatus = (eTestExecutionStatus)Enum.Parse(typeof(eNGStatus), NGTestM.GetAttribute("status").ToString(), true),
+                            ExecutionSignature = NGTestM.GetAttribute("signature-at").ToString(),
+                            ExecutionDurationMS = Int32.Parse(NGTestM.GetAttribute("duration-ms").ToString()),
+                            ExecutionStartTime = DateTime.Parse(NGTestM.GetAttribute("started-at").ToString()),
+                            ExecutionEndTime = DateTime.Parse(NGTestM.GetAttribute("finished-at").ToString()),
                         };
                         TestNGMethods.Add(NM);
                     }
