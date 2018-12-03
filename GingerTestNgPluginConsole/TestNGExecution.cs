@@ -10,9 +10,13 @@ namespace GingerTestNgPluginConsole
 {
     public class TestNGExecution
     {
-        IGingerAction mGA;
+        public IGingerAction GingerAction;
 
-        public enum eExecutionMode { XML,Classes,Methods,Jar}
+        static string mCommandOutputBuffer = string.Empty;
+        static string mCommandOutputErrorBuffer = string.Empty;
+
+        public enum eExecutionMode { XML, Classes, Methods, Jar }
+        public eExecutionMode ExecutionMode;
 
         string mTempWorkingFolder = null;
         public string TempWorkingFolder
@@ -60,7 +64,7 @@ namespace GingerTestNgPluginConsole
                         mJavaExeFullPath = Path.GetFullPath(mJavaExeFullPath);
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     //failed to init the Java Exe path
                 }
@@ -83,18 +87,18 @@ namespace GingerTestNgPluginConsole
             }
         }
 
-        string mTestNGProjectPath = null;
-        public string TestNGProjectPath
+        string mTestNGProjectBinFolderPath = null;
+        public string TestNGProjectBinFolderPath
         {
             get
             {
-                return mTestNGProjectPath;
+                return mTestNGProjectBinFolderPath;
             }
             set
             {
                 if (!string.IsNullOrEmpty(value))
                 {
-                    mTestNGProjectPath = Path.GetFullPath(value);
+                    mTestNGProjectBinFolderPath = Path.GetFullPath(value);
                 }
             }
         }
@@ -131,7 +135,7 @@ namespace GingerTestNgPluginConsole
 
         public List<TestNGTestGroup> TestGroupsToInclude = new List<TestNGTestGroup>();
 
-        public List<TestNGTestGroup> TestGroupsToExclude = new List<TestNGTestGroup>();        
+        public List<TestNGTestGroup> TestGroupsToExclude = new List<TestNGTestGroup>();
 
         public void SetXmlParametersValuesToOverwriteFromString(string xmlParams)
         {
@@ -143,7 +147,7 @@ namespace GingerTestNgPluginConsole
                     {
                         string[] paramArgs = param.Split('=');
                         TestNGTestParameter paramObj = new TestNGTestParameter();
-                        paramObj.Name = paramArgs[0].Trim(); 
+                        paramObj.Name = paramArgs[0].Trim();
                         paramObj.Value = paramArgs[1];
                         XmlParametersValuesToOverwrite.Add(paramObj);
                     }
@@ -178,32 +182,32 @@ namespace GingerTestNgPluginConsole
         }
 
 
-        public bool ValidateAndPrepareConfigs(IGingerAction GA, eExecutionMode execMode)        
+        public bool ValidateAndPrepareConfigs()
         {
             //validate general inputes
             if (Directory.Exists(TempWorkingFolder) == false)
             {
-                GA.AddError(String.Format("Failed to create temp working folder at: '{0}'", TempWorkingFolder));
+                GingerAction.AddError(String.Format("Failed to create temp working folder at: '{0}'", TempWorkingFolder));
                 return false;
             }
             else
             {
-                GA.AddExInfo(String.Format("Temp working folder path: '{0}'", TempWorkingFolder));
+                GingerAction.AddExInfo(String.Format("Temp working folder path: '{0}'", TempWorkingFolder));
             }
 
             if (Path.GetFileName(JavaExeFullPath).ToLower() != "java.exe" || File.Exists(JavaExeFullPath) == false)
             {
-                GA.AddError(String.Format("Failed to find 'java.exe' at: '{0}'", JavaExeFullPath));
+                GingerAction.AddError(String.Format("Failed to find 'java.exe' at: '{0}'", JavaExeFullPath));
                 return false;
             }
             else
             {
-                GA.AddExInfo(String.Format("'java.exe' path: '{0}'", JavaExeFullPath));
+                GingerAction.AddExInfo(String.Format("'java.exe' path: '{0}'", JavaExeFullPath));
             }
-            
+
             if (Directory.Exists(TestNGResourcesPath.Trim().TrimEnd('*')) == false)
             {
-                GA.AddError(String.Format("Failed to find the TestNG resources folder at: '{0}'", TestNGResourcesPath));
+                GingerAction.AddError(String.Format("Failed to find the TestNG resources folder at: '{0}'", TestNGResourcesPath));
                 return false;
             }
             else
@@ -212,58 +216,59 @@ namespace GingerTestNgPluginConsole
                 {
                     TestNGResourcesPath = Path.Combine(TestNGResourcesPath, "*");
                 }
-                GA.AddExInfo(String.Format("TestNG resources path: '{0}'", TestNGResourcesPath));
+                GingerAction.AddExInfo(String.Format("TestNG resources path: '{0}'", TestNGResourcesPath));
             }
 
-            if (Directory.Exists(TestNGProjectPath.Trim().TrimEnd('*')) == false)
+            TestNGProjectBinFolderPath = TestNGProjectBinFolderPath.TrimEnd(new char[] { '\\', '/' });
+            if (Path.GetFileName(TestNGProjectBinFolderPath).ToLower() != "bin")
             {
-                GA.AddError(String.Format("Failed to find the TestNG testing project folder at: '{0}'", TestNGProjectPath));
+                TestNGProjectBinFolderPath = Path.Combine(TestNGProjectBinFolderPath, "\bin");
+            }
+            if (Directory.Exists(TestNGProjectBinFolderPath) == false)
+            {
+                GingerAction.AddError(String.Format("Failed to find the TestNG testing project Bin folder at: '{0}'", TestNGProjectBinFolderPath));
                 return false;
             }
             else
-            {
-                if (TestNGProjectPath.Contains('*') == false)
-                {
-                    TestNGProjectPath = Path.Combine(TestNGProjectPath, "*");
-                }
-                GA.AddExInfo(String.Format("TestNG testing project path: '{0}'", TestNGProjectPath));
+            {                
+                GingerAction.AddExInfo(String.Format("TestNG testing project Bin folder path: '{0}'", TestNGProjectBinFolderPath));
             }
 
             if (Directory.Exists(TestNGOutputReportFolderPath) == false)
             {
-                GA.AddError(String.Format("Failed to find the TestNG output report root folder at: '{0}'", TestNGOutputReportFolderPath));
+                GingerAction.AddError(String.Format("Failed to find the TestNG output report root folder at: '{0}'", TestNGOutputReportFolderPath));
                 return false;
             }
             else
             {
-                GA.AddExInfo(String.Format("TestNG output report root folder path: '{0}'", TestNGOutputReportFolderPath));
+                GingerAction.AddExInfo(String.Format("TestNG output report root folder path: '{0}'", TestNGOutputReportFolderPath));
             }
 
 
-            switch (execMode)
+            switch (ExecutionMode)
             {
-                case eExecutionMode.XML:                    
+                case eExecutionMode.XML:
                     if (TestNgSuiteXML.LoadError != null)
                     {
-                        GA.AddError(TestNgSuiteXML.LoadError);
+                        GingerAction.AddError(TestNgSuiteXML.LoadError);
                         return false;
-                    }                    
+                    }
                     else
                     {
-                        GA.AddExInfo(String.Format("TestNG XML path: '{0}'", TestNgSuiteXML.XmlFilePath));
+                        GingerAction.AddExInfo(String.Format("TestNG XML path: '{0}'", TestNgSuiteXML.XmlFilePath));
                     }
 
                     string suiteXmlString = TestNgSuiteXML.SuiteXmlString;
 
-                    if (XmlParametersValuesToOverwrite.Count>0)
+                    if (XmlParametersValuesToOverwrite != null && XmlParametersValuesToOverwrite.Count > 0)
                     {
-                        string paramsListStr= "Parameters to overwrite: ";
-                        foreach(TestNGTestParameter param in XmlParametersValuesToOverwrite)
+                        string paramsListStr = "Parameters to overwrite: ";
+                        foreach (TestNGTestParameter param in XmlParametersValuesToOverwrite)
                         {
-                            param.Name = param.Name.Trim();                           
+                            param.Name = param.Name.Trim();
                             if (!TestNgSuiteXML.IsParameterExistInXML(param.Name))
                             {
-                                GA.AddError(string.Format("The Parameter '{0}' do not exist in the TestNG Suite XML", param.Name));
+                                GingerAction.AddError(string.Format("The Parameter '{0}' do not exist in the TestNG Suite XML", param.Name));
                                 return false;
                             }
                             else
@@ -272,10 +277,10 @@ namespace GingerTestNgPluginConsole
                             }
                         }
                         paramsListStr.TrimEnd(',');
-                        GA.AddExInfo(paramsListStr);
+                        GingerAction.AddExInfo(paramsListStr);
                     }
 
-                    if (XmlTestsToExecute.Count > 0)
+                    if (XmlTestsToExecute != null && XmlTestsToExecute.Count > 0)
                     {
                         string testsListStr = "Tests to execute: ";
                         foreach (TestNGTest test in XmlTestsToExecute)
@@ -283,7 +288,7 @@ namespace GingerTestNgPluginConsole
                             test.Name = test.Name.Trim();
                             if (!TestNgSuiteXML.IsTestExistInXML(test.Name))
                             {
-                                GA.AddError(string.Format("The Test '{0}' do not exist in the TestNG Suite XML", test.Name));
+                                GingerAction.AddError(string.Format("The Test '{0}' do not exist in the TestNG Suite XML", test.Name));
                                 return false;
                             }
                             else
@@ -292,7 +297,7 @@ namespace GingerTestNgPluginConsole
                             }
                         }
                         testsListStr.TrimEnd(',');
-                        GA.AddExInfo(testsListStr);
+                        GingerAction.AddExInfo(testsListStr);
                     }
                     break;
                 case eExecutionMode.Classes:
@@ -303,7 +308,7 @@ namespace GingerTestNgPluginConsole
                     break;
             }
 
-            if (TestGroupsToInclude.Count > 0)
+            if (TestGroupsToInclude != null && TestGroupsToInclude.Count > 0)
             {
                 string groupsToIncludeListStr = "Tests Groups to include: ";
                 foreach (TestNGTestGroup group in TestGroupsToInclude)
@@ -311,9 +316,9 @@ namespace GingerTestNgPluginConsole
                     groupsToIncludeListStr += string.Format("'{0}', ", group.Name);
                 }
                 groupsToIncludeListStr.TrimEnd(',');
-                GA.AddExInfo(groupsToIncludeListStr);
+                GingerAction.AddExInfo(groupsToIncludeListStr);
             }
-            if (TestGroupsToExclude.Count > 0)
+            if (TestGroupsToExclude != null && TestGroupsToExclude.Count > 0)
             {
                 string groupsToExcludeListStr = "Tests Groups to exclude: ";
                 foreach (TestNGTestGroup group in TestGroupsToExclude)
@@ -321,209 +326,152 @@ namespace GingerTestNgPluginConsole
                     groupsToExcludeListStr += string.Format("'{0}', ", group.Name);
                 }
                 groupsToExcludeListStr.TrimEnd(',');
-                GA.AddExInfo(groupsToExcludeListStr);
+                GingerAction.AddExInfo(groupsToExcludeListStr);
             }
 
             return true;
         }
 
-        public bool Execute(IGingerAction GA, eExecutionMode execMode)
+        public void Execute()
         {
-            mGA = GA;
+            if (!ValidateAndPrepareConfigs())
+            {
+                return;
+            }
 
-            return true;
+            //prepare the command 
+            CommandValues command = null;
+            try
+            {
+                switch (ExecutionMode)
+                {
+                    case eExecutionMode.XML:
+                        command = PrepareTestngXmlExecutionCommand();
+                        break;
+                    case eExecutionMode.Classes:
+                        break;
+                    case eExecutionMode.Methods:
+                        break;
+                    case eExecutionMode.Jar:
+                        break;
+                }
+            }
+            catch(Exception ex)
+            {
+                GingerAction.AddError(string.Format("Failed to prepare the command to execute, Error: '{0}'", ex.Message));
+                return;
+            }
+
+            if (command != null)
+            {
+                //execute the command
+                if (ExecuteCommand(command))
+                {
+                    //parse the Command output
+
+                    //parse the TestNG output result XML 
+                    TestNGReportXML ngReport = new TestNGReportXML(Path.Combine(TestNGOutputReportFolderPath, "testng-results.xml"));
+                }
+            }
+            else
+            {
+                GingerAction.AddError("No command found to exeucte");
+            }
         }
 
-        ////        //Execution
-        //static string DataBuffer = "";
-        //static string ErrorBuffer = "";
+        private CommandValues PrepareTestngXmlExecutionCommand()
+        {
+            CommandValues command = new CommandValues();
+
+            command.ExecuterFilePath = JavaExeFullPath;
+
+            //class path
+            command.Arguments = string.Format(" -cp \"{0}\";\"{1}\"", TestNGProjectBinFolderPath, TestNGResourcesPath);
+
+            //testng test arguments
+            command.Arguments += " org.testng.TestNG";
+
+            //TestNG XML path
+            command.Arguments += string.Format(" \"{0}\"", TestNgSuiteXML.XmlFilePath);
+
+            //Report output path
+            command.Arguments += string.Format(" -d \"{0}\"", TestNGOutputReportFolderPath);
+
+            //TODO: add handling to rest of possible arguments
 
 
-        //static protected void AddData(string outLine)
-        //{
-        //    DataBuffer += outLine;
-        //    Console.WriteLine(outLine);
-        //}
-        //static protected void AddError(string outLine)
-        //{
-        //    Console.WriteLine(outLine);
-        //    ErrorBuffer += outLine;
-        //}
+            return command;
+        }
 
-        ///// <summary>
-        ///// Run Test NG Suites with TestNG XML
-        ///// </summary>
-        ///// <param name="TestNgXML"></param>
-        ///// <param name="ProjectLocation"></param>
-        ///// <param name="LibraryFolder"></param>
-        ///// <param name="JavaLocation"></param>
-        ///// <returns></returns>
-        //public static TestNGReport Execute(string TestNgXML, string ProjectLocation, string LibraryFolder, string JavaLocation)
-        //{
-        //    if (LibraryFolder.EndsWith("\\"))
-        //    {
-        //        LibraryFolder = LibraryFolder + "*";
-        //    }
-        //    if (!JavaLocation.EndsWith("\\") && !string.IsNullOrEmpty(JavaLocation))
-        //    {
-        //        JavaLocation = JavaLocation + "\\";
-        //    }
-        //    else if (!LibraryFolder.EndsWith("\\*"))
-        //    {
-        //        LibraryFolder = LibraryFolder + "\\*";
+        private bool ExecuteCommand(CommandValues commandVals)
+        {
+            try
+            {
+                GingerAction.AddExInfo(string.Format("Executed command: '{0}'", commandVals.FullCommand));
 
-        //    }
-        //    string ProjectBin;
+                Process process = new Process();
+                process.StartInfo.FileName = commandVals.ExecuterFilePath;
+                //p.StartInfo.WorkingDirectory = mJavaWSEXEPath_Calc;
+                process.StartInfo.Arguments = commandVals.Arguments;
+                process.StartInfo.RedirectStandardOutput = true;
+                process.StartInfo.RedirectStandardError = true;
+                process.OutputDataReceived += (proc, outLine) => { AddCommandOutput(outLine.Data + "\n"); };
+                process.ErrorDataReceived += (proc, outLine) => { AddCommandOutputError(outLine.Data + "\n"); };
+                process.StartInfo.CreateNoWindow = true;
+                process.StartInfo.UseShellExecute = false;
+                process.Start();
+                //process.BeginOutputReadLine();
+                //process.BeginErrorReadLine();
+                process.WaitForExit(1000 * 60 * 180);//wait up tp 3 hours
 
-        //    string ReportFilePath;
-        //    if (ProjectLocation.EndsWith("\\"))
-        //    {
-        //        ReportFilePath = ProjectLocation + @"test-output\testng-results.xml";
-        //        ProjectBin = ProjectLocation + "bin";
+                //string result = process.StandardOutput.ReadToEnd(); //to Parse for output values
+                //string comanndExecError = process.StandardError.ReadToEnd();
+                //if (!string.IsNullOrEmpty(comanndExecError))
+                //{
+                //    GingerAction.AddError(comanndExecError);
+                //    return false;
+                //}
 
-        //    }
-        //    else
-        //    {
-        //        ReportFilePath = ProjectLocation + @"\test-output\testng-results.xml";
-        //        ProjectBin = ProjectLocation + "\\bin";
+                if (!string.IsNullOrEmpty(mCommandOutputErrorBuffer))
+                {
+                    GingerAction.AddError(mCommandOutputErrorBuffer);
+                    return false;
+                }
 
-        //    }
-        //    string CommandLineArguments;
-        //    if (string.IsNullOrEmpty(JavaLocation))
-        //    {
-        //        CommandLineArguments = "java" + @" -cp " + LibraryFolder + ";" + ProjectBin + " org.testng.TestNG " + TestNgXML;
-        //    }
-        //    else
-        //    { //TODO: Quick dirty solution to allow spliting filepath and arguments
-        //        CommandLineArguments = JavaLocation + "java.exe;" + @" -cp " + LibraryFolder + ";" + ProjectBin + " org.testng.TestNG " + TestNgXML;
-        //    }
-        //    return Execute(CommandLineArguments, ProjectLocation);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                GingerAction.AddError(string.Format("Failed to execute the command, Error is: '{0}'", ex.Message));
+                return false;
+            }
+        }
 
+        static protected void AddCommandOutput(string output)
+        {
+            mCommandOutputBuffer += output;
+            Console.WriteLine(output);
+        }
 
-        //}
+        static protected void AddCommandOutputError(string error)
+        {
+            mCommandOutputErrorBuffer += error;
+            Console.WriteLine(error);
+        }
 
-        //public static TestNGReport Execute(string FreeCommand, string WorkingDirectory, string reportSUbdirectory = null)
-        //{
-        //    DateTime BeginTime = DateTime.Now;
-        //    string ReportFilePath;
-        //    if (WorkingDirectory.EndsWith("\\"))
-        //    {
-        //        ReportFilePath = string.IsNullOrEmpty(reportSUbdirectory) ? WorkingDirectory + @"test-output\testng-results.xml" : WorkingDirectory + reportSUbdirectory + @"\testng-results.xml";
+    }
 
-        //    }
-        //    else
-        //    {
-        //        ReportFilePath = string.IsNullOrEmpty(reportSUbdirectory) ? WorkingDirectory + @"\test-output\testng-results.xml" : WorkingDirectory + "\\" + reportSUbdirectory + @"\testng-results.xml";
+    public class CommandValues
+    {
+        public string ExecuterFilePath;
+        public string Arguments;
 
-
-
-        //    }
-        //    ProcessStartInfo NgInfor = new ProcessStartInfo();
-        //    NgInfor.RedirectStandardError = true;
-        //    NgInfor.RedirectStandardOutput = true;
-
-
-        //    NgInfor.WorkingDirectory = WorkingDirectory;
-        //    string FilePath = FreeCommand;
-        //    string[] FileCommand;
-        //    //TODO: Quick dirty solution to allow spliting filepath and arguments
-        //    char[] delimiters = { ';', };
-        //    FileCommand = FreeCommand.Split(delimiters, 2);
-        //    if (FileCommand.Length != 2)
-        //    {
-
-        //        char[] delimiters2 = { ' ', };
-        //        FileCommand = FreeCommand.Split(delimiters2, 2);
-
-        //    }
-        //    FilePath = FileCommand[0];
-        //    string Arguments = FileCommand[1];
-
-
-        //    if (!File.Exists(FilePath))
-        //    {
-        //        foreach (string DirPath in Environment.GetEnvironmentVariable("PATH").Split(';'))
-        //        {
-        //            string Dir = DirPath.EndsWith("\\") ? DirPath : DirPath + "\\";
-        //            string TempPath = Dir + FilePath;
-
-        //            string extension = Path.GetExtension(TempPath);
-        //            if (string.IsNullOrEmpty(extension))
-        //            {
-        //                if (File.Exists(TempPath + ".cmd"))
-        //                {
-        //                    TempPath = TempPath + ".cmd";
-
-
-        //                }
-
-        //                else if (File.Exists(TempPath + ".bat"))
-        //                {
-        //                    TempPath = TempPath + ".bat";
-
-        //                    break;
-        //                }
-        //                else if (File.Exists(TempPath + ".exe"))
-        //                {
-        //                    TempPath = TempPath + ".exe";
-
-        //                }
-        //                if (File.Exists(TempPath))
-        //                {
-        //                    FilePath = TempPath;
-        //                    break;
-        //                }
-        //            }
-
-        //        }
-        //    }
-        //    NgInfor.Arguments = Arguments;
-
-
-
-
-        //    NgInfor.FileName = FilePath;
-
-
-
-        //    Process TestNgProcess = new Process();
-        //    TestNgProcess.OutputDataReceived += (proc, outLine) => { AddData(outLine.Data + "\n"); };
-        //    TestNgProcess.ErrorDataReceived += (proc, outLine) => { AddError(outLine.Data + "\n"); };
-        //    TestNgProcess.StartInfo = NgInfor;
-        //    TestNgProcess.Start();
-        //    TestNgProcess.BeginOutputReadLine();
-        //    TestNgProcess.BeginErrorReadLine();
-        //    TestNgProcess.WaitForExit();
-        //    DateTime Endtime = File.GetLastWriteTime(ReportFilePath);
-
-
-
-
-        //    try
-        //    {
-
-
-        //        if ((Endtime - BeginTime).TotalMilliseconds < 0)
-        //        {
-        //            throw new InvalidOperationException("TestNg Execution Failed");
-        //        }
-
-
-        //    }
-
-        //    catch (Exception ex)
-        //    {
-        //        if ((Endtime - BeginTime).TotalMilliseconds < 0)
-        //        {
-        //            throw new InvalidOperationException("TestNg Execution Failed", ex);
-        //        }
-        //    }
-
-
-
-        //    return TestNGReport.LoadfromXMl(ReportFilePath);
-        //}
-        ////#endregion
-
+        public string FullCommand
+        {
+            get
+            {
+                return ExecuterFilePath + " " + Arguments;
+            }
+        }
     }
 }

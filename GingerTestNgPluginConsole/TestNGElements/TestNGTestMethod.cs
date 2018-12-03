@@ -9,10 +9,11 @@ namespace GingerTestNgPlugin
     {
         public string Name;
 
-        public eTestExecutionStatus ExecutionStatus;
+        public eTestExecutionStatus ExecutionStatus= eTestExecutionStatus.NA;
         public DateTime ExecutionStartTime;
         public DateTime ExecutionEndTime;
         public int ExecutionDurationMS;
         public string ExecutionSignature;
+        public TestNGTestException ExecutionException;
     }
 }

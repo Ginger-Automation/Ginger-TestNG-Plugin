@@ -134,54 +134,54 @@ namespace StandAloneActions
         /// <param name="Report"></param>
         public static void ProcessTestNGReport(IGingerAction GA, TestNGReport Report, bool AddMethoudDetailsToOutput)
         {
-            if (Report.Failed > 0)
-            {
-                GA.AddError("TestNg Execution Failed");
-            }
-            GA.AddOutput("Passed", Report.Passed, "TEST");
-            GA.AddOutput("Failed", Report.Failed);
-            GA.AddOutput("Ignored", Report.Ignored);
-            GA.AddOutput("Skipped", Report.Skipped);
+            //if (Report.Failed > 0)
+            //{
+            //    GA.AddError("TestNg Execution Failed");
+            //}
+            //GA.AddOutput("Passed", Report.Passed, "TEST");
+            //GA.AddOutput("Failed", Report.Failed);
+            //GA.AddOutput("Ignored", Report.Ignored);
+            //GA.AddOutput("Skipped", Report.Skipped);
 
-            foreach (TestNGSuite TNS in Report.Suites)
-            {
-                GA.AddOutput(TNS.Name, TNS.Duration, "Duration");
-                foreach (TestNGTest Ntest in TNS.Tests)
-                {
-                    string TestPreFix = TNS.Name + "|" + Ntest.Name;
+            //foreach (TestNGSuite TNS in Report.Suites)
+            //{
+            //    //GA.AddOutput(TNS.Name, TNS.Duration, "Duration");
+            //    //foreach (TestNGTest Ntest in TNS.Tests)
+            //    //{
+            //    //    string TestPreFix = TNS.Name + "|" + Ntest.Name;
 
-                    GA.AddOutput(TestPreFix, Ntest.ExecutionDurationMS, "Duration");
-                    if (!String.IsNullOrEmpty(Ntest.ExecutionExceptionMsg))
-                    {
-                        GA.AddExInfo(Environment.NewLine);
-                        GA.AddExInfo(TestPreFix + " NG Exception" + Environment.NewLine);
-                        GA.AddExInfo(Ntest.ExecutionExceptionMsg);
-                        GA.AddExInfo(Environment.NewLine);
-                    }
-                    if (!String.IsNullOrEmpty(Ntest.ExecutionExceptionStackTrace))
-                    {
-                        GA.AddExInfo(Environment.NewLine);
-                        GA.AddExInfo(TestPreFix + " NG StackTrace" + Environment.NewLine);
-                        GA.AddExInfo(Ntest.ExecutionExceptionStackTrace);
-                        GA.AddExInfo(Environment.NewLine);
-                    }
+            //    //    GA.AddOutput(TestPreFix, Ntest.ExecutionDurationMS, "Duration");
+            //    //    if (!String.IsNullOrEmpty(Ntest.ExecutionExceptionMsg))
+            //    //    {
+            //    //        GA.AddExInfo(Environment.NewLine);
+            //    //        GA.AddExInfo(TestPreFix + " NG Exception" + Environment.NewLine);
+            //    //        GA.AddExInfo(Ntest.ExecutionExceptionMsg);
+            //    //        GA.AddExInfo(Environment.NewLine);
+            //    //    }
+            //    //    if (!String.IsNullOrEmpty(Ntest.ExecutionExceptionStackTrace))
+            //    //    {
+            //    //        GA.AddExInfo(Environment.NewLine);
+            //    //        GA.AddExInfo(TestPreFix + " NG StackTrace" + Environment.NewLine);
+            //    //        GA.AddExInfo(Ntest.ExecutionExceptionStackTrace);
+            //    //        GA.AddExInfo(Environment.NewLine);
+            //    //    }
 
-                    if (AddMethoudDetailsToOutput)
-                    {
-                        foreach (TestNGTestClass NClass in Ntest.Classes)
-                        {
-                            foreach (TestNGTestMethod Nm in NClass.Methods)
-                            {
-                                string MethodPrefix = TestPreFix + "|" + NClass.Name + "|" + Nm.Name;
-                                GA.AddOutput(MethodPrefix, Nm.ExecutionStatus, "Status");
-                                GA.AddOutput(MethodPrefix, Nm.ExecutionDurationMS, "Duration");
+            //        if (AddMethoudDetailsToOutput)
+            //        {
+            //            //foreach (TestNGTestClass NClass in Ntest.Classes)
+            //            //{
+            //            //    foreach (TestNGTestMethod Nm in NClass.Methods)
+            //            //    {
+            //            //        string MethodPrefix = TestPreFix + "|" + NClass.Name + "|" + Nm.Name;
+            //            //        GA.AddOutput(MethodPrefix, Nm.ExecutionStatus, "Status");
+            //            //        GA.AddOutput(MethodPrefix, Nm.ExecutionDurationMS, "Duration");
 
-                            }
-                        }
-                    }
-                }
+            //            //    }
+            //            //}
+            //        }
+            //    }
 
-            }
+            //}
 
         }
     }

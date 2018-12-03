@@ -9,15 +9,28 @@ namespace GingerTestNgPluginConsole
     public class TestNGReportXML
     {
         public string ReportXmlFilePath;
-        XmlDocument SuiteReportXml;
-        public TestNGTestSuite SuiteReportObject;
+        XmlDocument ReportXml;
+        public List<TestNGTestSuite> ReportSuites;
         public string LoadError = null;
+
+        public Int32 PassedTestsNum;
+        public Int32 FailedTestsNum;
+        public Int32 SkippedTestsNum;
+        public Int32 IgnoredTestsNum;
+        public Int32 TotalTestsNum;
 
         ///<summary>TestNGReportXML Object from TestNg Output Report XML file
         ///</summary>
         public TestNGReportXML(string xmlFilePath)
         {
-            ReportXmlFilePath = xmlFilePath;            
+            if (xmlFilePath != null)
+            {
+                ReportXmlFilePath = Path.GetFullPath(xmlFilePath);
+            }
+            else
+            {
+                ReportXmlFilePath = string.Empty;
+            }
             if (LoadReportXmlFromFile())
             {
                 LoadSuiteReportObjectFromXml();
@@ -34,8 +47,8 @@ namespace GingerTestNgPluginConsole
                     return false;
                 }
 
-                SuiteReportXml = new XmlDocument();
-                SuiteReportXml.LoadXml(System.IO.File.ReadAllText(ReportXmlFilePath));
+                ReportXml = new XmlDocument();
+                ReportXml.LoadXml(System.IO.File.ReadAllText(ReportXmlFilePath));
 
                 return true;
             }
@@ -50,29 +63,42 @@ namespace GingerTestNgPluginConsole
         {
             try
             {
-                if (SuiteReportXml == null)
+                if (ReportXml == null)
                 {
                     return false;
                 }
+                
+                //General counters
+                Int32.TryParse(ReportXml.DocumentElement.GetAttribute("skipped").ToString(), out PassedTestsNum);
+                Int32.TryParse(ReportXml.DocumentElement.GetAttribute("failed").ToString(), out FailedTestsNum);
+                Int32.TryParse(ReportXml.DocumentElement.GetAttribute("passed").ToString(), out SkippedTestsNum);
+                Int32.TryParse(ReportXml.DocumentElement.GetAttribute("ignored").ToString(), out IgnoredTestsNum);
+                Int32.TryParse(ReportXml.DocumentElement.GetAttribute("total").ToString(), out TotalTestsNum);
 
-                SuiteReportObject = new TestNGTestSuite();
-                SuiteReportObject.Name = SuiteReportXml.DocumentElement.GetAttribute("name").ToString();
-                SuiteReportObject.Parameters = GetTestParametersFromXmlElement(SuiteReportXml.DocumentElement);                
-                DateTime.TryParse(SuiteReportXml.DocumentElement.GetAttribute("started-at").ToString(), out SuiteReportObject.ExecutionStartTime);
-                DateTime.TryParse(SuiteReportXml.DocumentElement.GetAttribute("finished-at").ToString(), out SuiteReportObject.ExecutionStartTime);
-                Int32.TryParse(SuiteReportXml.DocumentElement.GetAttribute("duration-ms").ToString(), out SuiteReportObject.ExecutionDurationMS);
-
-                foreach (XmlElement xmlReportTest in SuiteReportXml.GetElementsByTagName("test"))
+                //Executed Suites details
+                ReportSuites = new List<TestNGTestSuite>();
+                foreach (XmlElement xmlReportSuite in ReportXml.GetElementsByTagName("suite"))
                 {
-                    TestNGTest ngTest = new TestNGTest();
-                    ngTest.Name = xmlReportTest.GetAttribute("name").ToString();                    
-                    DateTime.TryParse(xmlReportTest.GetAttribute("started-at").ToString(), out ngTest.ExecutionStartTime);
-                    DateTime.TryParse(xmlReportTest.GetAttribute("finished-at").ToString(), out ngTest.ExecutionEndTime);
-                    Int32.TryParse(xmlReportTest.GetAttribute("duration-ms").ToString(), out ngTest.ExecutionDurationMS);
-                    ngTest.Parameters = GetTestParametersFromXmlElement(xmlReportTest);
-                    ngTest.Classes = GetTestClassesFromXmlElement(xmlReportTest);
-                    SuiteReportObject.Tests.Add(ngTest);
-                }
+                    TestNGTestSuite ngSuite = new TestNGTestSuite();
+                    ngSuite.Name = xmlReportSuite.GetAttribute("name").ToString();
+                    ngSuite.Parameters = GetTestParametersFromXmlElement(xmlReportSuite);
+                    DateTime.TryParse(xmlReportSuite.GetAttribute("started-at").ToString(), out ngSuite.ExecutionStartTime);
+                    DateTime.TryParse(xmlReportSuite.GetAttribute("finished-at").ToString(), out ngSuite.ExecutionStartTime);
+                    Int32.TryParse(xmlReportSuite.GetAttribute("duration-ms").ToString(), out ngSuite.ExecutionDurationMS);
+
+                    foreach (XmlElement xmlReportTest in xmlReportSuite.GetElementsByTagName("test"))
+                    {
+                        TestNGTest ngTest = new TestNGTest();
+                        ngTest.Name = xmlReportTest.GetAttribute("name").ToString();
+                        DateTime.TryParse(xmlReportTest.GetAttribute("started-at").ToString(), out ngTest.ExecutionStartTime);
+                        DateTime.TryParse(xmlReportTest.GetAttribute("finished-at").ToString(), out ngTest.ExecutionEndTime);
+                        Int32.TryParse(xmlReportTest.GetAttribute("duration-ms").ToString(), out ngTest.ExecutionDurationMS);
+                        ngTest.Parameters = GetTestParametersFromXmlElement(xmlReportTest);
+                        ngTest.Classes = GetTestClassesFromXmlElement(xmlReportTest);
+                        ngSuite.Tests.Add(ngTest);
+                    }
+                    ReportSuites.Add(ngSuite);
+                }                
 
                 return true;
             }
@@ -104,13 +130,29 @@ namespace GingerTestNgPluginConsole
         {
             List<TestNGTestMethod> ngMethods = new List<TestNGTestMethod>();
 
-            foreach (XmlElement xmlMethod in xmlClass.GetElementsByTagName("include"))
+            foreach (XmlElement xmlReportMethod in xmlClass.GetElementsByTagName("test-method"))
             {
-                TestNGTestMethod ngMethod = new TestNGTestMethod
+                TestNGTestMethod ngReportMethod = new TestNGTestMethod();
+                ngReportMethod.Name = xmlReportMethod.Attributes.GetNamedItem("name").Value;
+                Enum.TryParse(xmlReportMethod.GetAttribute("status").ToString(), true, out ngReportMethod.ExecutionStatus);
+                ngReportMethod.ExecutionSignature = xmlReportMethod.GetAttribute("signature").ToString();                
+                DateTime.TryParse(xmlReportMethod.GetAttribute("started-at").ToString(), out ngReportMethod.ExecutionStartTime);
+                DateTime.TryParse(xmlReportMethod.GetAttribute("finished-at").ToString(), out ngReportMethod.ExecutionEndTime);
+                Int32.TryParse(xmlReportMethod.GetAttribute("duration-ms").ToString(), out ngReportMethod.ExecutionDurationMS);
+
+                XmlNodeList exceptions = xmlReportMethod.GetElementsByTagName("exception");
+                if (exceptions.Count > 0)
                 {
-                    Name = xmlMethod.Attributes.GetNamedItem("name").Value,
-                };
-                ngMethods.Add(ngMethod);
+                    TestNGTestException ngException = new TestNGTestException();
+                    ngException.Class = exceptions[0].Attributes.GetNamedItem("class").Value;
+                    //XmlNodeList messages = exceptions[0]..GetElementsByTagName("message");
+                    //Enum.TryParse(xmlReportMethod.GetAttribute("status").ToString(), true, out ngReportMethod.ExecutionStatus);
+                    //ngReportMethod.ExecutionSignature = xmlReportMethod.GetAttribute("signature").ToString();
+                    //DateTime.TryParse(xmlReportMethod.GetAttribute("started-at").ToString(), out ngReportMethod.ExecutionStartTime);
+                    //DateTime.TryParse(xmlReportMethod.GetAttribute("finished-at").ToString(), out ngReportMethod.ExecutionEndTime);
+                }
+
+                ngMethods.Add(ngReportMethod);
             }
             return ngMethods;
         }

@@ -12,11 +12,29 @@ namespace GingerTestNgPluginTest
     public class TestNgActionsTest
     {
         [TestMethod]
+        public void SimpleTestngXmlExecution()
+        {
+            //Arrange
+            TestNGExecuterService service = new TestNGExecuterService();
+            GingerAction GA = new GingerAction();
+
+            //Act
+            service.ExecuteTestNGXMLListInputs(GA, @"C:\Program Files\Java\jdk1.8.0_191\bin\java.exe", @"C:\Users\menik\eclipse-workspace\Learn-TestNG\bin", @"C:\Users\menik\.p2\pool\plugins\*", @"C:\Users\menik\eclipse-workspace\Learn-TestNG\src\Groups\testng.xml",null,null,null,null,null,null);
+
+            //Assert           
+            Assert.AreEqual(null, GA.Errors, "No Errors");
+        }
+
+        [TestMethod]
         public void Play()
         {
-            string a = Path.GetFullPath(@"C:\Users/menik\Documents\MENIK05/Work Projects");
+            bool aa = Directory.Exists(@"C:\TestNG_WORKSPACE");
+            bool bb = Directory.Exists(@"C:\TestNG_WORKSPACE\*");
+            string path = Path.Combine(Path.GetFullPath(@"C:\TestNG_WORKSPACE"), "*");
 
-            string b = Path.GetFullPath(null);
+           // string a = Path.GetFullPath(@"C:\Users/menik\Documents\MENIK05/Work Projects");
+
+           // string b = Path.GetFullPath(null);
         }
 
         [TestMethod]

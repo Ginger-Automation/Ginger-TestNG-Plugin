@@ -22,7 +22,6 @@ namespace GingerTestNgPlugin
         public DateTime ExecutionStartTime;
         public DateTime ExecutionEndTime;
         public int ExecutionDurationMS;
-        public string ExecutionExceptionMsg;
-        public string ExecutionExceptionStackTrace;
+
     }
 }
