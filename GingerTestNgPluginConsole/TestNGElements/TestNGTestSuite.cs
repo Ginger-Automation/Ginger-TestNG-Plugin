@@ -13,7 +13,7 @@ namespace GingerTestNgPlugin
         public List<TestNGTest> Tests;
 
         public DateTime ExecutionStartTime;
-        DateTime ExecutionEndTime;
+        public DateTime ExecutionEndTime;
         public Int32 ExecutionDurationMS;
     }
 }

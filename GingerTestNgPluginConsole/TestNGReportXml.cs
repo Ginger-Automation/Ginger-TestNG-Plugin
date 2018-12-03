@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
+using Amdocs.Ginger.Plugin.Core;
 
 namespace GingerTestNgPluginConsole
 {
@@ -83,9 +84,10 @@ namespace GingerTestNgPluginConsole
                     ngSuite.Name = xmlReportSuite.GetAttribute("name").ToString();
                     ngSuite.Parameters = GetTestParametersFromXmlElement(xmlReportSuite);
                     DateTime.TryParse(xmlReportSuite.GetAttribute("started-at").ToString(), out ngSuite.ExecutionStartTime);
-                    DateTime.TryParse(xmlReportSuite.GetAttribute("finished-at").ToString(), out ngSuite.ExecutionStartTime);
+                    DateTime.TryParse(xmlReportSuite.GetAttribute("finished-at").ToString(), out ngSuite.ExecutionEndTime);
                     Int32.TryParse(xmlReportSuite.GetAttribute("duration-ms").ToString(), out ngSuite.ExecutionDurationMS);
 
+                    ngSuite.Tests = new List<TestNGTest>();
                     foreach (XmlElement xmlReportTest in xmlReportSuite.GetElementsByTagName("test"))
                     {
                         TestNGTest ngTest = new TestNGTest();
@@ -145,11 +147,18 @@ namespace GingerTestNgPluginConsole
                 {
                     TestNGTestException ngException = new TestNGTestException();
                     ngException.Class = exceptions[0].Attributes.GetNamedItem("class").Value;
-                    //XmlNodeList messages = exceptions[0]..GetElementsByTagName("message");
-                    //Enum.TryParse(xmlReportMethod.GetAttribute("status").ToString(), true, out ngReportMethod.ExecutionStatus);
-                    //ngReportMethod.ExecutionSignature = xmlReportMethod.GetAttribute("signature").ToString();
-                    //DateTime.TryParse(xmlReportMethod.GetAttribute("started-at").ToString(), out ngReportMethod.ExecutionStartTime);
-                    //DateTime.TryParse(xmlReportMethod.GetAttribute("finished-at").ToString(), out ngReportMethod.ExecutionEndTime);
+                    foreach(XmlElement childNode in exceptions[0].ChildNodes)
+                    {
+                        if (childNode.LocalName == "message")
+                        {
+                            ngException.Message = childNode.InnerText;
+                        }
+                        else if (childNode.LocalName == "full-stacktrace")
+                        {
+                            ngException.StackTrace = childNode.InnerText;
+                        }
+                    }
+                    ngReportMethod.ExecutionException = ngException;
                 }
 
                 ngMethods.Add(ngReportMethod);
@@ -174,6 +183,45 @@ namespace GingerTestNgPluginConsole
             }
 
             return ngParams;
+        }
+
+        public void ParseTestNGReport(IGingerAction GA)
+        {
+            GA.AddOutput("Total Tests Num.", TotalTestsNum);
+            GA.AddOutput("Passed Tests Num.", PassedTestsNum);
+            GA.AddOutput("Failed Tests Num.", FailedTestsNum);
+            GA.AddOutput("Skipped Tests Num.", SkippedTestsNum);
+            GA.AddOutput("Ignored Tests Num.", IgnoredTestsNum);
+
+            foreach(TestNGTestSuite suiteReport in ReportSuites)
+            {
+                GA.AddOutput(string.Format("{0}-Start Time", suiteReport.Name),suiteReport.ExecutionStartTime);
+                GA.AddOutput(string.Format("{0}-Finish Time", suiteReport.Name), suiteReport.ExecutionEndTime);
+                GA.AddOutput(string.Format("{0}-Duration (MS)", suiteReport.Name), suiteReport.ExecutionDurationMS);
+
+                foreach (TestNGTest testReport in suiteReport.Tests)
+                {
+                    foreach (TestNGTestClass classReport in testReport.Classes)
+                    {
+                        foreach (TestNGTestMethod methodReport in classReport.Methods)
+                        {
+                           GA.AddOutput(string.Format("{0}-Status", methodReport.Name), methodReport.ExecutionStatus, string.Format("{0}.{1}.{2}", suiteReport.Name, testReport, classReport));
+                           if (methodReport.ExecutionStatus == eTestExecutionStatus.FAIL)
+                            {
+                                if (methodReport.ExecutionException != null)
+                                {
+                                    GA.AddOutput(string.Format("{0}-Error Message", methodReport.Name), methodReport.ExecutionException.Message, string.Format("{0}.{1}.{2}", suiteReport.Name, testReport, classReport));
+                                    GA.AddError(string.Format("The Method '{0}' (part of {1}.{2}.{3}) failed with the error: '{4}'", methodReport.Name, suiteReport.Name, testReport, classReport, methodReport.ExecutionException.Message));
+                                }
+                                else
+                                {
+                                    GA.AddError(string.Format("The Method '{0}' (part of {1}.{2}.{3}) failed", methodReport.Name, suiteReport.Name, testReport, classReport));
+                                }                                
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         //string mSuiteName;

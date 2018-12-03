@@ -18,7 +18,7 @@ namespace GingerTestNgPlugin
         public List<TestNGTestClass> Classes;
         public List<TestNGTestParameter> Parameters;
 
-        public eTestExecutionStatus ExecutionStatus;
+        //public eTestExecutionStatus ExecutionStatus;
         public DateTime ExecutionStartTime;
         public DateTime ExecutionEndTime;
         public int ExecutionDurationMS;

@@ -370,7 +370,16 @@ namespace GingerTestNgPluginConsole
                     //parse the Command output
 
                     //parse the TestNG output result XML 
-                    TestNGReportXML ngReport = new TestNGReportXML(Path.Combine(TestNGOutputReportFolderPath, "testng-results.xml"));
+                    string testNgReportPath = Path.Combine(TestNGOutputReportFolderPath, "testng-results.xml");
+                    TestNGReportXML ngReport = new TestNGReportXML(testNgReportPath);
+                    if (string.IsNullOrEmpty(ngReport.LoadError) == true)
+                    {
+                        ngReport.ParseTestNGReport(GingerAction);
+                    }
+                    else
+                    {
+                        GingerAction.AddError(string.Format("Failed to parse the TestNG output report at path: '{0}'", testNgReportPath));
+                    }
                 }
             }
             else
