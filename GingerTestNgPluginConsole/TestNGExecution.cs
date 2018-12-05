@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace GingerTestNgPluginConsole
 {
@@ -19,6 +21,8 @@ namespace GingerTestNgPluginConsole
         public eJavaProjectType JavaProjectType;
         public enum eExecutionMode { XML, Classes, Methods, Jar, FreeCommand }
         public eExecutionMode ExecutionMode;
+
+        public bool ParseConsoleOutputs;
 
         string mTempWorkingFolder = null;
         public string TempWorkingFolder
@@ -189,7 +193,14 @@ namespace GingerTestNgPluginConsole
                     }
                     else//Maven
                     {
-                        mTestNGOutputReportFolderPath = Path.Combine(MavenProjectFolderPath, @"\target\surefire-reports");
+                        if (Directory.Exists(MavenProjectFolderPath))
+                        { 
+                            mTestNGOutputReportFolderPath = Path.Combine(MavenProjectFolderPath, @"target\surefire-reports");
+                            if (Directory.Exists(mTestNGOutputReportFolderPath) == false)
+                            {
+                                Directory.CreateDirectory(mTestNGOutputReportFolderPath);
+                            }
+                        }
                     }
                 }
             }
@@ -431,8 +442,7 @@ namespace GingerTestNgPluginConsole
                 //execute the command
                 if (ExecuteCommand(command))
                 {
-                    //parse the Command output
-
+                    //parse report
                     if (ExecutionMode == eExecutionMode.XML)
                     {
                         //parse the TestNG output result XML 
@@ -459,7 +469,7 @@ namespace GingerTestNgPluginConsole
         {
             CommandValues command = new CommandValues();
 
-            command.ExecuterFilePath = JavaExeFullPath;
+            command.ExecuterFilePath = string.Format("\"{0}\"", JavaExeFullPath);
 
             //class path
             command.Arguments = string.Format(" -cp \"{0}\";\"{1}\"", JavaProjectBinFolderPath, JavaProjectResourcesPath);
@@ -484,10 +494,10 @@ namespace GingerTestNgPluginConsole
             CommandValues command = new CommandValues();
 
             command.WorkingFolder = MavenProjectFolderPath;
-            command.ExecuterFilePath = MavenCmdFullPath;
+            command.ExecuterFilePath = string.Format("\"{0}\"", MavenCmdFullPath);
 
             //Mvn arguments
-            if(PerformMavenInstall)
+            if (PerformMavenInstall)
             {
                 command.Arguments = " clean install test";
             }
@@ -503,7 +513,7 @@ namespace GingerTestNgPluginConsole
                 {                    
                     if (!string.IsNullOrEmpty(mvnParam.Name.Trim()))
                     {
-                        command.Arguments += string.Format(" -D{0}={1}", mvnParam.Name.Trim(), mvnParam.Value);
+                        command.Arguments += string.Format(" -D{0}=\"{1}\"", mvnParam.Name.Trim(), mvnParam.Value);
                     }
                 }
             }
@@ -532,7 +542,7 @@ namespace GingerTestNgPluginConsole
                 {
                     if (!string.IsNullOrEmpty(mvnParam.Name.Trim()))
                     {
-                        command.Arguments += string.Format(" -D{0}={1}", mvnParam.Name.Trim(), mvnParam.Value);
+                        command.Arguments += string.Format(" -D{0}=\"{1}\"", mvnParam.Name.Trim(), mvnParam.Value);
                     }
                 }
             }
@@ -547,38 +557,51 @@ namespace GingerTestNgPluginConsole
                 GingerAction.AddExInfo(string.Format("Executed command: '{0}'", commandVals.FullCommand));
 
                 Process process = new Process();
-                process.StartInfo.FileName = commandVals.ExecuterFilePath;
                 if (commandVals.WorkingFolder != null)
                 {
                     process.StartInfo.WorkingDirectory = commandVals.WorkingFolder;
                 }
+                process.StartInfo.FileName = commandVals.ExecuterFilePath;               
                 process.StartInfo.Arguments = commandVals.Arguments;
-                process.StartInfo.RedirectStandardOutput = true;
-                process.StartInfo.RedirectStandardError = true;
-                process.OutputDataReceived += (proc, outLine) => { AddCommandOutput(outLine.Data + "\n"); };
-                process.ErrorDataReceived += (proc, outLine) => { AddCommandOutputError(outLine.Data + "\n"); };
+
                 process.StartInfo.CreateNoWindow = true;
                 process.StartInfo.UseShellExecute = false;
+                process.StartInfo.RedirectStandardOutput = true;
+                process.StartInfo.RedirectStandardError = true;
+                mCommandOutputBuffer = string.Empty;
+                mCommandOutputErrorBuffer = string.Empty;
+                process.OutputDataReceived += (proc, outLine) => { AddCommandOutput(outLine.Data); };
+                process.ErrorDataReceived += (proc, outLine) => { AddCommandOutputError(outLine.Data); };
+                process.Exited += Process_Exited;
+
                 process.Start();
-                //process.BeginOutputReadLine();
-                //process.BeginErrorReadLine();
-                process.WaitForExit(1000 * 60 * 180);//wait up tp 3 hours
+                
+                process.BeginOutputReadLine();
+                process.BeginErrorReadLine();
 
-                //string result = process.StandardOutput.ReadToEnd(); //to Parse for output values
-                //string comanndExecError = process.StandardError.ReadToEnd();
-                //if (!string.IsNullOrEmpty(comanndExecError))
-                //{
-                //    GingerAction.AddError(comanndExecError);
-                //    return false;
-                //}
+                int maxWaitingTime = 1000 * 60 * 180;//3 hours
+                process.WaitForExit(maxWaitingTime);
 
-                if (!string.IsNullOrEmpty(mCommandOutputErrorBuffer))
+                if (process.TotalProcessorTime.TotalMilliseconds >= maxWaitingTime)
                 {
-                    GingerAction.AddError(mCommandOutputErrorBuffer);
+                    GingerAction.AddError(string.Format("Command processing timeout has reached!"));
                     return false;
                 }
 
                 return true;
+
+                //int maxWaitingTime = 100 * 10 * 60 * 180;//3 hours
+                //int counter = 0;
+                //while (!process.HasExited)
+                //{
+                //    Thread.Sleep(100);
+                //    counter += 100;
+                //    if (counter >= maxWaitingTime)
+                //    {
+                //        GingerAction.AddError(string.Format("Command processing timeout has reached!"));
+                //        return false;
+                //    }
+                //}
             }
             catch (Exception ex)
             {
@@ -589,14 +612,59 @@ namespace GingerTestNgPluginConsole
 
         static protected void AddCommandOutput(string output)
         {
-            mCommandOutputBuffer += output;
+            mCommandOutputBuffer += output + "\n";
             Console.WriteLine(output);
         }
 
         static protected void AddCommandOutputError(string error)
         {
-            mCommandOutputErrorBuffer += error;
+            mCommandOutputErrorBuffer += error + "\n";
             Console.WriteLine(error);
+        }
+
+        protected void Process_Exited(object sender, EventArgs e)
+        {
+            if (ParseConsoleOutputs)
+            {
+                ParseCommandOutput();
+            }
+        }
+
+        private void ParseCommandOutput()
+        {
+            try
+            {
+                //Error
+                if (!string.IsNullOrEmpty(mCommandOutputErrorBuffer))
+                {
+                    GingerAction.AddExInfo(string.Format("Console Errors: \n{0}", mCommandOutputErrorBuffer));
+                }
+
+                //Output values
+                Regex rg = new Regex(@"Microsoft.*\n.*All rights reserved.");
+                string stringToProcess = rg.Replace(mCommandOutputBuffer, "");
+                string[] values = stringToProcess.Split('\n');
+                foreach (string dataRow in values)
+                {
+                    if (dataRow.Length > 0) // Ignore empty lines
+                    {
+                        string param;
+                        string value;
+                        int signIndex = dataRow.IndexOf('=');
+                        if (signIndex > 0)
+                        {
+                            param = dataRow.Substring(0, signIndex);
+                            //the rest is the value
+                            value = dataRow.Substring(param.Length + 1);
+                            GingerAction.AddOutput(param, value, "Console Output");
+                        }                        
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                GingerAction.AddExInfo(string.Format("Failed to parse all command console outputs, Error:'{0}'", ex.Message));
+            }
         }
 
         //public void SetXmlParametersValuesToOverwriteFromString(string xmlParams)

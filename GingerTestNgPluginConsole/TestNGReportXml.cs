@@ -205,17 +205,17 @@ namespace GingerTestNgPluginConsole
                     {
                         foreach (TestNGTestMethod methodReport in classReport.Methods)
                         {
-                           GA.AddOutput(string.Format("{0}-Status", methodReport.Name), methodReport.ExecutionStatus, string.Format("{0}.{1}.{2}", suiteReport.Name, testReport, classReport));
+                           GA.AddOutput(string.Format("{0}-Status", methodReport.Name), methodReport.ExecutionStatus, string.Format("{0}.{1}.{2}", suiteReport.Name, testReport.Name, classReport.Name));
                            if (methodReport.ExecutionStatus == eTestExecutionStatus.FAIL)
                             {
                                 if (methodReport.ExecutionException != null)
                                 {
-                                    GA.AddOutput(string.Format("{0}-Error Message", methodReport.Name), methodReport.ExecutionException.Message, string.Format("{0}.{1}.{2}", suiteReport.Name, testReport, classReport));
-                                    GA.AddError(string.Format("The Method '{0}' (part of {1}.{2}.{3}) failed with the error: '{4}'", methodReport.Name, suiteReport.Name, testReport, classReport, methodReport.ExecutionException.Message));
+                                    GA.AddOutput(string.Format("{0}-Error Message", methodReport.Name), methodReport.ExecutionException.Message, string.Format("{0}.{1}.{2}", suiteReport.Name, testReport.Name, classReport.Name));
+                                    GA.AddError(string.Format("The Method '{0}' (part of {1}.{2}.{3}) failed with the error: '{4}'", methodReport.Name, suiteReport.Name, testReport.Name, classReport.Name, methodReport.ExecutionException.Message));
                                 }
                                 else
                                 {
-                                    GA.AddError(string.Format("The Method '{0}' (part of {1}.{2}.{3}) failed", methodReport.Name, suiteReport.Name, testReport, classReport));
+                                    GA.AddError(string.Format("The Method '{0}' (part of {1}.{2}.{3}) failed", methodReport.Name, suiteReport.Name, testReport.Name, classReport.Name));
                                 }                                
                             }
                         }
