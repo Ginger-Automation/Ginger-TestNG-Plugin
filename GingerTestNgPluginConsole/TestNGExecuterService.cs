@@ -28,7 +28,7 @@ namespace GingerTestNgPluginConsole
         public void ExecuteTestNGXML(IGingerAction GA, string JavaExeFullPath, string JavaProjectBinFolderPath,
                                 string JavaProjectResourcesPath, string TestNGXMLPath, List<TestNGTestParameter> XmlParametersToOverwrite,
                                 List<TestNGTest> XmlTestsToExecute, List<TestNGTestGroup> TestGroupsToInclude,
-                                List<TestNGTestGroup> TestGroupsToExclude, string ContinueExecutionOnTestFailure, string TestNGOutputReportFolderPath, string ParseConsoleOutputs)
+                                List<TestNGTestGroup> TestGroupsToExclude, bool ContinueExecutionOnTestFailure, string TestNGOutputReportFolderPath, bool ParseConsoleOutputs)
         {
             //Set execution configurations
             TestNGExecution testNgExecuter = new TestNGExecution();
@@ -40,14 +40,16 @@ namespace GingerTestNgPluginConsole
             testNgExecuter.JavaProjectBinFolderPath = JavaProjectBinFolderPath;
             testNgExecuter.JavaProjectResourcesPath = JavaProjectResourcesPath;
             testNgExecuter.TestNGOutputReportFolderPath = TestNGOutputReportFolderPath;
-            if (ContinueExecutionOnTestFailure != null)
-            {
-                bool.TryParse(ContinueExecutionOnTestFailure, out testNgExecuter.ContinueExecutionOnTestFailure);
-            }
-            if (ParseConsoleOutputs != null)
-            {
-                bool.TryParse(ParseConsoleOutputs, out testNgExecuter.ParseConsoleOutputs);
-            }
+            //if (ContinueExecutionOnTestFailure != null)
+            //{
+            //    bool.TryParse(ContinueExecutionOnTestFailure, out testNgExecuter.ContinueExecutionOnTestFailure);
+            //}
+            //if (ParseConsoleOutputs != null)
+            //{
+            //    bool.TryParse(ParseConsoleOutputs, out testNgExecuter.ParseConsoleOutputs);
+            //}
+            testNgExecuter.ContinueExecutionOnTestFailure = ContinueExecutionOnTestFailure;
+            testNgExecuter.ParseConsoleOutputs = ParseConsoleOutputs;
 
             testNgExecuter.TestNgSuiteXML = new TestNGSuiteXML(TestNGXMLPath);
             testNgExecuter.XmlParametersToOverwrite = XmlParametersToOverwrite;
@@ -71,8 +73,8 @@ namespace GingerTestNgPluginConsole
         /// <param name="TestNGOutputReportFolderPath"></param>
         [GingerAction("ExecuteMavenProjectTestNGXML", "Execute Maven project TestNG tests using TestNG XML")]
         public void ExecuteMavenProjectTestNGXML(IGingerAction GA, string MavenCmdFullPath, string MavenProjectFolderPath, 
-                        string PerformMavenInstall, List<MavenCommandParameter> MavenCommandParameters, string TestNGXMLPath, List<TestNGTestParameter> XmlParametersToOverwrite,
-                        string TestNGOutputReportFolderPath, string ParseConsoleOutputs)
+                        bool PerformMavenInstall, List<MavenCommandParameter> MavenCommandParameters, string TestNGXMLPath, List<TestNGTestParameter> XmlParametersToOverwrite,
+                        string TestNGOutputReportFolderPath, bool ParseConsoleOutputs)
         {
             //Set execution configurations
             TestNGExecution testNgExecuter = new TestNGExecution();
@@ -83,14 +85,16 @@ namespace GingerTestNgPluginConsole
             testNgExecuter.MavenCmdFullPath = MavenCmdFullPath;
             testNgExecuter.MavenProjectFolderPath = MavenProjectFolderPath;            
             testNgExecuter.TestNGOutputReportFolderPath = TestNGOutputReportFolderPath;
-            if (PerformMavenInstall != null)
-            {
-                bool.TryParse(PerformMavenInstall, out testNgExecuter.PerformMavenInstall);
-            }
-            if (ParseConsoleOutputs != null)
-            {
-                bool.TryParse(ParseConsoleOutputs, out testNgExecuter.ParseConsoleOutputs);
-            }
+            //if (PerformMavenInstall != null)
+            //{
+            //    bool.TryParse(PerformMavenInstall, out testNgExecuter.PerformMavenInstall);
+            //}
+            //if (ParseConsoleOutputs != null)
+            //{
+            //    bool.TryParse(ParseConsoleOutputs, out testNgExecuter.ParseConsoleOutputs);
+            //}
+            testNgExecuter.PerformMavenInstall = PerformMavenInstall;
+            testNgExecuter.ParseConsoleOutputs = ParseConsoleOutputs;
 
             testNgExecuter.MavenCommandParameters = MavenCommandParameters;
 
@@ -101,7 +105,7 @@ namespace GingerTestNgPluginConsole
         }
 
         public void ExecuteMavenCommand(IGingerAction GA, string MavenCmdFullPath, string MavenProjectFolderPath,
-                string MavenCommandArguments, List<MavenCommandParameter> MavenCommandParameters, string ParseConsoleOutputs)
+                string MavenCommandArguments, List<MavenCommandParameter> MavenCommandParameters, bool ParseConsoleOutputs)
         {
             //Set execution configurations
             TestNGExecution testNgExecuter = new TestNGExecution();
@@ -113,10 +117,11 @@ namespace GingerTestNgPluginConsole
             testNgExecuter.MavenProjectFolderPath = MavenProjectFolderPath;
             testNgExecuter.MavenCommandArguments = MavenCommandArguments;
             testNgExecuter.MavenCommandParameters = MavenCommandParameters;
-            if (ParseConsoleOutputs != null)
-            {
-                bool.TryParse(ParseConsoleOutputs, out testNgExecuter.ParseConsoleOutputs);
-            }
+            //if (ParseConsoleOutputs != null)
+            //{
+            //    bool.TryParse(ParseConsoleOutputs, out testNgExecuter.ParseConsoleOutputs);
+            //}
+            testNgExecuter.ParseConsoleOutputs = ParseConsoleOutputs;
 
             testNgExecuter.Execute();
         }
