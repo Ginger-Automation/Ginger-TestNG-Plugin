@@ -5,6 +5,7 @@ using GingerTestNgPluginConsole;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StandAloneActions;
 using System;
+using System.Collections.Generic;
 using System.IO;
 namespace GingerTestNgPluginTest
 {
@@ -39,6 +40,24 @@ namespace GingerTestNgPluginTest
             Assert.AreEqual(null, GA.Errors, "No Errors");
         }
 
+        [TestMethod]
+        public void TestNGXmlParametersOverrideTest()
+        {
+            //Arrange
+            TestNGExecuterService service = new TestNGExecuterService();
+            GingerAction GA = new GingerAction();
+
+            List<TestNGTestParameter> paramsToOveride = new List<TestNGTestParameter>();
+            paramsToOveride.Add(new TestNGTestParameter() { Name = "Num1", Value = "55" });
+            paramsToOveride.Add(new TestNGTestParameter() { Name = "Num2", Value = "66" });
+
+            //Act
+            service.ExecuteTestNGXML(GA, @"C:\Program Files\Java\jdk1.8.0_191\bin\java.exe", @"C:\Users\menik\eclipse-workspace\Learn-TestNG\bin", @"C:\Users\menik\.p2\pool\plugins\*", @"C:\Users\menik\eclipse-workspace\Learn-TestNG\src\Calculator\testng.xml", paramsToOveride, null, null, null, false, null, false);
+
+            //Assert           
+            Assert.AreEqual(null, GA.Errors, "No Errors");
+        }
+
         //[TestMethod]
         //public void Play()
         //{
@@ -59,7 +78,7 @@ namespace GingerTestNgPluginTest
         //    GingerAction GA = new GingerAction();
 
         //    //Act
-            
+
 
         //    //Assert            
         //    Assert.AreEqual(null, GA.Errors, "No Errors");
@@ -200,7 +219,7 @@ namespace GingerTestNgPluginTest
         //{
         //    GingerAction GA = new GingerAction();
         //    TestNgService TNA = new TestNgService();
-        
+
         //    string TestNgXmll = System.IO.File.ReadAllText(@"C:\Users\mohdkhan\eclipse-workspace\SeleniumTestNg\testng.xml");
 
         //    TestNGSuite Suite = new TestNGSuite(TestNgXmll);

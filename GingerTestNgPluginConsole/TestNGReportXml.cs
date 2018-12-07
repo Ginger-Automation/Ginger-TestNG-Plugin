@@ -14,11 +14,11 @@ namespace GingerTestNgPluginConsole
         public List<TestNGTestSuite> ReportSuites;
         public string LoadError = null;
 
-        public Int32 PassedTestsNum;
-        public Int32 FailedTestsNum;
-        public Int32 SkippedTestsNum;
-        public Int32 IgnoredTestsNum;
-        public Int32 TotalTestsNum;
+        public Int32 PassedTestMethodsNum;
+        public Int32 FailedTestMethodsNum;
+        public Int32 SkippedTestMethodsNum;
+        public Int32 IgnoredTestMethodsNum;
+        public Int32 TotalTestMethodsNum;
 
         ///<summary>TestNGReportXML Object from TestNg Output Report XML file
         ///</summary>
@@ -70,11 +70,11 @@ namespace GingerTestNgPluginConsole
                 }
                 
                 //General counters
-                Int32.TryParse(ReportXml.DocumentElement.GetAttribute("skipped").ToString(), out PassedTestsNum);
-                Int32.TryParse(ReportXml.DocumentElement.GetAttribute("failed").ToString(), out FailedTestsNum);
-                Int32.TryParse(ReportXml.DocumentElement.GetAttribute("passed").ToString(), out SkippedTestsNum);
-                Int32.TryParse(ReportXml.DocumentElement.GetAttribute("ignored").ToString(), out IgnoredTestsNum);
-                Int32.TryParse(ReportXml.DocumentElement.GetAttribute("total").ToString(), out TotalTestsNum);
+                Int32.TryParse(ReportXml.DocumentElement.GetAttribute("passed").ToString(), out PassedTestMethodsNum);
+                Int32.TryParse(ReportXml.DocumentElement.GetAttribute("failed").ToString(), out FailedTestMethodsNum);
+                Int32.TryParse(ReportXml.DocumentElement.GetAttribute("skipped").ToString(), out SkippedTestMethodsNum);
+                Int32.TryParse(ReportXml.DocumentElement.GetAttribute("ignored").ToString(), out IgnoredTestMethodsNum);
+                Int32.TryParse(ReportXml.DocumentElement.GetAttribute("total").ToString(), out TotalTestMethodsNum);
 
                 //Executed Suites details
                 ReportSuites = new List<TestNGTestSuite>();
@@ -187,17 +187,17 @@ namespace GingerTestNgPluginConsole
 
         public void ParseTestNGReport(IGingerAction GA)
         {
-            GA.AddOutput("Total Tests Num.", TotalTestsNum);
-            GA.AddOutput("Passed Tests Num.", PassedTestsNum);
-            GA.AddOutput("Failed Tests Num.", FailedTestsNum);
-            GA.AddOutput("Skipped Tests Num.", SkippedTestsNum);
-            GA.AddOutput("Ignored Tests Num.", IgnoredTestsNum);
+            GA.AddOutput("Total Test Methods", TotalTestMethodsNum);
+            GA.AddOutput("Total Passed Test Methods", PassedTestMethodsNum);
+            GA.AddOutput("Total Failed Test Methods", FailedTestMethodsNum);
+            GA.AddOutput("Total Skipped Test Methods", SkippedTestMethodsNum);
+            GA.AddOutput("Total Ignored Test Methods", IgnoredTestMethodsNum);
 
             foreach(TestNGTestSuite suiteReport in ReportSuites)
             {
-                GA.AddOutput(string.Format("{0}-Start Time", suiteReport.Name),suiteReport.ExecutionStartTime);
-                GA.AddOutput(string.Format("{0}-Finish Time", suiteReport.Name), suiteReport.ExecutionEndTime);
-                GA.AddOutput(string.Format("{0}-Duration (MS)", suiteReport.Name), suiteReport.ExecutionDurationMS);
+                GA.AddOutput(string.Format("'{0}' Suite-Start Time", suiteReport.Name),suiteReport.ExecutionStartTime);
+                GA.AddOutput(string.Format("'{0}' Suite-Finish Time", suiteReport.Name), suiteReport.ExecutionEndTime);
+                GA.AddOutput(string.Format("'{0}' Suite-Duration (MS)", suiteReport.Name), suiteReport.ExecutionDurationMS);
 
                 foreach (TestNGTest testReport in suiteReport.Tests)
                 {
@@ -205,17 +205,17 @@ namespace GingerTestNgPluginConsole
                     {
                         foreach (TestNGTestMethod methodReport in classReport.Methods)
                         {
-                           GA.AddOutput(string.Format("{0}-Status", methodReport.Name), methodReport.ExecutionStatus, string.Format("{0}.{1}.{2}", suiteReport.Name, testReport.Name, classReport.Name));
+                           GA.AddOutput(string.Format("{0}\\{1}-Status", testReport.Name, methodReport.Name), methodReport.ExecutionStatus, string.Format("{0}\\{1}\\{2}", suiteReport.Name, testReport.Name, classReport.Name));
                            if (methodReport.ExecutionStatus == eTestExecutionStatus.FAIL)
                             {
                                 if (methodReport.ExecutionException != null)
                                 {
-                                    GA.AddOutput(string.Format("{0}-Error Message", methodReport.Name), methodReport.ExecutionException.Message, string.Format("{0}.{1}.{2}", suiteReport.Name, testReport.Name, classReport.Name));
-                                    GA.AddError(string.Format("The Method '{0}' (part of {1}.{2}.{3}) failed with the error: '{4}'", methodReport.Name, suiteReport.Name, testReport.Name, classReport.Name, methodReport.ExecutionException.Message));
+                                    GA.AddOutput(string.Format("{0}\\{1}-Error Message", testReport.Name, methodReport.Name), methodReport.ExecutionException.Message, string.Format("{0}\\{1}\\{2}", suiteReport.Name, testReport.Name, classReport.Name));
+                                    GA.AddError(string.Format("The Test method '{0}\\{1}' failed with the error: '{2}'", testReport.Name, methodReport.Name, methodReport.ExecutionException.Message));
                                 }
                                 else
                                 {
-                                    GA.AddError(string.Format("The Method '{0}' (part of {1}.{2}.{3}) failed", methodReport.Name, suiteReport.Name, testReport.Name, classReport.Name));
+                                    GA.AddError(string.Format("The Test method '{0}\\{1}' failed", testReport.Name, methodReport.Name));
                                 }                                
                             }
                         }

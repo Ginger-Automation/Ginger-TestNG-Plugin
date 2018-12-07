@@ -401,6 +401,12 @@ namespace GingerTestNgPluginConsole
                 return;
             }
 
+            //prepare the customized xml
+            if (!PrepareTestNGXmlForExecution())
+            {
+                return;
+            }
+
             //prepare the command 
             CommandValues command = null;
             try
@@ -441,7 +447,7 @@ namespace GingerTestNgPluginConsole
             {
                 //execute the command
                 if (ExecuteCommand(command))
-                {
+                {                    
                     //parse report
                     if (ExecutionMode == eExecutionMode.XML)
                     {
@@ -462,6 +468,46 @@ namespace GingerTestNgPluginConsole
             else
             {
                 GingerAction.AddError("No command found to exeucte");
+            }
+        }
+
+        private bool PrepareTestNGXmlForExecution()
+        {
+            TestNGSuiteXML customizedSuiteXML=null;
+            try
+            {
+                switch (ExecutionMode)
+                {
+                    case eExecutionMode.XML:
+                        //Parameters
+                        if (XmlParametersToOverwrite != null && XmlParametersToOverwrite.Count > 0)
+                        {
+                            customizedSuiteXML = new TestNGSuiteXML(TestNgSuiteXML.XmlFilePath);
+                            customizedSuiteXML.OverrideXMLParameters(XmlParametersToOverwrite);                            
+                        }
+                        break;
+
+                    case eExecutionMode.Classes:
+                    case eExecutionMode.Methods:
+                    case eExecutionMode.Jar:
+                        break;
+                }
+                
+
+                //create temp XML
+                if (customizedSuiteXML != null)
+                {
+                    string customeXMLFilePath = Path.Combine(TempWorkingFolder, "testng.xml");
+                    customizedSuiteXML.SuiteXml.Save(customeXMLFilePath);
+                    TestNgSuiteXML = new TestNGSuiteXML(customeXMLFilePath);
+                    GingerAction.AddExInfo(String.Format("Customized TestNG XML path: '{0}'", TestNgSuiteXML.XmlFilePath));
+                }
+                return true;
+            }
+            catch(Exception ex)
+            {
+                GingerAction.AddError(string.Format("Failed to Prepare TestNG Xml for execution, Error is: '{0}'", ex.Message));
+                return false;
             }
         }
 
@@ -509,13 +555,7 @@ namespace GingerTestNgPluginConsole
             //Maven parameters
             if (MavenCommandParameters != null && MavenCommandParameters.Count>0)
             {
-                foreach (MavenCommandParameter mvnParam in MavenCommandParameters)
-                {                    
-                    if (!string.IsNullOrEmpty(mvnParam.Name.Trim()))
-                    {
-                        command.Arguments += string.Format(" -D{0}=\"{1}\"", mvnParam.Name.Trim(), mvnParam.Value);
-                    }
-                }
+                SetMavenCommandParameters(command);
             }
 
             //TestNG XML path
@@ -538,16 +578,28 @@ namespace GingerTestNgPluginConsole
             //Maven parameters
             if (MavenCommandParameters != null && MavenCommandParameters.Count > 0)
             {
-                foreach (MavenCommandParameter mvnParam in MavenCommandParameters)
-                {
-                    if (!string.IsNullOrEmpty(mvnParam.Name.Trim()))
-                    {
-                        command.Arguments += string.Format(" -D{0}=\"{1}\"", mvnParam.Name.Trim(), mvnParam.Value);
-                    }
-                }
+                SetMavenCommandParameters(command);
             }
 
             return command;
+        }
+
+        private void SetMavenCommandParameters(CommandValues command)
+        {
+            foreach (MavenCommandParameter mvnParam in MavenCommandParameters)
+            {
+                if (!string.IsNullOrEmpty(mvnParam.Name.Trim()))
+                {
+                    if (!mvnParam.Name.Trim().Contains("-D"))
+                    {
+                        command.Arguments += string.Format(" -D{0}=\"{1}\"", mvnParam.Name.Trim(), mvnParam.Value);
+                    }
+                    else
+                    {
+                        command.Arguments += string.Format(" {0}=\"{1}\"", mvnParam.Name.Trim(), mvnParam.Value);
+                    }
+                }
+            }
         }
 
         private bool ExecuteCommand(CommandValues commandVals)
@@ -635,7 +687,7 @@ namespace GingerTestNgPluginConsole
             try
             {
                 //Error
-                if (!string.IsNullOrEmpty(mCommandOutputErrorBuffer))
+                if (!string.IsNullOrEmpty(mCommandOutputErrorBuffer.Trim().Trim('\n')))
                 {
                     GingerAction.AddExInfo(string.Format("Console Errors: \n{0}", mCommandOutputErrorBuffer));
                 }

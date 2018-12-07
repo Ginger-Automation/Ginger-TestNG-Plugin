@@ -7,7 +7,7 @@ using System.Text;
 
 namespace GingerTestNgPluginConsole
 {
-    [GingerService("TestNGExecuter", "Trigger TestNG Tests Execution by Ginger")]
+    [GingerService("TestNGExecuter", "Trigger TestNG Tests Execution via Ginger")]
     public class TestNGExecuterService
     {
         /// <summary>
@@ -40,14 +40,6 @@ namespace GingerTestNgPluginConsole
             testNgExecuter.JavaProjectBinFolderPath = JavaProjectBinFolderPath;
             testNgExecuter.JavaProjectResourcesPath = JavaProjectResourcesPath;
             testNgExecuter.TestNGOutputReportFolderPath = TestNGOutputReportFolderPath;
-            //if (ContinueExecutionOnTestFailure != null)
-            //{
-            //    bool.TryParse(ContinueExecutionOnTestFailure, out testNgExecuter.ContinueExecutionOnTestFailure);
-            //}
-            //if (ParseConsoleOutputs != null)
-            //{
-            //    bool.TryParse(ParseConsoleOutputs, out testNgExecuter.ParseConsoleOutputs);
-            //}
             testNgExecuter.ContinueExecutionOnTestFailure = ContinueExecutionOnTestFailure;
             testNgExecuter.ParseConsoleOutputs = ParseConsoleOutputs;
 
@@ -85,14 +77,6 @@ namespace GingerTestNgPluginConsole
             testNgExecuter.MavenCmdFullPath = MavenCmdFullPath;
             testNgExecuter.MavenProjectFolderPath = MavenProjectFolderPath;            
             testNgExecuter.TestNGOutputReportFolderPath = TestNGOutputReportFolderPath;
-            //if (PerformMavenInstall != null)
-            //{
-            //    bool.TryParse(PerformMavenInstall, out testNgExecuter.PerformMavenInstall);
-            //}
-            //if (ParseConsoleOutputs != null)
-            //{
-            //    bool.TryParse(ParseConsoleOutputs, out testNgExecuter.ParseConsoleOutputs);
-            //}
             testNgExecuter.PerformMavenInstall = PerformMavenInstall;
             testNgExecuter.ParseConsoleOutputs = ParseConsoleOutputs;
 
@@ -104,6 +88,16 @@ namespace GingerTestNgPluginConsole
             testNgExecuter.Execute();
         }
 
+        /// <summary>
+        /// Execute Maven free command
+        /// </summary>
+        /// <param name="GA"></param>
+        /// <param name="MavenCmdFullPath"></param>
+        /// <param name="MavenProjectFolderPath"></param>
+        /// <param name="MavenCommandArguments"></param>
+        /// <param name="MavenCommandParameters"></param>
+        /// <param name="ParseConsoleOutputs"></param>
+        [GingerAction("ExecuteMavenCommand", "Execute Maven free command")]
         public void ExecuteMavenCommand(IGingerAction GA, string MavenCmdFullPath, string MavenProjectFolderPath,
                 string MavenCommandArguments, List<MavenCommandParameter> MavenCommandParameters, bool ParseConsoleOutputs)
         {
@@ -117,10 +111,6 @@ namespace GingerTestNgPluginConsole
             testNgExecuter.MavenProjectFolderPath = MavenProjectFolderPath;
             testNgExecuter.MavenCommandArguments = MavenCommandArguments;
             testNgExecuter.MavenCommandParameters = MavenCommandParameters;
-            //if (ParseConsoleOutputs != null)
-            //{
-            //    bool.TryParse(ParseConsoleOutputs, out testNgExecuter.ParseConsoleOutputs);
-            //}
             testNgExecuter.ParseConsoleOutputs = ParseConsoleOutputs;
 
             testNgExecuter.Execute();
