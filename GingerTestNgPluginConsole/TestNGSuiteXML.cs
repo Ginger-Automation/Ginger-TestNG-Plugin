@@ -50,15 +50,8 @@ namespace GingerTestNgPluginConsole
         /// Generate TestNGSuiteXML Object from TestNg Suite XML file
         ///</summary>
         public TestNGSuiteXML(string xmlFilePath)
-        {            
-            if (xmlFilePath != null)
-            {
-                XmlFilePath = Path.GetFullPath(xmlFilePath);
-            }
-            else
-            {
-                XmlFilePath = string.Empty;
-            }
+        {
+            XmlFilePath = xmlFilePath;
             if (LoadSuiteXmlFromFile())
             {
                 LoadSuiteObjectFromXml();
@@ -68,7 +61,8 @@ namespace GingerTestNgPluginConsole
         private bool LoadSuiteXmlFromFile()
         {
             try
-            {                
+            {
+                XmlFilePath = Path.GetFullPath(XmlFilePath);
                 if (File.Exists(XmlFilePath) == false)
                 {
                     LoadError = String.Format("Failed to find the TestNG XML file at: '{0}'", XmlFilePath);

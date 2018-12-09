@@ -20,7 +20,10 @@ namespace GingerTestNgPluginTest
             GingerAction GA = new GingerAction();
 
             //Act
-            service.ExecuteTestNGXML(GA, @"C:\Program Files\Java\jdk1.8.0_191\bin\java.exe", @"C:\Users\menik\eclipse-workspace\Learn-TestNG\bin", @"C:\Users\menik\.p2\pool\plugins\*", @"C:\Users\menik\eclipse-workspace\Learn-TestNG\src\Groups\testng.xml",null,null,null,null, false, null, false);
+            service.ExecuteTestNGXML(GA, OverrideJavaHomePath:@"C:\Program Files\Java\jdk1.8.0_191\bin\java.exe", JavaProjectBinPath:@"C:\Users\menik\eclipse-workspace\Learn-TestNG\bin", JavaProjectResourcesPath:@"C:\Users\menik\.p2\pool\plugins\*",
+                                   TestngXmlPath:@"C:\Users\menik\eclipse-workspace\Learn-TestNG\src\Groups\testng.xml", TestngXmlParametersToOverride:null,
+                                   ParseConsoleOutputs:false, FailActionDueToConsoleErrors:false,
+                                   ParseTestngResultsXml:true, OverrideTestngResultsXmlDefaultFolderPath:null, FailActionDueToTestngResultsFailures:false);
 
             //Assert           
             Assert.AreEqual(null, GA.Errors, "No Errors");
@@ -34,7 +37,10 @@ namespace GingerTestNgPluginTest
             GingerAction GA = new GingerAction();
 
             //Act
-            service.ExecuteMavenProjectTestNGXML(GA, @"C:\Users\menik\Documents\MENIK05\Work Projects\TestNG\PBG Flows\apache-maven-3.5.3\bin\mvn.cmd", @"C:\Users\menik\Documents\MENIK05\Work Projects\TestNG\PBG Flows\test\order_capture_test", false, null, @"C:\Users\menik\Documents\MENIK05\Work Projects\TestNG\PBG Flows\test\CustomeXMLs\Dynamic Device from CouchBase.xml",null,null,false);
+            service.ExecuteMavenProjectTestNGXML(GA, OverrideMavenHomePath: @"C:\Program Files(x86)\apache-maven-3.5.3\bin\mvn.cmd", MavenProjectFolderPath: @"C:\TestNG_WORKSPACE\PBG Flows\order_capture_test", PerformMavenInstall:false, 
+                                   TestngXmlPath: @"C:\TestNG_WORKSPACE\PBG Flows\CustomeXMLs\Dynamic Device from CouchBase.xml",TestngXmlParametersToOverride: null,
+                                   ParseConsoleOutputs: false, FailActionDueToConsoleErrors: false,
+                                   ParseTestngResultsXml: true, OverrideTestngResultsXmlDefaultFolderPath: null, FailActionDueToTestngResultsFailures: false);
 
             //Assert           
             Assert.AreEqual(null, GA.Errors, "No Errors");
@@ -52,7 +58,10 @@ namespace GingerTestNgPluginTest
             paramsToOveride.Add(new TestNGTestParameter() { Name = "Num2", Value = "66" });
 
             //Act
-            service.ExecuteTestNGXML(GA, @"C:\Program Files\Java\jdk1.8.0_191\bin\java.exe", @"C:\Users\menik\eclipse-workspace\Learn-TestNG\bin", @"C:\Users\menik\.p2\pool\plugins\*", @"C:\Users\menik\eclipse-workspace\Learn-TestNG\src\Calculator\testng.xml", paramsToOveride, null, null, null, false, null, false);
+            service.ExecuteTestNGXML(GA, OverrideJavaHomePath: @"C:\Program Files\Java\jdk1.8.0_191\bin\java.exe", JavaProjectBinPath: @"C:\Users\menik\eclipse-workspace\Learn-TestNG\bin", JavaProjectResourcesPath: @"C:\Users\menik\.p2\pool\plugins\*",
+                                   TestngXmlPath: @"C:\Users\menik\eclipse-workspace\Learn-TestNG\src\Calculator\testng.xml", TestngXmlParametersToOverride: null,
+                                   ParseConsoleOutputs: false, FailActionDueToConsoleErrors: false,
+                                   ParseTestngResultsXml: true, OverrideTestngResultsXmlDefaultFolderPath: null, FailActionDueToTestngResultsFailures: false);         
 
             //Assert           
             Assert.AreEqual(null, GA.Errors, "No Errors");

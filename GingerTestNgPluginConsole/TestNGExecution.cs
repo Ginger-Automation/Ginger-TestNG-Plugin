@@ -14,15 +14,23 @@ namespace GingerTestNgPluginConsole
     {
         public IGingerAction GingerAction;
 
-        static string mCommandOutputBuffer = string.Empty;
-        static string mCommandOutputErrorBuffer = string.Empty;
+        public enum eExecuterType { Java, Maven }
+        public eExecuterType ExecuterType;
 
         public enum eJavaProjectType { Regular, Maven}
         public eJavaProjectType JavaProjectType;
-        public enum eExecutionMode { XML, Classes, Methods, Jar, FreeCommand }
+
+        public enum eExecutionMode { XML, DynamicXML, FreeCommand }
         public eExecutionMode ExecutionMode;
+        
+        static string mCommandOutputBuffer = string.Empty;
+        static string mCommandOutputErrorBuffer = string.Empty;
 
         public bool ParseConsoleOutputs;
+        public bool FailActionDueToConsoleErrors;
+
+        public bool ParseTestngResultsXml;
+        public bool FailActionDueToTestngResultsFailures;
 
         string mTempWorkingFolder = null;
         public string TempWorkingFolder
@@ -90,12 +98,17 @@ namespace GingerTestNgPluginConsole
                 if (!string.IsNullOrEmpty(value))
                 {
                     mJavaProjectResourcesPath = Path.GetFullPath(value);
+
+                    if (JavaProjectResourcesPath.Contains('*') == false)
+                    {
+                        JavaProjectResourcesPath = Path.Combine(JavaProjectResourcesPath, "*");
+                    }
                 }
             }
         }
 
         string mJavaProjectBinFolderPath = null;
-        public string JavaProjectBinFolderPath
+        public string JavaProjectBinPath
         {
             get
             {
@@ -106,6 +119,12 @@ namespace GingerTestNgPluginConsole
                 if (!string.IsNullOrEmpty(value))
                 {
                     mJavaProjectBinFolderPath = Path.GetFullPath(value);
+
+                    JavaProjectBinPath = JavaProjectBinPath.TrimEnd(new char[] { '\\', '/' });
+                    if (Path.GetFileName(JavaProjectBinPath).ToLower() != "bin")
+                    {
+                        JavaProjectBinPath = Path.Combine(JavaProjectBinPath, "\bin");
+                    }
                 }
             }
         }
@@ -166,14 +185,42 @@ namespace GingerTestNgPluginConsole
         }
 
         public bool PerformMavenInstall = true;
-
-        public string MavenCommandArguments;
-
-        public List<MavenCommandParameter> MavenCommandParameters = new List<MavenCommandParameter>();
         #endregion
 
+        string mFreeCommandArguments = null;
+        public string FreeCommandArguments
+        {
+            get
+            {
+                return mFreeCommandArguments;
+            }
+            set
+            {
+                mFreeCommandArguments = value;
+                if (!string.IsNullOrEmpty(mFreeCommandArguments))
+                {
+                   //trim java or mvn
+                   if (ExecuterType == eExecuterType.Java)
+                    {
+                        if (mFreeCommandArguments.TrimStart().IndexOf("java") == 0)
+                        {
+                            mFreeCommandArguments= mFreeCommandArguments.Replace("java", "").TrimStart();
+                        }
+                    }
+                   else//Maven executer
+                    {
+                        if (mFreeCommandArguments.TrimStart().IndexOf("mvn") == 0)
+                        {
+                            mFreeCommandArguments = mFreeCommandArguments.Replace("mvn", "").TrimStart();
+                        }
+                    }                   
+                }
+            }
+        }
+        public List<CommandParameter> CommandParametersToOverride = new List<CommandParameter>();
+
         string mTestNGOutputReportFolderPath = null;
-        public string TestNGOutputReportFolderPath
+        public string TestngResultsXmlFolderPath
         {
             get
             {
@@ -206,11 +253,49 @@ namespace GingerTestNgPluginConsole
             }
         }
 
-        public bool ContinueExecutionOnTestFailure;
+        string mTestngXmlPath = null;
+        public string TestngXmlPath
+        {
+            get
+            {
+                return mTestngXmlPath;
+            }
+            set
+            {
+                mTestngXmlPath = value;
+                if (!string.IsNullOrEmpty(mTestngXmlPath))
+                {
+                    if (!File.Exists(mTestngXmlPath))
+                    {
+                        if (Path.IsPathRooted(mTestngXmlPath) == false)//relative path provided
+                        {
+                            if (ExecutionMode == eExecutionMode.XML)
+                            {
+                                if (JavaProjectType == eJavaProjectType.Regular)
+                                {
+                                    if (string.IsNullOrEmpty(JavaProjectBinPath) == false)
+                                    {
+                                        mTestngXmlPath = Path.Combine(Path.GetDirectoryName(JavaProjectBinPath), mTestngXmlPath);
+                                    }
+                                }
+                                else //Maven
+                                {
+                                    if (string.IsNullOrEmpty(MavenProjectFolderPath) == false)
+                                    {
+                                        mTestngXmlPath = Path.Combine(MavenProjectFolderPath, mTestngXmlPath);
+                                    }
 
-        public TestNGSuiteXML TestNgSuiteXML;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
-        public List<TestNGTestParameter> XmlParametersToOverwrite = new List<TestNGTestParameter>();
+        public TestNGSuiteXML TestNgSuiteXMLObj;
+
+        public List<TestNGTestParameter> TestngXmlParametersToOverride = new List<TestNGTestParameter>();
 
         public List<TestNGTest> XmlTestsToExecute = new List<TestNGTest>();
 
@@ -219,6 +304,7 @@ namespace GingerTestNgPluginConsole
         public List<TestNGTestGroup> TestGroupsToExclude = new List<TestNGTestGroup>();
 
 
+        public bool ContinueExecutionOnTestFailure;
         public bool ValidateAndPrepareConfigs()
         {
             //validate general inputes
@@ -232,7 +318,7 @@ namespace GingerTestNgPluginConsole
                 GingerAction.AddExInfo(String.Format("Temp working folder path: '{0}'", TempWorkingFolder));
             }
 
-            if (JavaProjectType == eJavaProjectType.Regular)
+            if (ExecuterType == eExecuterType.Java)
             {
                 if (Path.GetFileName(JavaExeFullPath).ToLower() != "java.exe" || File.Exists(JavaExeFullPath) == false)
                 {
@@ -243,37 +329,8 @@ namespace GingerTestNgPluginConsole
                 {
                     GingerAction.AddExInfo(String.Format("Path of 'java.exe' file: '{0}'", JavaExeFullPath));
                 }
-
-                if (Directory.Exists(JavaProjectResourcesPath.Trim().TrimEnd('*')) == false)
-                {
-                    GingerAction.AddError(String.Format("Failed to find the TestNG resources folder at: '{0}'", JavaProjectResourcesPath));
-                    return false;
-                }
-                else
-                {
-                    if (JavaProjectResourcesPath.Contains('*') == false)
-                    {
-                        JavaProjectResourcesPath = Path.Combine(JavaProjectResourcesPath, "*");
-                    }
-                    GingerAction.AddExInfo(String.Format("TestNG resources path: '{0}'", JavaProjectResourcesPath));
-                }
-
-                JavaProjectBinFolderPath = JavaProjectBinFolderPath.TrimEnd(new char[] { '\\', '/' });
-                if (Path.GetFileName(JavaProjectBinFolderPath).ToLower() != "bin")
-                {
-                    JavaProjectBinFolderPath = Path.Combine(JavaProjectBinFolderPath, "\bin");
-                }
-                if (Directory.Exists(JavaProjectBinFolderPath) == false)
-                {
-                    GingerAction.AddError(String.Format("Failed to find the TestNG testing project Bin folder at: '{0}'", JavaProjectBinFolderPath));
-                    return false;
-                }
-                else
-                {
-                    GingerAction.AddExInfo(String.Format("TestNG testing project Bin folder path: '{0}'", JavaProjectBinFolderPath));
-                }
             }
-            else //Maven Project
+            else//Maven Executer
             {
                 if (Path.GetFileName(MavenCmdFullPath).ToLower() != "mvn.cmd" || File.Exists(MavenCmdFullPath) == false)
                 {
@@ -284,51 +341,67 @@ namespace GingerTestNgPluginConsole
                 {
                     GingerAction.AddExInfo(String.Format("Path of 'mvn.cmd' file: '{0}'", MavenCmdFullPath));
                 }
-
-                if (Directory.Exists(MavenProjectFolderPath) == false)
-                {
-                    GingerAction.AddError(String.Format("Failed to find the Maven Java project folder at: '{0}'", MavenProjectFolderPath));
-                    return false;
-                }
-                else
-                {
-                    GingerAction.AddExInfo(String.Format("Maven Java project path: '{0}'", MavenProjectFolderPath));
-                }
             }
-
-            if (Directory.Exists(TestNGOutputReportFolderPath) == false)
-            {
-                GingerAction.AddError(String.Format("Failed to find the TestNG output report root folder at: '{0}'", TestNGOutputReportFolderPath));
-                return false;
-            }
-            else
-            {
-                GingerAction.AddExInfo(String.Format("TestNG output report root folder path: '{0}'", TestNGOutputReportFolderPath));
-            }
-
 
             switch (ExecutionMode)
             {
                 case eExecutionMode.XML:
-                    if (TestNgSuiteXML.LoadError != null)
+                case eExecutionMode.DynamicXML:
+                    if (JavaProjectType == eJavaProjectType.Regular)
                     {
-                        GingerAction.AddError(TestNgSuiteXML.LoadError);
+                        if (Directory.Exists(JavaProjectResourcesPath.Trim().TrimEnd('*')) == false)
+                        {
+                            GingerAction.AddError(String.Format("Failed to find the TestNG resources folder at: '{0}'", JavaProjectResourcesPath));
+                            return false;
+                        }
+                        else
+                        {
+                            GingerAction.AddExInfo(String.Format("TestNG resources path: '{0}'", JavaProjectResourcesPath));
+                        }
+
+                        if (Directory.Exists(JavaProjectBinPath) == false)
+                        {
+                            GingerAction.AddError(String.Format("Failed to find the TestNG testing project Bin folder at: '{0}'", JavaProjectBinPath));
+                            return false;
+                        }
+                        else
+                        {
+                            GingerAction.AddExInfo(String.Format("TestNG testing project Bin folder path: '{0}'", JavaProjectBinPath));
+                        }
+                    }
+                    else //Maven Project
+                    {
+                        if (Directory.Exists(MavenProjectFolderPath) == false)
+                        {
+                            GingerAction.AddError(String.Format("Failed to find the Maven Java project folder at: '{0}'", MavenProjectFolderPath));
+                            return false;
+                        }
+                        else
+                        {
+                            GingerAction.AddExInfo(String.Format("Maven Java project path: '{0}'", MavenProjectFolderPath));
+                        }
+                    }
+
+                    TestNgSuiteXMLObj = new TestNGSuiteXML(TestngXmlPath);
+                    if (TestNgSuiteXMLObj.LoadError != null)
+                    {
+                        GingerAction.AddError(TestNgSuiteXMLObj.LoadError);
                         return false;
                     }
                     else
                     {
-                        GingerAction.AddExInfo(String.Format("TestNG XML path: '{0}'", TestNgSuiteXML.XmlFilePath));
+                        GingerAction.AddExInfo(String.Format("TestNG XML path: '{0}'", TestNgSuiteXMLObj.XmlFilePath));
                     }
 
-                    string suiteXmlString = TestNgSuiteXML.SuiteXmlString;
+                    string suiteXmlString = TestNgSuiteXMLObj.SuiteXmlString;
 
-                    if (XmlParametersToOverwrite != null && XmlParametersToOverwrite.Count > 0)
+                    if (TestngXmlParametersToOverride != null && TestngXmlParametersToOverride.Count > 0)
                     {
                         string paramsListStr = "Parameters to overwrite: ";
-                        foreach (TestNGTestParameter param in XmlParametersToOverwrite)
+                        foreach (TestNGTestParameter param in TestngXmlParametersToOverride)
                         {
                             param.Name = param.Name.Trim();
-                            if (!TestNgSuiteXML.IsParameterExistInXML(param.Name))
+                            if (!TestNgSuiteXMLObj.IsParameterExistInXML(param.Name))
                             {
                                 GingerAction.AddError(string.Format("The Parameter '{0}' do not exist in the TestNG Suite XML", param.Name));
                                 return false;
@@ -342,53 +415,75 @@ namespace GingerTestNgPluginConsole
                         GingerAction.AddExInfo(paramsListStr);
                     }
 
-                    if (XmlTestsToExecute != null && XmlTestsToExecute.Count > 0)
+                    if (ExecutionMode == eExecutionMode.DynamicXML)
                     {
-                        string testsListStr = "Tests to execute: ";
-                        foreach (TestNGTest test in XmlTestsToExecute)
+                        if (XmlTestsToExecute != null && XmlTestsToExecute.Count > 0)
                         {
-                            test.Name = test.Name.Trim();
-                            if (!TestNgSuiteXML.IsTestExistInXML(test.Name))
+                            string testsListStr = "Tests to execute: ";
+                            foreach (TestNGTest test in XmlTestsToExecute)
                             {
-                                GingerAction.AddError(string.Format("The Test '{0}' do not exist in the TestNG Suite XML", test.Name));
-                                return false;
+                                test.Name = test.Name.Trim();
+                                if (!TestNgSuiteXMLObj.IsTestExistInXML(test.Name))
+                                {
+                                    GingerAction.AddError(string.Format("The Test '{0}' do not exist in the TestNG Suite XML", test.Name));
+                                    return false;
+                                }
+                                else
+                                {
+                                    testsListStr += string.Format("'{0}', ", test.Name);
+                                }
                             }
-                            else
-                            {
-                                testsListStr += string.Format("'{0}', ", test.Name);
-                            }
+                            testsListStr.TrimEnd(',');
+                            GingerAction.AddExInfo(testsListStr);
                         }
-                        testsListStr.TrimEnd(',');
-                        GingerAction.AddExInfo(testsListStr);
+
+                        if (TestGroupsToInclude != null && TestGroupsToInclude.Count > 0)
+                        {
+                            string groupsToIncludeListStr = "Tests Groups to include: ";
+                            foreach (TestNGTestGroup group in TestGroupsToInclude)
+                            {
+                                groupsToIncludeListStr += string.Format("'{0}', ", group.Name);
+                            }
+                            groupsToIncludeListStr.TrimEnd(',');
+                            GingerAction.AddExInfo(groupsToIncludeListStr);
+                        }
+                        if (TestGroupsToExclude != null && TestGroupsToExclude.Count > 0)
+                        {
+                            string groupsToExcludeListStr = "Tests Groups to exclude: ";
+                            foreach (TestNGTestGroup group in TestGroupsToExclude)
+                            {
+                                groupsToExcludeListStr += string.Format("'{0}', ", group.Name);
+                            }
+                            groupsToExcludeListStr.TrimEnd(',');
+                            GingerAction.AddExInfo(groupsToExcludeListStr);
+                        }
                     }
                     break;
-                case eExecutionMode.Classes:
-                    break;
-                case eExecutionMode.Methods:
-                    break;
-                case eExecutionMode.Jar:
+
+                case eExecutionMode.FreeCommand:
+                    if (string.IsNullOrEmpty(FreeCommandArguments.Trim()))
+                    {
+                        GingerAction.AddError(String.Format("Provided Free Command Arguments is not valid: '{0}'", FreeCommandArguments));
+                        return false;
+                    }
+                    else
+                    {
+                        GingerAction.AddExInfo(String.Format("Free Command Arguments: '{0}'", FreeCommandArguments));
+                    }
                     break;
             }
 
-            if (TestGroupsToInclude != null && TestGroupsToInclude.Count > 0)
+            if (ParseTestngResultsXml == true)
             {
-                string groupsToIncludeListStr = "Tests Groups to include: ";
-                foreach (TestNGTestGroup group in TestGroupsToInclude)
+                if (Directory.Exists(TestngResultsXmlFolderPath) == false)
                 {
-                    groupsToIncludeListStr += string.Format("'{0}', ", group.Name);
+                    GingerAction.AddError(String.Format("Failed to find the TestNG output report root folder at: '{0}'", TestngResultsXmlFolderPath));
+                    return false;
                 }
-                groupsToIncludeListStr.TrimEnd(',');
-                GingerAction.AddExInfo(groupsToIncludeListStr);
-            }
-            if (TestGroupsToExclude != null && TestGroupsToExclude.Count > 0)
-            {
-                string groupsToExcludeListStr = "Tests Groups to exclude: ";
-                foreach (TestNGTestGroup group in TestGroupsToExclude)
+                else
                 {
-                    groupsToExcludeListStr += string.Format("'{0}', ", group.Name);
+                    GingerAction.AddExInfo(String.Format("TestNG output report root folder path: '{0}'", TestngResultsXmlFolderPath));
                 }
-                groupsToExcludeListStr.TrimEnd(',');
-                GingerAction.AddExInfo(groupsToExcludeListStr);
             }
 
             return true;
@@ -408,7 +503,7 @@ namespace GingerTestNgPluginConsole
             }
 
             //prepare the command 
-            CommandValues command = null;
+            CommandElements command = null;
             try
             {
                 switch (ExecutionMode)
@@ -423,14 +518,9 @@ namespace GingerTestNgPluginConsole
                             command = PrepareMavenTestngXmlExecutionCommand();
                         }
                         break;
-                    case eExecutionMode.Classes:
-                        break;
-                    case eExecutionMode.Methods:
-                        break;
-                    case eExecutionMode.Jar:
-                        break;
+
                     case eExecutionMode.FreeCommand:
-                        if (JavaProjectType == eJavaProjectType.Maven)
+                        if (ExecuterType == eExecuterType.Maven)
                         {
                             command = PrepareMavenFreeCommand();
                         }
@@ -447,16 +537,22 @@ namespace GingerTestNgPluginConsole
             {
                 //execute the command
                 if (ExecuteCommand(command))
-                {                    
+                {
+                    //parse output
+                    if (ParseConsoleOutputs)
+                    {
+                        ParseCommandOutput();
+                    }
+
                     //parse report
-                    if (ExecutionMode == eExecutionMode.XML)
+                    if (ParseTestngResultsXml)
                     {
                         //parse the TestNG output result XML 
-                        string testNgReportPath = Path.Combine(TestNGOutputReportFolderPath, "testng-results.xml");
+                        string testNgReportPath = Path.Combine(TestngResultsXmlFolderPath, "testng-results.xml");
                         TestNGReportXML ngReport = new TestNGReportXML(testNgReportPath);
                         if (string.IsNullOrEmpty(ngReport.LoadError) == true)
                         {
-                            ngReport.ParseTestNGReport(GingerAction);
+                            ngReport.ParseTestNGReport(GingerAction, FailActionDueToTestngResultsFailures);
                         }
                         else
                         {
@@ -480,27 +576,22 @@ namespace GingerTestNgPluginConsole
                 {
                     case eExecutionMode.XML:
                         //Parameters
-                        if (XmlParametersToOverwrite != null && XmlParametersToOverwrite.Count > 0)
+                        if (TestngXmlParametersToOverride != null && TestngXmlParametersToOverride.Count > 0)
                         {
-                            customizedSuiteXML = new TestNGSuiteXML(TestNgSuiteXML.XmlFilePath);
-                            customizedSuiteXML.OverrideXMLParameters(XmlParametersToOverwrite);                            
+                            customizedSuiteXML = new TestNGSuiteXML(TestNgSuiteXMLObj.XmlFilePath);
+                            customizedSuiteXML.OverrideXMLParameters(TestngXmlParametersToOverride);                            
                         }
                         break;
-
-                    case eExecutionMode.Classes:
-                    case eExecutionMode.Methods:
-                    case eExecutionMode.Jar:
-                        break;
                 }
-                
-
+               
                 //create temp XML
                 if (customizedSuiteXML != null)
                 {
                     string customeXMLFilePath = Path.Combine(TempWorkingFolder, "testng.xml");
                     customizedSuiteXML.SuiteXml.Save(customeXMLFilePath);
-                    TestNgSuiteXML = new TestNGSuiteXML(customeXMLFilePath);
-                    GingerAction.AddExInfo(String.Format("Customized TestNG XML path: '{0}'", TestNgSuiteXML.XmlFilePath));
+                    TestngXmlPath = customeXMLFilePath;
+                    TestNgSuiteXMLObj = new TestNGSuiteXML(TestngXmlPath);
+                    GingerAction.AddExInfo(String.Format("Customized TestNG XML path: '{0}'", TestNgSuiteXMLObj.XmlFilePath));
                 }
                 return true;
             }
@@ -511,33 +602,30 @@ namespace GingerTestNgPluginConsole
             }
         }
 
-        private CommandValues PrepareTestngXmlExecutionCommand()
+        private CommandElements PrepareTestngXmlExecutionCommand()
         {
-            CommandValues command = new CommandValues();
+            CommandElements command = new CommandElements();
 
             command.ExecuterFilePath = string.Format("\"{0}\"", JavaExeFullPath);
 
             //class path
-            command.Arguments = string.Format(" -cp \"{0}\";\"{1}\"", JavaProjectBinFolderPath, JavaProjectResourcesPath);
+            command.Arguments = string.Format(" -cp \"{0}\";\"{1}\"", JavaProjectBinPath, JavaProjectResourcesPath);
 
             //testng test arguments
             command.Arguments += " org.testng.TestNG";
 
             //TestNG XML path
-            command.Arguments += string.Format(" \"{0}\"", TestNgSuiteXML.XmlFilePath);
+            command.Arguments += string.Format(" \"{0}\"", TestNgSuiteXMLObj.XmlFilePath);
 
             //Report output path
-            command.Arguments += string.Format(" -d \"{0}\"", TestNGOutputReportFolderPath);
-
-            //TODO: add handling to rest of possible arguments
-
+            command.Arguments += string.Format(" -d \"{0}\"", TestngResultsXmlFolderPath);
 
             return command;
         }
 
-        private CommandValues PrepareMavenTestngXmlExecutionCommand()
+        private CommandElements PrepareMavenTestngXmlExecutionCommand()
         {
-            CommandValues command = new CommandValues();
+            CommandElements command = new CommandElements();
 
             command.WorkingFolder = MavenProjectFolderPath;
             command.ExecuterFilePath = string.Format("\"{0}\"", MavenCmdFullPath);
@@ -552,57 +640,51 @@ namespace GingerTestNgPluginConsole
                 command.Arguments = " clean test";
             }            
 
-            //Maven parameters
-            if (MavenCommandParameters != null && MavenCommandParameters.Count>0)
-            {
-                SetMavenCommandParameters(command);
-            }
-
             //TestNG XML path
-            command.Arguments += string.Format(" -Dsurefire.suiteXmlFiles=\"{0}\"", TestNgSuiteXML.XmlFilePath);
-
+            command.Arguments += string.Format(" -Dsurefire.suiteXmlFiles=\"{0}\"", TestNgSuiteXMLObj.XmlFilePath);
 
             return command;
         }
 
-        private CommandValues PrepareMavenFreeCommand()
+        private CommandElements PrepareMavenFreeCommand()
         {
-            CommandValues command = new CommandValues();
+            CommandElements command = new CommandElements();
 
             command.WorkingFolder = MavenProjectFolderPath;
             command.ExecuterFilePath = MavenCmdFullPath;
 
-            //Mvn arguments
-            command.Arguments = string.Format(" {0}", MavenCommandArguments);
-
-            //Maven parameters
-            if (MavenCommandParameters != null && MavenCommandParameters.Count > 0)
+            string commandArgsToExecute= string.Format(" {0}", FreeCommandArguments);            
+            //Maven parameters ovveride
+            if (CommandParametersToOverride != null && CommandParametersToOverride.Count > 0)
             {
-                SetMavenCommandParameters(command);
+                commandArgsToExecute = string.Format(" {0}", OverrideCommandParameters(FreeCommandArguments));                
             }
+
+            command.Arguments = commandArgsToExecute;
 
             return command;
         }
 
-        private void SetMavenCommandParameters(CommandValues command)
+        private string OverrideCommandParameters(string commandArgs)
         {
-            foreach (MavenCommandParameter mvnParam in MavenCommandParameters)
+            foreach (CommandParameter cmdParam in CommandParametersToOverride)
             {
-                if (!string.IsNullOrEmpty(mvnParam.Name.Trim()))
-                {
-                    if (!mvnParam.Name.Trim().Contains("-D"))
+                string fullParamName = cmdParam.Name.Trim();
+                if (!string.IsNullOrEmpty(fullParamName))
+                {                    
+                    if (!fullParamName.Contains("-D"))
                     {
-                        command.Arguments += string.Format(" -D{0}=\"{1}\"", mvnParam.Name.Trim(), mvnParam.Value);
+                        fullParamName = string.Format("-D{0}", fullParamName);
                     }
-                    else
-                    {
-                        command.Arguments += string.Format(" {0}=\"{1}\"", mvnParam.Name.Trim(), mvnParam.Value);
-                    }
+                    
+                    //TODO: implement replace param value
                 }
             }
+
+            return commandArgs;
         }
 
-        private bool ExecuteCommand(CommandValues commandVals)
+        private bool ExecuteCommand(CommandElements commandVals)
         {
             try
             {
@@ -631,7 +713,7 @@ namespace GingerTestNgPluginConsole
                 process.BeginOutputReadLine();
                 process.BeginErrorReadLine();
 
-                int maxWaitingTime = 1000 * 60 * 180;//3 hours
+                int maxWaitingTime = 1000 * 60 * 60;//1 hour
                 process.WaitForExit(maxWaitingTime);
 
                 if (process.TotalProcessorTime.TotalMilliseconds >= maxWaitingTime)
@@ -641,19 +723,6 @@ namespace GingerTestNgPluginConsole
                 }
 
                 return true;
-
-                //int maxWaitingTime = 100 * 10 * 60 * 180;//3 hours
-                //int counter = 0;
-                //while (!process.HasExited)
-                //{
-                //    Thread.Sleep(100);
-                //    counter += 100;
-                //    if (counter >= maxWaitingTime)
-                //    {
-                //        GingerAction.AddError(string.Format("Command processing timeout has reached!"));
-                //        return false;
-                //    }
-                //}
             }
             catch (Exception ex)
             {
@@ -676,10 +745,6 @@ namespace GingerTestNgPluginConsole
 
         protected void Process_Exited(object sender, EventArgs e)
         {
-            if (ParseConsoleOutputs)
-            {
-                ParseCommandOutput();
-            }
         }
 
         private void ParseCommandOutput()
@@ -689,7 +754,14 @@ namespace GingerTestNgPluginConsole
                 //Error
                 if (!string.IsNullOrEmpty(mCommandOutputErrorBuffer.Trim().Trim('\n')))
                 {
-                    GingerAction.AddExInfo(string.Format("Console Errors: \n{0}", mCommandOutputErrorBuffer));
+                    if (FailActionDueToConsoleErrors)
+                    {
+                        GingerAction.AddError(string.Format("Console Errors: \n{0}", mCommandOutputErrorBuffer));
+                    }
+                    else
+                    {
+                        GingerAction.AddExInfo(string.Format("Console Errors: \n{0}", mCommandOutputErrorBuffer));
+                    }
                 }
 
                 //Output values
@@ -718,72 +790,5 @@ namespace GingerTestNgPluginConsole
                 GingerAction.AddExInfo(string.Format("Failed to parse all command console outputs, Error:'{0}'", ex.Message));
             }
         }
-
-        //public void SetXmlParametersValuesToOverwriteFromString(string xmlParams)
-        //{
-        //    if (!string.IsNullOrEmpty(xmlParams.Trim()))
-        //    {
-        //        foreach (string param in xmlParams.Split(','))
-        //        {
-        //            if (param.Contains('='))
-        //            {
-        //                string[] paramArgs = param.Split('=');
-        //                TestNGTestParameter paramObj = new TestNGTestParameter();
-        //                paramObj.Name = paramArgs[0].Trim();
-        //                paramObj.Value = paramArgs[1];
-        //                XmlParametersToOverwrite.Add(paramObj);
-        //            }
-        //        }
-        //    }
-        //}
-
-        //public void SetXmlTestsToExecuteFromString(string xmlTests)
-        //{
-        //    if (!string.IsNullOrEmpty(xmlTests.Trim()))
-        //    {
-        //        foreach (string test in xmlTests.Split(','))
-        //        {
-        //            TestNGTest testObj = new TestNGTest();
-        //            testObj.Name = test;
-        //            XmlTestsToExecute.Add(testObj);
-        //        }
-        //    }
-        //}
-
-        //public void SetTestGroupsFromString(string groups, List<TestNGTestGroup> listToAddto)
-        //{
-        //    if (!string.IsNullOrEmpty(groups.Trim()))
-        //    {
-        //        foreach (string group in groups.Split(','))
-        //        {
-        //            TestNGTestGroup groupObj = new TestNGTestGroup();
-        //            groupObj.Name = group;
-        //            listToAddto.Add(groupObj);
-        //        }
-        //    }
-        //}
-
-    }
-
-    public class CommandValues
-    {
-        public string WorkingFolder;
-        public string ExecuterFilePath;
-        public string Arguments;
-
-        public string FullCommand
-        {
-            get
-            {
-                if (WorkingFolder == null)
-                {
-                    return string.Format("{0} {1}", ExecuterFilePath, Arguments);
-                }
-                else
-                {
-                    return string.Format("{0}>{1} {2}", WorkingFolder, ExecuterFilePath, Arguments);
-                }
-            }
-        }
-    }
+    }   
 }

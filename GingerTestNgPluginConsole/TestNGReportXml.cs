@@ -24,14 +24,7 @@ namespace GingerTestNgPluginConsole
         ///</summary>
         public TestNGReportXML(string xmlFilePath)
         {
-            if (xmlFilePath != null)
-            {
-                ReportXmlFilePath = Path.GetFullPath(xmlFilePath);
-            }
-            else
-            {
-                ReportXmlFilePath = string.Empty;
-            }
+            ReportXmlFilePath = xmlFilePath;
             if (LoadReportXmlFromFile())
             {
                 LoadSuiteReportObjectFromXml();
@@ -42,6 +35,7 @@ namespace GingerTestNgPluginConsole
         {
             try
             {
+                ReportXmlFilePath = Path.GetFullPath(ReportXmlFilePath);
                 if (File.Exists(ReportXmlFilePath) == false)
                 {
                     LoadError = String.Format("Failed to find the TestNG Report XML file at: '{0}'", ReportXmlFilePath);
@@ -185,7 +179,7 @@ namespace GingerTestNgPluginConsole
             return ngParams;
         }
 
-        public void ParseTestNGReport(IGingerAction GA)
+        public void ParseTestNGReport(IGingerAction GA, bool AddFailuresToActionErrors)
         {
             GA.AddOutput("Total Test Methods", TotalTestMethodsNum);
             GA.AddOutput("Total Passed Test Methods", PassedTestMethodsNum);
@@ -211,11 +205,17 @@ namespace GingerTestNgPluginConsole
                                 if (methodReport.ExecutionException != null)
                                 {
                                     GA.AddOutput(string.Format("{0}\\{1}-Error Message", testReport.Name, methodReport.Name), methodReport.ExecutionException.Message, string.Format("{0}\\{1}\\{2}", suiteReport.Name, testReport.Name, classReport.Name));
-                                    GA.AddError(string.Format("The Test method '{0}\\{1}' failed with the error: '{2}'", testReport.Name, methodReport.Name, methodReport.ExecutionException.Message));
+                                    if (AddFailuresToActionErrors)
+                                    {
+                                        GA.AddError(string.Format("The Test method '{0}\\{1}' failed with the error: '{2}'", testReport.Name, methodReport.Name, methodReport.ExecutionException.Message));
+                                    }
                                 }
                                 else
                                 {
-                                    GA.AddError(string.Format("The Test method '{0}\\{1}' failed", testReport.Name, methodReport.Name));
+                                    if (AddFailuresToActionErrors)
+                                    {
+                                        GA.AddError(string.Format("The Test method '{0}\\{1}' failed", testReport.Name, methodReport.Name));
+                                    }
                                 }                                
                             }
                         }
