@@ -11,9 +11,7 @@ using System.Threading;
 namespace GingerTestNgPluginConsole
 {
     public class TestNGExecution
-    {
-        public IGingerAction GingerAction;
-
+    {        
         public enum eExecuterType { Java, Maven }
         public eExecuterType ExecuterType;
 
@@ -32,7 +30,25 @@ namespace GingerTestNgPluginConsole
         public bool ParseTestngResultsXml;
         public bool FailActionDueToTestngResultsFailures;
 
-        string mTempWorkingFolder = null;
+
+        IGingerAction mGingerAction = null;
+        public IGingerAction GingerAction
+        {
+            get
+            {
+                return mGingerAction;
+            }
+            set
+            {
+                mGingerAction = value;
+                if (mGingerAction != null)
+                {
+                    mGingerAction.AddExInfo("\n");
+                }
+            }
+        }
+
+       string mTempWorkingFolder = null;
         public string TempWorkingFolder
         {
             get
@@ -323,24 +339,24 @@ namespace GingerTestNgPluginConsole
             {
                 if (Path.GetFileName(JavaExeFullPath).ToLower() != "java.exe" || File.Exists(JavaExeFullPath) == false)
                 {
-                    GingerAction.AddError(String.Format("Failed to find 'java.exe' at: '{0}'", JavaExeFullPath));
+                    GingerAction.AddError(String.Format("Failed to find java.exe file at: '{0}'", JavaExeFullPath));
                     return false;
                 }
                 else
                 {
-                    GingerAction.AddExInfo(String.Format("Path of 'java.exe' file: '{0}'", JavaExeFullPath));
+                    GingerAction.AddExInfo(String.Format("Path of java.exe file: '{0}'", JavaExeFullPath));
                 }
             }
             else//Maven Executer
             {
                 if (Path.GetFileName(MavenCmdFullPath).ToLower() != "mvn.cmd" || File.Exists(MavenCmdFullPath) == false)
                 {
-                    GingerAction.AddError(String.Format("Failed to find 'mvn.cmd' at: '{0}'", MavenCmdFullPath));
+                    GingerAction.AddError(String.Format("Failed to find mvn.cmd file at: '{0}'", MavenCmdFullPath));
                     return false;
                 }
                 else
                 {
-                    GingerAction.AddExInfo(String.Format("Path of 'mvn.cmd' file: '{0}'", MavenCmdFullPath));
+                    GingerAction.AddExInfo(String.Format("Path of mvn.cmd file: '{0}'", MavenCmdFullPath));
                 }
             }
 

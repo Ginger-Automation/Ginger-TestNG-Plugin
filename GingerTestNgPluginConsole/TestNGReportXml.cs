@@ -191,9 +191,9 @@ namespace GingerTestNgPluginConsole
 
                 foreach (TestNGTestSuite suiteReport in ReportSuites)
                 {
-                    gingerAction.AddOutput(string.Format("'{0}' Suite-Start Time", suiteReport.Name), suiteReport.ExecutionStartTime);
-                    gingerAction.AddOutput(string.Format("'{0}' Suite-Finish Time", suiteReport.Name), suiteReport.ExecutionEndTime);
-                    gingerAction.AddOutput(string.Format("'{0}' Suite-Duration (MS)", suiteReport.Name), suiteReport.ExecutionDurationMS);
+                    gingerAction.AddOutput(string.Format("{0}- Suite Start Time", suiteReport.Name), suiteReport.ExecutionStartTime, suiteReport.Name);
+                    gingerAction.AddOutput(string.Format("{0}- Suite Finish Time", suiteReport.Name), suiteReport.ExecutionEndTime, suiteReport.Name);
+                    gingerAction.AddOutput(string.Format("{0}- Suite Duration (MS)", suiteReport.Name), suiteReport.ExecutionDurationMS, suiteReport.Name);
 
                     foreach (TestNGTest testReport in suiteReport.Tests)
                     {
@@ -201,7 +201,7 @@ namespace GingerTestNgPluginConsole
                         {
                             foreach (TestNGTestMethod methodReport in classReport.Methods)
                             {
-                                gingerAction.AddOutput(string.Format("{0}\\{1}-Status", testReport.Name, methodReport.Name), methodReport.ExecutionStatus, string.Format("{0}\\{1}\\{2}", suiteReport.Name, testReport.Name, classReport.Name));
+                                gingerAction.AddOutput(string.Format("{0}\\{1}-Test Status", testReport.Name, methodReport.Name), methodReport.ExecutionStatus, string.Format("{0}\\{1}\\{2}", suiteReport.Name, testReport.Name, classReport.Name));
                                 if (methodReport.ExecutionStatus != eTestExecutionStatus.PASS)
                                 {
                                     if (methodReport.ExecutionException != null)
@@ -230,120 +230,5 @@ namespace GingerTestNgPluginConsole
                 gingerAction.AddError(string.Format("Failed to parse the TestNG output report at path: '{0}' due to the Error '{1}'", ReportXmlFilePath, ex.Message));
             }
         }
-
-        //string mSuiteName;
-        //public string SuiteName
-        //{
-        //    get
-        //    {
-        //        if (mSuiteName == null && SuiteReportXml != null)
-        //        {
-        //            mSuiteName = SuiteReportXml.DocumentElement.GetAttribute("name").ToString();                    
-        //        }
-        //        return mSuiteName;
-        //    }
-        //}
-
-        //Int32 mSuiteExecutionDurationMS=-1;
-        //public Int32 SuiteExecutionDurationMS
-        //{
-        //    get
-        //    {
-        //        if (mSuiteExecutionDurationMS == -1 && SuiteReportXml != null)
-        //        {
-        //            Int32.TryParse(SuiteReportXml.DocumentElement.GetAttribute("duration-ms").ToString(), out mSuiteExecutionDurationMS);
-        //        }
-        //        return mSuiteExecutionDurationMS;
-        //    }
-        //}
-
-        //DateTime mSuiteExecutionStartTime;
-        //public DateTime SuiteExecutionStartTime
-        //{
-        //    get
-        //    {
-        //        if (mSuiteExecutionStartTime == null && SuiteReportXml != null)
-        //        {
-        //            DateTime.TryParse(SuiteReportXml.DocumentElement.GetAttribute("started-at").ToString(), out mSuiteExecutionStartTime);
-        //        }
-        //        return mSuiteExecutionStartTime;
-        //    }
-        //}
-
-        //DateTime mSuiteExecutionEndTime;
-        //public DateTime SuiteExecutionEndTime
-        //{
-        //    get
-        //    {
-        //        if (mSuiteExecutionEndTime == null && SuiteReportXml != null)
-        //        {
-        //            DateTime.TryParse(SuiteReportXml.DocumentElement.GetAttribute("finished-at").ToString(), out mSuiteExecutionStartTime);
-        //        }
-        //        return mSuiteExecutionEndTime;
-        //    }
-        //}
-
-
-        //List<TestNGTest> mTests;
-        //public List<TestNGTest> Tests
-        //{
-        //    get
-        //    {
-        //        if (mTests == null && SuiteReportXml != null)
-        //        {
-        //            foreach (XmlElement xmlTest in SuiteReportXml.GetElementsByTagName("test"))
-        //            {
-        //                TestNGTest ngTest = new TestNGTest();
-        //                ngTest.Name = xmlTest.GetAttribute("name").ToString();
-        //                Int32.TryParse(xmlTest.GetAttribute("duration-ms").ToString(), out ngTest.ExecutionDurationMS);
-        //                DateTime.TryParse(xmlTest.GetAttribute("started-at").ToString(), out ngTest.ExecutionStartTime);
-        //                DateTime.TryParse(xmlTest.GetAttribute("finished-at").ToString(), out ngTest.ExecutionEndTime);
-
-        //                ngTest.Parameters = GetTestParametersFromXmlElement(xmlTest);
-        //                ngTest.Classes = GetTestClassesFromXmlElement(xmlTest);
-
-        //                mTests.Add(ngTest);
-        //            }
-        //        }
-        //        return mTests;
-        //    }
-        //}
-
-        //List<TestNGTestParameter> mParameters;
-        //public List<TestNGTestParameter> Parameters
-        //{
-        //    get
-        //    {
-        //        if (mParameters == null && SuiteReportXml != null)
-        //        {
-        //            mParameters = GetTestParametersFromXmlElement(SuiteReportXml.DocumentElement);
-        //        }
-        //        return mParameters;
-        //    }
-        //}
-
-        //List<string> mListeners;
-        //public List<string> Listeners
-        //{
-        //    get
-        //    {
-        //        if (mListeners == null && SuiteReportXml != null)
-        //        {
-        //            mListeners = GetSuiteListners(SuiteReportXml.DocumentElement);
-        //        }
-        //        return mListeners;
-        //    }
-        //}
-
-        //private List<string> GetSuiteListners(XmlElement xmlSuite)
-        //{
-        //    List<string> ngListners = new List<string>();
-        //    foreach (XmlElement parameter in xmlSuite.GetElementsByTagName("listener"))
-        //    {
-        //        ngListners.Add(parameter.Attributes.GetNamedItem("class-name").Value);
-        //    }
-
-        //    return ngListners;
-        //}      
     }
 }

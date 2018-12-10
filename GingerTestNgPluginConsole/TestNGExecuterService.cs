@@ -24,7 +24,7 @@ namespace GingerTestNgPluginConsole
         /// <param name="ParseTestngResultsXml"></param>
         /// <param name="OverrideTestngResultsXmlDefaultFolderPath"></param>
         /// <param name="FailActionDueToTestngResultsFailures"></param>
-        [GingerAction("ExecuteTestNGXML", "Execute TestNG tests by TestNG XML")]
+        [GingerAction("ExecuteTestNGXML", "Execute TestNG Tests by TestNG XML")]
         public void ExecuteTestNGXML(IGingerAction GA, string OverrideJavaHomePath, string JavaProjectBinPath, string JavaProjectResourcesPath,
                                  string TestngXmlPath, List<TestNGTestParameter> TestngXmlParametersToOverride,
                                  bool ParseConsoleOutputs, bool FailActionDueToConsoleErrors, 
@@ -67,7 +67,7 @@ namespace GingerTestNgPluginConsole
         /// <param name="ParseTestngResultsXml"></param>
         /// <param name="OverrideTestngResultsXmlDefaultFolderPath"></param>
         /// <param name="FailActionDueToTestngResultsFailures"></param>
-        [GingerAction("ExecuteMavenProjectTestNGXML", "Execute Maven project TestNG tests by TestNG XML")]
+        [GingerAction("ExecuteMavenProjectTestNGXML", "Execute Maven Project TestNG Tests by TestNG XML")]
         public void ExecuteMavenProjectTestNGXML(IGingerAction GA, string OverrideMavenHomePath, string MavenProjectFolderPath, bool PerformMavenInstall,
                         string TestngXmlPath, List<TestNGTestParameter> TestngXmlParametersToOverride,
                         bool ParseConsoleOutputs, bool FailActionDueToConsoleErrors,
@@ -112,7 +112,7 @@ namespace GingerTestNgPluginConsole
         /// <param name="ParseTestngResultsXml"></param>
         /// <param name="OverrideTestngResultsXmlDefaultFolderPath"></param>
         /// <param name="FailActionDueToTestngResultsFailures"></param>
-        [GingerAction("ExecuteMavenFreeCommand", "Execute Maven fully customized command")]
+        [GingerAction("ExecuteMavenFreeCommand", "Execute Maven Free Command")]
         public void ExecuteMavenFreeCommand(IGingerAction GA, string OverrideMavenHomePath, string MavenProjectFolderPath,
                        string FreeCommandArguments, List<CommandParameter> CommandParametersToOverride,
                        bool ParseConsoleOutputs, bool FailActionDueToConsoleErrors,
