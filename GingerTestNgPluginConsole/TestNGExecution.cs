@@ -95,13 +95,14 @@ namespace GingerTestNgPluginConsole
             }
             set
             {
-                if (!string.IsNullOrEmpty(value))
+                mJavaProjectResourcesPath = value;
+                if (!string.IsNullOrEmpty(mJavaProjectResourcesPath))
                 {
-                    mJavaProjectResourcesPath = Path.GetFullPath(value);
+                    mJavaProjectResourcesPath = Path.GetFullPath(mJavaProjectResourcesPath);
 
-                    if (JavaProjectResourcesPath.Contains('*') == false)
+                    if (mJavaProjectResourcesPath.Contains('*') == false)
                     {
-                        JavaProjectResourcesPath = Path.Combine(JavaProjectResourcesPath, "*");
+                        mJavaProjectResourcesPath = Path.Combine(mJavaProjectResourcesPath, "*");
                     }
                 }
             }
@@ -116,14 +117,14 @@ namespace GingerTestNgPluginConsole
             }
             set
             {
-                if (!string.IsNullOrEmpty(value))
+                mJavaProjectBinFolderPath = value;
+                if (!string.IsNullOrEmpty(mJavaProjectBinFolderPath))
                 {
-                    mJavaProjectBinFolderPath = Path.GetFullPath(value);
-
-                    JavaProjectBinPath = JavaProjectBinPath.TrimEnd(new char[] { '\\', '/' });
-                    if (Path.GetFileName(JavaProjectBinPath).ToLower() != "bin")
+                    mJavaProjectBinFolderPath = Path.GetFullPath(mJavaProjectBinFolderPath);
+                    mJavaProjectBinFolderPath = mJavaProjectBinFolderPath.TrimEnd(new char[] { '\\', '/' });
+                    if (Path.GetFileName(mJavaProjectBinFolderPath).ToLower() != "bin")
                     {
-                        JavaProjectBinPath = Path.Combine(JavaProjectBinPath, "\bin");
+                        mJavaProjectBinFolderPath = Path.Combine(mJavaProjectBinFolderPath, "\bin");
                     }
                 }
             }
@@ -397,7 +398,7 @@ namespace GingerTestNgPluginConsole
 
                     if (TestngXmlParametersToOverride != null && TestngXmlParametersToOverride.Count > 0)
                     {
-                        string paramsListStr = "Parameters to overwrite: ";
+                        string paramsListStr = "Parameters to override: ";
                         foreach (TestNGTestParameter param in TestngXmlParametersToOverride)
                         {
                             param.Name = param.Name.Trim();
@@ -463,12 +464,32 @@ namespace GingerTestNgPluginConsole
                 case eExecutionMode.FreeCommand:
                     if (string.IsNullOrEmpty(FreeCommandArguments.Trim()))
                     {
-                        GingerAction.AddError(String.Format("Provided Free Command Arguments is not valid: '{0}'", FreeCommandArguments));
+                        GingerAction.AddError(String.Format("Provided Free Command Arguments are not valid: '{0}'", FreeCommandArguments));
                         return false;
                     }
                     else
                     {
                         GingerAction.AddExInfo(String.Format("Free Command Arguments: '{0}'", FreeCommandArguments));
+                    }
+
+                    if (CommandParametersToOverride != null && CommandParametersToOverride.Count > 0)
+                    {
+                        string paramsListStr = "Command Parameters to override: ";
+                        foreach (CommandParameter param in CommandParametersToOverride)
+                        {
+                            param.Name = param.Name.Trim();                            
+                            if (!FreeCommandArguments.Contains(param.Name))
+                            {
+                                GingerAction.AddError(string.Format("The Command Parameter '{0}' do not exist in the Command Arguments", param.Name));
+                                return false;
+                            }
+                            else
+                            {
+                                paramsListStr += string.Format("'{0}'='{1}', ", param.Name, param.Value);
+                            }
+                        }
+                        paramsListStr.TrimEnd(',');
+                        GingerAction.AddExInfo(paramsListStr);
                     }
                     break;
             }
@@ -556,7 +577,7 @@ namespace GingerTestNgPluginConsole
                         }
                         else
                         {
-                            GingerAction.AddError(string.Format("Failed to parse the TestNG output report at path: '{0}'", testNgReportPath));
+                            GingerAction.AddError(string.Format("Failed to parse the TestNG output report at path: '{0}', due to the Error '{1}'", testNgReportPath, ngReport.LoadError));
                         }
                     }
                 }
@@ -587,7 +608,7 @@ namespace GingerTestNgPluginConsole
                 //create temp XML
                 if (customizedSuiteXML != null)
                 {
-                    string customeXMLFilePath = Path.Combine(TempWorkingFolder, "testng.xml");
+                    string customeXMLFilePath = Path.Combine(TempWorkingFolder, "CustomeTestng.xml");
                     customizedSuiteXML.SuiteXml.Save(customeXMLFilePath);
                     TestngXmlPath = customeXMLFilePath;
                     TestNgSuiteXMLObj = new TestNGSuiteXML(TestngXmlPath);
@@ -651,13 +672,14 @@ namespace GingerTestNgPluginConsole
             CommandElements command = new CommandElements();
 
             command.WorkingFolder = MavenProjectFolderPath;
-            command.ExecuterFilePath = MavenCmdFullPath;
+            command.ExecuterFilePath = string.Format("\"{0}\"", MavenCmdFullPath); 
 
-            string commandArgsToExecute= string.Format(" {0}", FreeCommandArguments);            
-            //Maven parameters ovveride
+            string commandArgsToExecute= string.Format(" {0}", FreeCommandArguments);
+
+            //command parameters ovveride
             if (CommandParametersToOverride != null && CommandParametersToOverride.Count > 0)
             {
-                commandArgsToExecute = string.Format(" {0}", OverrideCommandParameters(FreeCommandArguments));                
+                commandArgsToExecute = string.Format(" {0}", OverrideCommandParameters());
             }
 
             command.Arguments = commandArgsToExecute;
@@ -665,23 +687,36 @@ namespace GingerTestNgPluginConsole
             return command;
         }
 
-        private string OverrideCommandParameters(string commandArgs)
+        private string OverrideCommandParameters()
         {
             foreach (CommandParameter cmdParam in CommandParametersToOverride)
             {
                 string fullParamName = cmdParam.Name.Trim();
                 if (!string.IsNullOrEmpty(fullParamName))
-                {                    
-                    if (!fullParamName.Contains("-D"))
+                {
+                    if (fullParamName.IndexOf("-D") != 0)
                     {
                         fullParamName = string.Format("-D{0}", fullParamName);
                     }
-                    
-                    //TODO: implement replace param value
+                }
+
+                try
+                {
+                    Match match = Regex.Match(FreeCommandArguments, string.Format("/{0}=\"([]+)\"/", fullParamName));
+                    if (match.Success)
+                    {
+                        // Finally, we get the Group value and display it.
+                        string key = match.Groups[1].Value;
+                        Console.WriteLine(key);
+                    }
+                }
+                catch (Exception ex)
+                {
+
                 }
             }
 
-            return commandArgs;
+            return FreeCommandArguments;
         }
 
         private bool ExecuteCommand(CommandElements commandVals)

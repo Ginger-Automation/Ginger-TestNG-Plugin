@@ -179,48 +179,55 @@ namespace GingerTestNgPluginConsole
             return ngParams;
         }
 
-        public void ParseTestNGReport(IGingerAction GA, bool AddFailuresToActionErrors)
+        public void ParseTestNGReport(IGingerAction gingerAction, bool AddFailuresToActionErrors)
         {
-            GA.AddOutput("Total Test Methods", TotalTestMethodsNum);
-            GA.AddOutput("Total Passed Test Methods", PassedTestMethodsNum);
-            GA.AddOutput("Total Failed Test Methods", FailedTestMethodsNum);
-            GA.AddOutput("Total Skipped Test Methods", SkippedTestMethodsNum);
-            GA.AddOutput("Total Ignored Test Methods", IgnoredTestMethodsNum);
-
-            foreach(TestNGTestSuite suiteReport in ReportSuites)
+            try
             {
-                GA.AddOutput(string.Format("'{0}' Suite-Start Time", suiteReport.Name),suiteReport.ExecutionStartTime);
-                GA.AddOutput(string.Format("'{0}' Suite-Finish Time", suiteReport.Name), suiteReport.ExecutionEndTime);
-                GA.AddOutput(string.Format("'{0}' Suite-Duration (MS)", suiteReport.Name), suiteReport.ExecutionDurationMS);
+                gingerAction.AddOutput("Total Test Methods", TotalTestMethodsNum);
+                gingerAction.AddOutput("Total Passed Test Methods", PassedTestMethodsNum);
+                gingerAction.AddOutput("Total Failed Test Methods", FailedTestMethodsNum);
+                gingerAction.AddOutput("Total Skipped Test Methods", SkippedTestMethodsNum);
+                gingerAction.AddOutput("Total Ignored Test Methods", IgnoredTestMethodsNum);
 
-                foreach (TestNGTest testReport in suiteReport.Tests)
+                foreach (TestNGTestSuite suiteReport in ReportSuites)
                 {
-                    foreach (TestNGTestClass classReport in testReport.Classes)
+                    gingerAction.AddOutput(string.Format("'{0}' Suite-Start Time", suiteReport.Name), suiteReport.ExecutionStartTime);
+                    gingerAction.AddOutput(string.Format("'{0}' Suite-Finish Time", suiteReport.Name), suiteReport.ExecutionEndTime);
+                    gingerAction.AddOutput(string.Format("'{0}' Suite-Duration (MS)", suiteReport.Name), suiteReport.ExecutionDurationMS);
+
+                    foreach (TestNGTest testReport in suiteReport.Tests)
                     {
-                        foreach (TestNGTestMethod methodReport in classReport.Methods)
+                        foreach (TestNGTestClass classReport in testReport.Classes)
                         {
-                           GA.AddOutput(string.Format("{0}\\{1}-Status", testReport.Name, methodReport.Name), methodReport.ExecutionStatus, string.Format("{0}\\{1}\\{2}", suiteReport.Name, testReport.Name, classReport.Name));
-                           if (methodReport.ExecutionStatus == eTestExecutionStatus.FAIL)
+                            foreach (TestNGTestMethod methodReport in classReport.Methods)
                             {
-                                if (methodReport.ExecutionException != null)
+                                gingerAction.AddOutput(string.Format("{0}\\{1}-Status", testReport.Name, methodReport.Name), methodReport.ExecutionStatus, string.Format("{0}\\{1}\\{2}", suiteReport.Name, testReport.Name, classReport.Name));
+                                if (methodReport.ExecutionStatus != eTestExecutionStatus.PASS)
                                 {
-                                    GA.AddOutput(string.Format("{0}\\{1}-Error Message", testReport.Name, methodReport.Name), methodReport.ExecutionException.Message, string.Format("{0}\\{1}\\{2}", suiteReport.Name, testReport.Name, classReport.Name));
-                                    if (AddFailuresToActionErrors)
+                                    if (methodReport.ExecutionException != null)
                                     {
-                                        GA.AddError(string.Format("The Test method '{0}\\{1}' failed with the error: '{2}'", testReport.Name, methodReport.Name, methodReport.ExecutionException.Message));
+                                        gingerAction.AddOutput(string.Format("{0}\\{1}-Error Message", testReport.Name, methodReport.Name), methodReport.ExecutionException.Message, string.Format("{0}\\{1}\\{2}", suiteReport.Name, testReport.Name, classReport.Name));
+                                        if (AddFailuresToActionErrors && methodReport.ExecutionStatus == eTestExecutionStatus.FAIL)
+                                        {
+                                            gingerAction.AddError(string.Format("The Test method '{0}\\{1}' failed with the error: '{2}'", testReport.Name, methodReport.Name, methodReport.ExecutionException.Message));
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (AddFailuresToActionErrors && methodReport.ExecutionStatus == eTestExecutionStatus.FAIL)
+                                        {
+                                            gingerAction.AddError(string.Format("The Test method '{0}\\{1}' failed", testReport.Name, methodReport.Name));
+                                        }
                                     }
                                 }
-                                else
-                                {
-                                    if (AddFailuresToActionErrors)
-                                    {
-                                        GA.AddError(string.Format("The Test method '{0}\\{1}' failed", testReport.Name, methodReport.Name));
-                                    }
-                                }                                
                             }
                         }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                gingerAction.AddError(string.Format("Failed to parse the TestNG output report at path: '{0}' due to the Error '{1}'", ReportXmlFilePath, ex.Message));
             }
         }
 

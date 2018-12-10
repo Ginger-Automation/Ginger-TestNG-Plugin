@@ -16,7 +16,7 @@ namespace GingerTestNgPluginConsole
             {
                 if (WorkingFolder == null)
                 {
-                    return string.Format("{0} {1}", ExecuterFilePath, Arguments);
+                    return string.Format("{0}{1}", ExecuterFilePath, Arguments);
                 }
                 else
                 {

@@ -98,15 +98,20 @@ namespace GingerTestNgPluginConsole
             testNgExecuter.Execute();
         }
 
+
         /// <summary>
-        /// Execute Maven free command
+        /// Execute Maven fully customized command
         /// </summary>
         /// <param name="GA"></param>
-        /// <param name="MavenCmdFullPath"></param>
+        /// <param name="OverrideMavenHomePath"></param>
         /// <param name="MavenProjectFolderPath"></param>
-        /// <param name="MavenCommandArguments"></param>
-        /// <param name="MavenCommandParameters"></param>
+        /// <param name="FreeCommandArguments"></param>
+        /// <param name="CommandParametersToOverride"></param>
         /// <param name="ParseConsoleOutputs"></param>
+        /// <param name="FailActionDueToConsoleErrors"></param>
+        /// <param name="ParseTestngResultsXml"></param>
+        /// <param name="OverrideTestngResultsXmlDefaultFolderPath"></param>
+        /// <param name="FailActionDueToTestngResultsFailures"></param>
         [GingerAction("ExecuteMavenFreeCommand", "Execute Maven fully customized command")]
         public void ExecuteMavenFreeCommand(IGingerAction GA, string OverrideMavenHomePath, string MavenProjectFolderPath,
                        string FreeCommandArguments, List<CommandParameter> CommandParametersToOverride,
@@ -134,55 +139,5 @@ namespace GingerTestNgPluginConsole
 
             testNgExecuter.Execute();
         }
-
-        //    /// <summary>
-        //    /// Execute TestNG Suite based on TestNG XML
-        //    /// </summary>
-        //    /// <param name="GA"></param>
-        //    /// <param name="JavaExeFullPath"></param>
-        //    /// <param name="TestNGProjectPath"></param>
-        //    /// <param name="TestNGResourcesPath"></param>
-        //    /// <param name="TestNGXMLPath"></param>
-        //    /// <param name="XmlParametersValuesToOverwrite"></param>
-        //    /// <param name="XmlTestsToExecute"></param>
-        //    /// <param name="TestGroupsToInclude"></param>
-        //    /// <param name="TestGroupsToExclude"></param>
-        //    /// <param name="ContinueExecutionOnTestFailure"></param>
-        //    /// <param name="TestNGOutputReportFolderPath"></param>
-        //    [GingerAction("ExecuteTestNGXMLStringInputs", "Execute TestNG Suite by TestNG XML using String Inputes")]                
-        //    public void ExecuteTestNGXMLStringInputs(IGingerAction GA, string JavaExeFullPath, string TestNGProjectPath, 
-        //                        string TestNGResourcesPath, string TestNGXMLPath, string XmlParametersValuesToOverwrite, 
-        //                        string XmlTestsToExecute, string TestGroupsToInclude, string TestGroupsToExclude, 
-        //                        string ContinueExecutionOnTestFailure, string TestNGOutputReportFolderPath)
-        //    {
-        //        //Set execution configurations
-        //        TestNGExecution testNgExecuter = new TestNGExecution();
-        //        testNgExecuter.JavaExeFullPath = JavaExeFullPath;
-        //        testNgExecuter.TestNGProjectBinFolderPath = TestNGProjectPath;
-        //        testNgExecuter.TestNGResourcesPath = TestNGResourcesPath;
-        //        testNgExecuter.TestNGOutputReportFolderPath = TestNGOutputReportFolderPath;
-        //        bool.TryParse(ContinueExecutionOnTestFailure, out testNgExecuter.ContinueExecutionOnTestFailure);
-
-        //        testNgExecuter.TestNgSuiteXML = new TestNGSuiteXML(Path.GetFullPath(TestNGXMLPath));
-        //        testNgExecuter.SetXmlParametersValuesToOverwriteFromString(XmlParametersValuesToOverwrite);
-        //        testNgExecuter.SetXmlTestsToExecuteFromString(XmlTestsToExecute);
-
-        //        testNgExecuter.SetTestGroupsFromString(TestGroupsToInclude, testNgExecuter.TestGroupsToInclude);
-        //        testNgExecuter.SetTestGroupsFromString(TestGroupsToExclude, testNgExecuter.TestGroupsToExclude);                         
-        //    }
-
-
-
-
-        //[GingerAction("Play", "111")]
-        //public void PlayAAA(IGingerAction GA, string JavaExeFullPath, List<TestNGTestParameter> XmlParametersValuesToOverwrite)
-        //{
-        //    GA.AddOutput("aa", "11");
-        //    GA.AddExInfo("Extra 222");
-        //    if (JavaExeFullPath == "fail")
-        //    {
-        //        GA.AddError("some error details 333");
-        //    }
-        //}
     }
 }
