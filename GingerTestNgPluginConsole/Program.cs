@@ -1,5 +1,4 @@
 ﻿using Amdocs.Ginger.Plugin.Core;
-using StandAloneActions;
 using System;
 
 namespace GingerTestNgPluginConsole
