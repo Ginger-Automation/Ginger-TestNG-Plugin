@@ -28,7 +28,7 @@ namespace GingerTestNgPluginConsole
         public bool FailActionDueToConsoleErrors;
 
         public bool ParseTestngResultsXml;
-        public bool FailActionDueToTestngResultsFailures;
+        public bool FailActionDueToTestngResultsXmlFailures;
 
 
         IGingerAction mGingerAction = null;
@@ -272,6 +272,8 @@ namespace GingerTestNgPluginConsole
                 }
             }
         }
+
+        public bool OverwriteOriginalTestngXML;
 
         string mTestngXmlPath = null;
         public string TestngXmlPath
@@ -592,7 +594,7 @@ namespace GingerTestNgPluginConsole
                         TestNGReportXML ngReport = new TestNGReportXML(testNgReportPath);
                         if (string.IsNullOrEmpty(ngReport.LoadError) == true)
                         {
-                            ngReport.ParseTestNGReport(GingerAction, FailActionDueToTestngResultsFailures);
+                            ngReport.ParseTestNGReport(GingerAction, FailActionDueToTestngResultsXmlFailures);
                         }
                         else
                         {
@@ -627,11 +629,20 @@ namespace GingerTestNgPluginConsole
                 //create temp XML
                 if (customizedSuiteXML != null)
                 {
-                    string customeXMLFilePath = Path.Combine(TempWorkingFolder, "CustomeTestng.xml");
-                    customizedSuiteXML.SuiteXml.Save(customeXMLFilePath);
-                    TestngXmlPath = customeXMLFilePath;
-                    TestNgSuiteXMLObj = new TestNGSuiteXML(TestngXmlPath);
-                    GingerAction.AddExInfo(String.Format("Customized TestNG XML path: '{0}'", TestNgSuiteXMLObj.XmlFilePath));
+                    if (OverwriteOriginalTestngXML)
+                    {
+                        customizedSuiteXML.SuiteXml.Save(TestngXmlPath);//overwrite original TestNG xml                        
+                        TestNgSuiteXMLObj = new TestNGSuiteXML(TestngXmlPath);
+                        GingerAction.AddExInfo(String.Format("The Parameters of '{0}' TestNG XML were overwritten", TestngXmlPath));
+                    }
+                    else
+                    { 
+                        string customeXMLFilePath = Path.Combine(TempWorkingFolder, "CustomTestng.xml");
+                        customizedSuiteXML.SuiteXml.Save(customeXMLFilePath);
+                        TestngXmlPath = customeXMLFilePath;
+                        TestNgSuiteXMLObj = new TestNGSuiteXML(TestngXmlPath);
+                        GingerAction.AddExInfo(String.Format("Customized TestNG XML path: '{0}'", TestNgSuiteXMLObj.XmlFilePath));
+                    }
                 }
                 return true;
             }

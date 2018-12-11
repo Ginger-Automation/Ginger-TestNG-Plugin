@@ -14,7 +14,7 @@ namespace GingerTestNgPluginConsole
         /// Execute TestNG tests by TestNG XML
         /// </summary>
         /// <param name="GA"></param>
-        /// <param name="OverrideJavaHomePath"></param>
+        /// <param name="OverwriteJavaHomePath"></param>
         /// <param name="JavaProjectBinPath"></param>
         /// <param name="JavaProjectResourcesPath"></param>
         /// <param name="TestngXmlPath"></param>
@@ -22,13 +22,13 @@ namespace GingerTestNgPluginConsole
         /// <param name="ParseConsoleOutputs"></param>
         /// <param name="FailActionDueToConsoleErrors"></param>
         /// <param name="ParseTestngResultsXml"></param>
-        /// <param name="OverrideTestngResultsXmlDefaultFolderPath"></param>
+        /// <param name="OverwriteTestngResultsXmlDefaultFolderPath"></param>
         /// <param name="FailActionDueToTestngResultsFailures"></param>
         [GingerAction("ExecuteTestNGXML", "Execute TestNG Tests by TestNG XML")]
-        public void ExecuteTestNGXML(IGingerAction GA, string OverrideJavaHomePath, string JavaProjectBinPath, string JavaProjectResourcesPath,
-                                 string TestngXmlPath, List<TestNGTestParameter> TestngXmlParametersToOverride,
+        public void ExecuteTestNGXML(IGingerAction GA, string OverwriteJavaHomePath, string JavaProjectBinPath, string JavaProjectResourcesPath,
+                                 string TestngXmlPath, List<TestNGTestParameter> TestngXmlParametersToOverride, bool OverwriteOriginalTestngXML,
                                  bool ParseConsoleOutputs, bool FailActionDueToConsoleErrors, 
-                                 bool ParseTestngResultsXml, string OverrideTestngResultsXmlDefaultFolderPath, bool FailActionDueToTestngResultsFailures)
+                                 bool ParseTestngResultsXml, string OverwriteTestngResultsXmlDefaultFolderPath, bool FailActionDueToTestngResultsXmlFailures)
         {
             //Set execution configurations
             TestNGExecution testNgExecuter = new TestNGExecution();
@@ -37,18 +37,19 @@ namespace GingerTestNgPluginConsole
             testNgExecuter.ExecutionMode = TestNGExecution.eExecutionMode.XML;
             testNgExecuter.GingerAction = GA;
 
-            testNgExecuter.JavaExeFullPath = OverrideJavaHomePath;
+            testNgExecuter.JavaExeFullPath = OverwriteJavaHomePath;
             testNgExecuter.JavaProjectBinPath = JavaProjectBinPath;
             testNgExecuter.JavaProjectResourcesPath = JavaProjectResourcesPath;
 
             testNgExecuter.TestngXmlPath = TestngXmlPath;
             testNgExecuter.TestngXmlParametersToOverride = TestngXmlParametersToOverride;
+            testNgExecuter.OverwriteOriginalTestngXML = OverwriteOriginalTestngXML;
 
             testNgExecuter.ParseConsoleOutputs = ParseConsoleOutputs;
             testNgExecuter.FailActionDueToConsoleErrors = FailActionDueToConsoleErrors;
             testNgExecuter.ParseTestngResultsXml = ParseTestngResultsXml;
-            testNgExecuter.TestngResultsXmlFolderPath = OverrideTestngResultsXmlDefaultFolderPath;
-            testNgExecuter.FailActionDueToTestngResultsFailures = FailActionDueToTestngResultsFailures;
+            testNgExecuter.TestngResultsXmlFolderPath = OverwriteTestngResultsXmlDefaultFolderPath;
+            testNgExecuter.FailActionDueToTestngResultsXmlFailures = FailActionDueToTestngResultsXmlFailures;
 
             testNgExecuter.Execute();
         }
@@ -57,7 +58,7 @@ namespace GingerTestNgPluginConsole
         /// Execute Maven project TestNG tests by TestNG XML
         /// </summary>
         /// <param name="GA"></param>
-        /// <param name="OverrideMavenHomePath"></param>
+        /// <param name="OverwriteMavenHomePath"></param>
         /// <param name="MavenProjectFolderPath"></param>
         /// <param name="PerformMavenInstall"></param>
         /// <param name="TestngXmlPath"></param>
@@ -65,13 +66,13 @@ namespace GingerTestNgPluginConsole
         /// <param name="ParseConsoleOutputs"></param>
         /// <param name="FailActionDueToConsoleErrors"></param>
         /// <param name="ParseTestngResultsXml"></param>
-        /// <param name="OverrideTestngResultsXmlDefaultFolderPath"></param>
+        /// <param name="OverwriteTestngResultsXmlDefaultFolderPath"></param>
         /// <param name="FailActionDueToTestngResultsFailures"></param>
         [GingerAction("ExecuteMavenProjectTestNGXML", "Execute Maven Project TestNG Tests by TestNG XML")]
-        public void ExecuteMavenProjectTestNGXML(IGingerAction GA, string OverrideMavenHomePath, string MavenProjectFolderPath, bool PerformMavenInstall,
-                        string TestngXmlPath, List<TestNGTestParameter> TestngXmlParametersToOverride,
+        public void ExecuteMavenProjectTestNGXML(IGingerAction GA, string OverwriteMavenHomePath, string MavenProjectFolderPath, bool PerformMavenInstall,
+                        string TestngXmlPath, List<TestNGTestParameter> TestngXmlParametersToOverride, bool OverwriteOriginalTestngXML,
                         bool ParseConsoleOutputs, bool FailActionDueToConsoleErrors,
-                        bool ParseTestngResultsXml, string OverrideTestngResultsXmlDefaultFolderPath, bool FailActionDueToTestngResultsFailures)
+                        bool ParseTestngResultsXml, string OverwriteTestngResultsXmlDefaultFolderPath, bool FailActionDueToTestngResultsXmlFailures)
         {
             //Set execution configurations
             TestNGExecution testNgExecuter = new TestNGExecution();
@@ -80,20 +81,19 @@ namespace GingerTestNgPluginConsole
             testNgExecuter.ExecutionMode = TestNGExecution.eExecutionMode.XML;
             testNgExecuter.GingerAction = GA;
 
-            testNgExecuter.MavenCmdFullPath = OverrideMavenHomePath;
+            testNgExecuter.MavenCmdFullPath = OverwriteMavenHomePath;
             testNgExecuter.MavenProjectFolderPath = MavenProjectFolderPath;                        
-            testNgExecuter.PerformMavenInstall = PerformMavenInstall;
-
-            testNgExecuter.ParseConsoleOutputs = ParseConsoleOutputs;
+            testNgExecuter.PerformMavenInstall = PerformMavenInstall;            
 
             testNgExecuter.TestngXmlPath = TestngXmlPath;            
             testNgExecuter.TestngXmlParametersToOverride = TestngXmlParametersToOverride;
+            testNgExecuter.OverwriteOriginalTestngXML = OverwriteOriginalTestngXML;
 
             testNgExecuter.ParseConsoleOutputs = ParseConsoleOutputs;
             testNgExecuter.FailActionDueToConsoleErrors = FailActionDueToConsoleErrors;
             testNgExecuter.ParseTestngResultsXml = ParseTestngResultsXml;
-            testNgExecuter.TestngResultsXmlFolderPath = OverrideTestngResultsXmlDefaultFolderPath;
-            testNgExecuter.FailActionDueToTestngResultsFailures = FailActionDueToTestngResultsFailures;
+            testNgExecuter.TestngResultsXmlFolderPath = OverwriteTestngResultsXmlDefaultFolderPath;
+            testNgExecuter.FailActionDueToTestngResultsXmlFailures = FailActionDueToTestngResultsXmlFailures;
 
             testNgExecuter.Execute();
         }
@@ -103,20 +103,20 @@ namespace GingerTestNgPluginConsole
         /// Execute Maven fully customized command
         /// </summary>
         /// <param name="GA"></param>
-        /// <param name="OverrideMavenHomePath"></param>
+        /// <param name="OverwriteMavenHomePath"></param>
         /// <param name="MavenProjectFolderPath"></param>
         /// <param name="FreeCommandArguments"></param>
         /// <param name="CommandParametersToOverride"></param>
         /// <param name="ParseConsoleOutputs"></param>
         /// <param name="FailActionDueToConsoleErrors"></param>
         /// <param name="ParseTestngResultsXml"></param>
-        /// <param name="OverrideTestngResultsXmlDefaultFolderPath"></param>
+        /// <param name="OverwriteTestngResultsXmlDefaultFolderPath"></param>
         /// <param name="FailActionDueToTestngResultsFailures"></param>
         [GingerAction("ExecuteMavenFreeCommand", "Execute Maven Free Command")]
-        public void ExecuteMavenFreeCommand(IGingerAction GA, string OverrideMavenHomePath, string MavenProjectFolderPath,
-                       string FreeCommandArguments, List<CommandParameter> CommandParametersToOverride,
+        public void ExecuteMavenFreeCommand(IGingerAction GA, string OverwriteMavenHomePath, string MavenProjectFolderPath, string FreeCommandArguments,
+                       string TestngXmlPath, List<TestNGTestParameter> TestngXmlParametersToOverride, bool OverwriteOriginalTestngXML,
                        bool ParseConsoleOutputs, bool FailActionDueToConsoleErrors,
-                       bool ParseTestngResultsXml, string OverrideTestngResultsXmlDefaultFolderPath, bool FailActionDueToTestngResultsFailures)
+                       bool ParseTestngResultsXml, string OverwriteTestngResultsXmlDefaultFolderPath, bool FailActionDueToTestngResultsXmlFailures)
         {
             //Set execution configurations
             TestNGExecution testNgExecuter = new TestNGExecution();
@@ -125,17 +125,19 @@ namespace GingerTestNgPluginConsole
             testNgExecuter.ExecutionMode = TestNGExecution.eExecutionMode.FreeCommand;
             testNgExecuter.GingerAction = GA;
 
-            testNgExecuter.MavenCmdFullPath = OverrideMavenHomePath;
+            testNgExecuter.MavenCmdFullPath = OverwriteMavenHomePath;
             testNgExecuter.MavenProjectFolderPath = MavenProjectFolderPath;
-
             testNgExecuter.FreeCommandArguments = FreeCommandArguments;
-            testNgExecuter.CommandParametersToOverride = CommandParametersToOverride;            
+
+            testNgExecuter.TestngXmlPath = TestngXmlPath;
+            testNgExecuter.TestngXmlParametersToOverride = TestngXmlParametersToOverride;
+            testNgExecuter.OverwriteOriginalTestngXML = OverwriteOriginalTestngXML;
 
             testNgExecuter.ParseConsoleOutputs = ParseConsoleOutputs;
             testNgExecuter.FailActionDueToConsoleErrors = FailActionDueToConsoleErrors;
             testNgExecuter.ParseTestngResultsXml = ParseTestngResultsXml;
-            testNgExecuter.TestngResultsXmlFolderPath = OverrideTestngResultsXmlDefaultFolderPath;
-            testNgExecuter.FailActionDueToTestngResultsFailures = FailActionDueToTestngResultsFailures;
+            testNgExecuter.TestngResultsXmlFolderPath = OverwriteTestngResultsXmlDefaultFolderPath;
+            testNgExecuter.FailActionDueToTestngResultsXmlFailures = FailActionDueToTestngResultsXmlFailures;
 
             testNgExecuter.Execute();
         }

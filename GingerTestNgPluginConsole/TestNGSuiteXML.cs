@@ -189,12 +189,13 @@ namespace GingerTestNgPluginConsole
             return ngListners;
         }
 
-        public bool IsParameterExistInXML(string parameterName)
+        public bool IsParameterExistInXML(string parameterName)//, string parentNodeName)
         {
             XmlNodeList paramsList = SuiteXml.GetElementsByTagName("parameter");
             for (int i = 0; i < paramsList.Count; i++)
             {
-               if (paramsList[i].Attributes.GetNamedItem("name").Value == parameterName)
+                //if (string.IsNullOrEmpty(parentNodeName)
+                if (paramsList[i].Attributes.GetNamedItem("name").Value == parameterName)
                 {
                     return true;
                 }
