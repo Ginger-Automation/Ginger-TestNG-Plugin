@@ -97,7 +97,7 @@ namespace GingerTestNgPluginConsole
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(string.Format("Failed to init the java.exe file path, Error: '{0}'", ex.Message));
+                    GingerAction.AddExInfo(string.Format("Failed to init the java.exe file path, Error: '{0}'", ex.Message));
                 }
             }
         }
@@ -183,7 +183,7 @@ namespace GingerTestNgPluginConsole
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(string.Format("Failed to init the mvn.cmd file path, Error: '{0}'", ex.Message));
+                    GingerAction.AddExInfo(string.Format("Failed to init the mvn.cmd file path, Error: '{0}'", ex.Message));
                 }
             }
         }
@@ -251,6 +251,17 @@ namespace GingerTestNgPluginConsole
                 if (!string.IsNullOrEmpty(value))
                 {
                     mTestNGOutputReportFolderPath = Path.GetFullPath(value);
+                    try
+                    {
+                        if (!Directory.Exists(mTestNGOutputReportFolderPath))
+                        {
+                            Directory.CreateDirectory(mTestNGOutputReportFolderPath);
+                        }
+                    }
+                    catch(Exception ex)
+                    {
+                        GingerAction.AddExInfo(string.Format("Failed to create the customized TestNG Report folder at: '{0}', Error: '{1}'", mTestNGOutputReportFolderPath, ex.Message));
+                    }
                 }
                 else
                 {
@@ -275,6 +286,8 @@ namespace GingerTestNgPluginConsole
 
         public bool OverwriteOriginalTestngXML;
 
+        string mOriginalTestngXmlPath = string.Empty;
+
         string mTestngXmlPath = null;
         public string TestngXmlPath
         {
@@ -289,26 +302,24 @@ namespace GingerTestNgPluginConsole
                 {
                     if (!File.Exists(mTestngXmlPath))
                     {
+                        mTestngXmlPath = mTestngXmlPath.TrimStart(new char[] { '\\', '/' });
                         if (Path.IsPathRooted(mTestngXmlPath) == false)//relative path provided
                         {
-                            if (ExecutionMode == eExecutionMode.XML)
+                            if (JavaProjectType == eJavaProjectType.Regular)
                             {
-                                if (JavaProjectType == eJavaProjectType.Regular)
+                                if (string.IsNullOrEmpty(JavaProjectBinPath) == false)
                                 {
-                                    if (string.IsNullOrEmpty(JavaProjectBinPath) == false)
-                                    {
-                                        mTestngXmlPath = Path.Combine(Path.GetDirectoryName(JavaProjectBinPath), mTestngXmlPath);
-                                    }
-                                }
-                                else //Maven
-                                {
-                                    if (string.IsNullOrEmpty(MavenProjectFolderPath) == false)
-                                    {
-                                        mTestngXmlPath = Path.Combine(MavenProjectFolderPath, mTestngXmlPath);
-                                    }
-
+                                    mTestngXmlPath = Path.Combine(Path.GetDirectoryName(JavaProjectBinPath.TrimEnd(new char[] { '\\', '/' })), mTestngXmlPath);
                                 }
                             }
+                            else //Maven
+                            {
+                                if (string.IsNullOrEmpty(MavenProjectFolderPath) == false)
+                                {
+                                    mTestngXmlPath = Path.Combine(MavenProjectFolderPath, mTestngXmlPath);
+                                }
+                            }
+
                         }
                     }
                 }
@@ -402,40 +413,7 @@ namespace GingerTestNgPluginConsole
                         {
                             GingerAction.AddExInfo(String.Format("Maven Java project path: '{0}'", MavenProjectFolderPath));
                         }
-                    }
-
-                    TestNgSuiteXMLObj = new TestNGSuiteXML(TestngXmlPath);
-                    if (TestNgSuiteXMLObj.LoadError != null)
-                    {
-                        GingerAction.AddError(TestNgSuiteXMLObj.LoadError);
-                        return false;
-                    }
-                    else
-                    {
-                        GingerAction.AddExInfo(String.Format("TestNG XML path: '{0}'", TestNgSuiteXMLObj.XmlFilePath));
-                    }
-
-                    string suiteXmlString = TestNgSuiteXMLObj.SuiteXmlString;
-
-                    if (TestngXmlParametersToOverride != null && TestngXmlParametersToOverride.Count > 0)
-                    {
-                        string paramsListStr = "Parameters to override: ";
-                        foreach (TestNGTestParameter param in TestngXmlParametersToOverride)
-                        {
-                            param.Name = param.Name.Trim();
-                            if (!TestNgSuiteXMLObj.IsParameterExistInXML(param.Name))
-                            {
-                                GingerAction.AddError(string.Format("The Parameter '{0}' do not exist in the TestNG Suite XML", param.Name));
-                                return false;
-                            }
-                            else
-                            {
-                                paramsListStr += string.Format("'{0}'='{1}', ", param.Name, param.Value);
-                            }
-                        }
-                        paramsListStr.TrimEnd(',');
-                        GingerAction.AddExInfo(paramsListStr);
-                    }
+                    }                    
 
                     if (ExecutionMode == eExecutionMode.DynamicXML)
                     {
@@ -513,6 +491,62 @@ namespace GingerTestNgPluginConsole
                         GingerAction.AddExInfo(paramsListStr);
                     }
                     break;
+            }
+
+            TestNgSuiteXMLObj = new TestNGSuiteXML(TestngXmlPath);
+            if (TestNgSuiteXMLObj.LoadError != null)
+            {
+                GingerAction.AddError(TestNgSuiteXMLObj.LoadError);
+                return false;
+            }
+            else
+            {
+                GingerAction.AddExInfo(String.Format("TestNG XML path: '{0}'", TestNgSuiteXMLObj.XmlFilePath));
+            }
+            
+            if (TestngXmlParametersToOverride != null && TestngXmlParametersToOverride.Count > 0)
+            {
+                string paramsListStr = "Parameters to override: ";
+                foreach (TestNGTestParameter param in TestngXmlParametersToOverride)
+                {
+                    if (param == null || string.IsNullOrEmpty(param.Name))
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        param.Name = param.Name.Trim();
+                    }
+                    if (!string.IsNullOrEmpty(param.ParentNodeName))
+                    {
+                        param.ParentNodeName = param.ParentNodeName.Trim();
+                    }
+                    if (!TestNgSuiteXMLObj.IsParameterExistInXML(param.Name, param.ParentNodeName))
+                    {
+                        if (string.IsNullOrEmpty(param.ParentNodeName))
+                        {
+                            GingerAction.AddError(string.Format("The Parameter '{0}' do not exist in the TestNG Suite XML", param.Name));
+                        }
+                        else
+                        {
+                            GingerAction.AddError(string.Format("The Parameter '{0}\\{1}' do not exist in the TestNG Suite XML", param.ParentNodeName, param.Name));
+                        }
+                        return false;
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(param.ParentNodeName))
+                        {
+                            paramsListStr += string.Format("'{0}'='{1}', ", param.Name, param.Value);
+                        }
+                        else
+                        {
+                            paramsListStr += string.Format("'{0}\\{1}'='{2}', ", param.ParentNodeName, param.Name, param.Value);
+                        }
+                    }
+                }
+                paramsListStr.TrimEnd(',');
+                GingerAction.AddExInfo(paramsListStr);
             }
 
             if (ParseTestngResultsXml == true)
@@ -617,10 +651,11 @@ namespace GingerTestNgPluginConsole
                 switch (ExecutionMode)
                 {
                     case eExecutionMode.XML:
+                    case eExecutionMode.FreeCommand:
                         //Parameters
                         if (TestngXmlParametersToOverride != null && TestngXmlParametersToOverride.Count > 0)
                         {
-                            customizedSuiteXML = new TestNGSuiteXML(TestNgSuiteXMLObj.XmlFilePath);
+                            customizedSuiteXML = new TestNGSuiteXML(TestngXmlPath);
                             customizedSuiteXML.OverrideXMLParameters(TestngXmlParametersToOverride);                            
                         }
                         break;
@@ -637,8 +672,9 @@ namespace GingerTestNgPluginConsole
                     }
                     else
                     { 
-                        string customeXMLFilePath = Path.Combine(TempWorkingFolder, "CustomTestng.xml");
+                        string customeXMLFilePath = Path.Combine(TempWorkingFolder, "Custom " + Path.GetFileName(TestngXmlPath));
                         customizedSuiteXML.SuiteXml.Save(customeXMLFilePath);
+                        mOriginalTestngXmlPath = TestngXmlPath;
                         TestngXmlPath = customeXMLFilePath;
                         TestNgSuiteXMLObj = new TestNGSuiteXML(TestngXmlPath);
                         GingerAction.AddExInfo(String.Format("Customized TestNG XML path: '{0}'", TestNgSuiteXMLObj.XmlFilePath));
@@ -704,47 +740,79 @@ namespace GingerTestNgPluginConsole
             command.WorkingFolder = MavenProjectFolderPath;
             command.ExecuterFilePath = string.Format("\"{0}\"", MavenCmdFullPath); 
 
-            string commandArgsToExecute= string.Format(" {0}", FreeCommandArguments);
+            ////command parameters ovveride
+            //if (CommandParametersToOverride != null && CommandParametersToOverride.Count > 0)
+            //{
+            //    commandArgsToExecute = string.Format(" {0}", OverrideCommandParameters());
+            //}
 
-            //command parameters ovveride
-            if (CommandParametersToOverride != null && CommandParametersToOverride.Count > 0)
+            if(OverwriteOriginalTestngXML == false && TestngXmlParametersToOverride != null && TestngXmlParametersToOverride.Count > 0)
             {
-                commandArgsToExecute = string.Format(" {0}", OverrideCommandParameters());
+                //need to update the path of the xml in the command arguments to point the customized one
+                string xmlName = Path.GetFileName(mOriginalTestngXmlPath);
+                int fileNameIndx = FreeCommandArguments.IndexOf(xmlName);
+                if (fileNameIndx > 0)
+                {
+                    int rightIndx = fileNameIndx + xmlName.Length;
+                    if (FreeCommandArguments[rightIndx] == '\"')
+                    {
+                        rightIndx++; 
+                    }
+                    int leftIndx = fileNameIndx;
+                    while (leftIndx > 0 && FreeCommandArguments[leftIndx-1] != '=')
+                    {
+                        leftIndx--;
+                    }
+
+                    if (rightIndx > leftIndx && rightIndx >0 && leftIndx>0)
+                    {
+                        string fullXmlPathArgument = FreeCommandArguments.Substring(leftIndx, rightIndx - leftIndx);
+                        FreeCommandArguments= FreeCommandArguments.Replace(fullXmlPathArgument, string.Format("\"{0}\"", TestngXmlPath));
+                    }
+                    else
+                    {
+                        GingerAction.AddError(string.Format("Failed to replace the original TestNG XML path '{0}' with the customized one '{1}' in the command arguments", mOriginalTestngXmlPath, TestngXmlPath));
+                    }
+                }
+                else
+                {
+                    GingerAction.AddError(string.Format("Failed to replace the original TestNG XML path '{0}' with the customized one '{1}' in the command arguments", mOriginalTestngXmlPath, TestngXmlPath));
+                }
             }
 
-            command.Arguments = commandArgsToExecute;
+            command.Arguments = string.Format(" {0}", FreeCommandArguments); 
 
             return command;
         }
 
         private string OverrideCommandParameters()
         {
-            foreach (CommandParameter cmdParam in CommandParametersToOverride)
-            {
-                string fullParamName = cmdParam.Name.Trim();
-                if (!string.IsNullOrEmpty(fullParamName))
-                {
-                    if (fullParamName.IndexOf("-D") != 0)
-                    {
-                        fullParamName = string.Format("-D{0}", fullParamName);
-                    }
-                }
+            //foreach (CommandParameter cmdParam in CommandParametersToOverride)
+            //{
+            //    string fullParamName = cmdParam.Name.Trim();
+            //    if (!string.IsNullOrEmpty(fullParamName))
+            //    {
+            //        if (fullParamName.IndexOf("-D") != 0)
+            //        {
+            //            fullParamName = string.Format("-D{0}", fullParamName);
+            //        }
+            //    }
 
-                try
-                {
-                    Match match = Regex.Match(FreeCommandArguments, string.Format("/{0}=\"([]+)\"/", fullParamName));
-                    if (match.Success)
-                    {
-                        // Finally, we get the Group value and display it.
-                        string key = match.Groups[1].Value;
-                        Console.WriteLine(key);
-                    }
-                }
-                catch (Exception ex)
-                {
+            //    try
+            //    {
+            //        Match match = Regex.Match(FreeCommandArguments, string.Format("/{0}=\"([]+)\"/", fullParamName));
+            //        if (match.Success)
+            //        {
+            //            // Finally, we get the Group value and display it.
+            //            string key = match.Groups[1].Value;
+            //            Console.WriteLine(key);
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
 
-                }
-            }
+            //    }
+            //}
 
             return FreeCommandArguments;
         }

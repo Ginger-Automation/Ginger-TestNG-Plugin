@@ -189,15 +189,25 @@ namespace GingerTestNgPluginConsole
             return ngListners;
         }
 
-        public bool IsParameterExistInXML(string parameterName)//, string parentNodeName)
+        public bool IsParameterExistInXML(string parameterName, string parentNodeName)
         {
             XmlNodeList paramsList = SuiteXml.GetElementsByTagName("parameter");
             for (int i = 0; i < paramsList.Count; i++)
             {
-                //if (string.IsNullOrEmpty(parentNodeName)
-                if (paramsList[i].Attributes.GetNamedItem("name").Value == parameterName)
+                if (string.IsNullOrEmpty(parentNodeName))
                 {
-                    return true;
+                    if (paramsList[i].Attributes.GetNamedItem("name").Value == parameterName)
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    if (paramsList[i].ParentNode.Attributes.GetNamedItem("name").Value == parentNodeName
+                        && paramsList[i].Attributes.GetNamedItem("name").Value == parameterName)
+                    {
+                        return true;
+                    }
                 }
             }
 
@@ -224,7 +234,9 @@ namespace GingerTestNgPluginConsole
             XmlNodeList xmlParamsList = SuiteXml.GetElementsByTagName("parameter");
             for (int i = 0; i < xmlParamsList.Count; i++)
             {
-                TestNGTestParameter paramToOveride = xmlParametersToOverwrite.Where(x => x.Name.Trim() == xmlParamsList[i].Attributes.GetNamedItem("name").Value).FirstOrDefault();
+                TestNGTestParameter paramToOveride = null;                
+                paramToOveride = xmlParametersToOverwrite.Where(x => ((x.Name == xmlParamsList[i].Attributes.GetNamedItem("name").Value) &&
+                                                                           (string.IsNullOrEmpty(x.ParentNodeName) || x.ParentNodeName == xmlParamsList[i].ParentNode.Attributes.GetNamedItem("name").Value))).FirstOrDefault();
                 if (paramToOveride != null)
                 {
                     xmlParamsList[i].Attributes.GetNamedItem("value").Value = paramToOveride.Value;
