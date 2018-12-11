@@ -493,18 +493,22 @@ namespace GingerTestNgPluginConsole
                     break;
             }
 
-            TestNgSuiteXMLObj = new TestNGSuiteXML(TestngXmlPath);
-            if (TestNgSuiteXMLObj.LoadError != null)
+            if (ExecutionMode != eExecutionMode.FreeCommand ||
+                (ExecutionMode == eExecutionMode.FreeCommand && string.IsNullOrEmpty(TestngXmlPath) == false))
             {
-                GingerAction.AddError(TestNgSuiteXMLObj.LoadError);
-                return false;
-            }
-            else
-            {
-                GingerAction.AddExInfo(String.Format("TestNG XML path: '{0}'", TestNgSuiteXMLObj.XmlFilePath));
+                TestNgSuiteXMLObj = new TestNGSuiteXML(TestngXmlPath);
+                if (TestNgSuiteXMLObj.LoadError != null)
+                {
+                    GingerAction.AddError(TestNgSuiteXMLObj.LoadError);
+                    return false;
+                }
+                else
+                {
+                    GingerAction.AddExInfo(String.Format("TestNG XML path: '{0}'", TestNgSuiteXMLObj.XmlFilePath));
+                }
             }
             
-            if (TestngXmlParametersToOverride != null && TestngXmlParametersToOverride.Count > 0)
+            if (TestNgSuiteXMLObj != null && TestngXmlParametersToOverride != null && TestngXmlParametersToOverride.Count > 0)
             {
                 string paramsListStr = "Parameters to override: ";
                 foreach (TestNGTestParameter param in TestngXmlParametersToOverride)
@@ -653,7 +657,7 @@ namespace GingerTestNgPluginConsole
                     case eExecutionMode.XML:
                     case eExecutionMode.FreeCommand:
                         //Parameters
-                        if (TestngXmlParametersToOverride != null && TestngXmlParametersToOverride.Count > 0)
+                        if (TestNgSuiteXMLObj != null && TestngXmlParametersToOverride != null && TestngXmlParametersToOverride.Count > 0)
                         {
                             customizedSuiteXML = new TestNGSuiteXML(TestngXmlPath);
                             customizedSuiteXML.OverrideXMLParameters(TestngXmlParametersToOverride);                            

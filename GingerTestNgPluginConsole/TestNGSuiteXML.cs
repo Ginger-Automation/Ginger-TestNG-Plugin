@@ -62,11 +62,19 @@ namespace GingerTestNgPluginConsole
         {
             try
             {
-                XmlFilePath = Path.GetFullPath(XmlFilePath);
-                if (File.Exists(XmlFilePath) == false)
+                if (string.IsNullOrEmpty(XmlFilePath))
                 {
                     LoadError = String.Format("Failed to find the TestNG XML file at: '{0}'", XmlFilePath);
                     return false;
+                }
+                else
+                {
+                    XmlFilePath = Path.GetFullPath(XmlFilePath);
+                    if (File.Exists(XmlFilePath) == false)
+                    {
+                        LoadError = String.Format("Failed to find the TestNG XML file at: '{0}'", XmlFilePath);
+                        return false;
+                    }
                 }
 
                 SuiteXml = new XmlDocument();

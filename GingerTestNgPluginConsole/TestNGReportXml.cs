@@ -35,11 +35,19 @@ namespace GingerTestNgPluginConsole
         {
             try
             {
-                ReportXmlFilePath = Path.GetFullPath(ReportXmlFilePath);
-                if (File.Exists(ReportXmlFilePath) == false)
+                if (string.IsNullOrEmpty(ReportXmlFilePath))
                 {
                     LoadError = String.Format("Failed to find the TestNG Report XML file at: '{0}'", ReportXmlFilePath);
                     return false;
+                }
+                else
+                {
+                    ReportXmlFilePath = Path.GetFullPath(ReportXmlFilePath);
+                    if (File.Exists(ReportXmlFilePath) == false)
+                    {
+                        LoadError = String.Format("Failed to find the TestNG Report XML file at: '{0}'", ReportXmlFilePath);
+                        return false;
+                    }
                 }
 
                 ReportXml = new XmlDocument();
