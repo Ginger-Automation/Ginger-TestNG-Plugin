@@ -23,5 +23,39 @@ namespace GingerTestNgPluginConsole
         {
             Console.WriteLine(string.Format("INFO: {0}", message));
         }
+
+        public static string TrimApostrophes(string str)
+        {
+            string customStr = str;
+            if (!string.IsNullOrEmpty(customStr))
+            {
+                customStr = customStr.TrimStart('\"');
+                customStr = customStr.TrimEnd('\"');
+            }
+
+            return customStr;
+        }
+
+        public static string TrimRelativeSleshes(string str)
+        {
+            string customStr = str;
+            if (!string.IsNullOrEmpty(customStr))
+            {
+                customStr = customStr.TrimStart(new char[] { '\\', '/' });
+            }
+
+            return customStr;
+        }
+
+        public static string TrimEndSleshes(string str)
+        {
+            string customStr = str;
+            if (!string.IsNullOrEmpty(customStr))
+            {
+                customStr = customStr.TrimEnd(new char[] { '\\', '/' });
+            }
+
+            return customStr;
+        }
     }
 }

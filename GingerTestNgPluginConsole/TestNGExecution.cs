@@ -77,6 +77,7 @@ namespace GingerTestNgPluginConsole
                 try
                 {
                     mJavaExeFullPath = value;
+                    mJavaExeFullPath = General.TrimApostrophes(mJavaExeFullPath);
                     if (string.IsNullOrEmpty(mJavaExeFullPath))
                     {
                         mJavaExeFullPath = Environment.GetEnvironmentVariable("JAVA_HOME");
@@ -112,6 +113,7 @@ namespace GingerTestNgPluginConsole
             set
             {
                 mJavaProjectResourcesPath = value;
+                mJavaProjectResourcesPath = General.TrimApostrophes(mJavaProjectResourcesPath);
                 if (!string.IsNullOrEmpty(mJavaProjectResourcesPath))
                 {
                     mJavaProjectResourcesPath = Path.GetFullPath(mJavaProjectResourcesPath);
@@ -134,10 +136,11 @@ namespace GingerTestNgPluginConsole
             set
             {
                 mJavaProjectBinFolderPath = value;
+                mJavaProjectBinFolderPath = General.TrimApostrophes(mJavaProjectBinFolderPath);
                 if (!string.IsNullOrEmpty(mJavaProjectBinFolderPath))
                 {
-                    mJavaProjectBinFolderPath = Path.GetFullPath(mJavaProjectBinFolderPath);
-                    mJavaProjectBinFolderPath = mJavaProjectBinFolderPath.TrimEnd(new char[] { '\\', '/' });
+                    mJavaProjectBinFolderPath = Path.GetFullPath(mJavaProjectBinFolderPath);                   
+                    mJavaProjectBinFolderPath = General.TrimEndSleshes(mJavaProjectBinFolderPath);
                     if (Path.GetFileName(mJavaProjectBinFolderPath).ToLower() != "bin")
                     {
                         mJavaProjectBinFolderPath = Path.Combine(mJavaProjectBinFolderPath, "bin");
@@ -163,6 +166,7 @@ namespace GingerTestNgPluginConsole
                 try
                 {
                     mMavenCmdFullPath = value;
+                    mMavenCmdFullPath = General.TrimApostrophes(mMavenCmdFullPath);
                     if (string.IsNullOrEmpty(mMavenCmdFullPath))
                     {
                         mMavenCmdFullPath = Environment.GetEnvironmentVariable("MAVEN_HOME");
@@ -197,9 +201,11 @@ namespace GingerTestNgPluginConsole
             }
             set
             {
-                if (!string.IsNullOrEmpty(value))
+                mMavenProjectFolderPath = value;
+                mMavenProjectFolderPath = General.TrimApostrophes(mMavenProjectFolderPath);
+                if (!string.IsNullOrEmpty(mMavenProjectFolderPath))
                 {
-                    mMavenProjectFolderPath = Path.GetFullPath(value);
+                    mMavenProjectFolderPath = Path.GetFullPath(mMavenProjectFolderPath);
                 }
             }
         }
@@ -249,11 +255,13 @@ namespace GingerTestNgPluginConsole
             set
             {
                 mTestNGOutputReportFolderPath = value;
+                mTestNGOutputReportFolderPath = General.TrimApostrophes(mTestNGOutputReportFolderPath);
                 if (!string.IsNullOrEmpty(mTestNGOutputReportFolderPath))
                 {
                     try
                     {
-                        mTestNGOutputReportFolderPath = mTestNGOutputReportFolderPath.TrimStart(new char[] { '\\', '/' });
+
+                        mTestNGOutputReportFolderPath = General.TrimRelativeSleshes(mTestNGOutputReportFolderPath);                        
                         if (Path.IsPathRooted(mTestNGOutputReportFolderPath) == false)//relative path provided
                         {
                             if (JavaProjectType == eJavaProjectType.Regular)
@@ -322,11 +330,12 @@ namespace GingerTestNgPluginConsole
             set
             {
                 mTestngXmlPath = value;
+                mTestngXmlPath = General.TrimApostrophes(mTestngXmlPath);
                 if (!string.IsNullOrEmpty(mTestngXmlPath))
                 {
                     if (!File.Exists(mTestngXmlPath))
-                    {
-                        mTestngXmlPath = mTestngXmlPath.TrimStart(new char[] { '\\', '/' });
+                    {                        
+                        mTestngXmlPath = General.TrimRelativeSleshes(mTestngXmlPath);
                         if (Path.IsPathRooted(mTestngXmlPath) == false)//relative path provided
                         {
                             if (JavaProjectType == eJavaProjectType.Regular)

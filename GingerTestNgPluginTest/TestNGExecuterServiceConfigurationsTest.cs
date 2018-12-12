@@ -43,7 +43,7 @@ namespace GingerTestNgPluginTest
             testNgExecuter.ExecutionMode = TestNGExecution.eExecutionMode.XML;
 
             //Act
-            testNgExecuter.JavaExeFullPath = @"C:\Program Files\Java\jdk1.8.0_191";
+            testNgExecuter.JavaExeFullPath = "\"C:\\Program Files\\Java\\jdk1.8.0_191\"";
 
             //Assert                  
             Assert.IsTrue(testNgExecuter.JavaExeFullPath == @"C:\Program Files\Java\jdk1.8.0_191\bin\java.exe", "JavaExeFullPath pointing to bin\\java.exe file");
@@ -163,7 +163,7 @@ namespace GingerTestNgPluginTest
 
             //Act
             testNgExecuter.JavaProjectBinPath = @"C:\Users\menik\eclipse-workspace\Learn-TestNG\bin";
-            testNgExecuter.TestngXmlPath = @"\src\Calculator\testng.xml";
+            testNgExecuter.TestngXmlPath = "\"\\src\\Calculator\\testng.xml\"";
 
             //Assert                  
             Assert.IsTrue(testNgExecuter.TestngXmlPath == @"C:\Users\menik\eclipse-workspace\Learn-TestNG\src\Calculator\testng.xml", "Relative TestngXmlPath been converted to full path");
@@ -194,7 +194,7 @@ namespace GingerTestNgPluginTest
             testNgExecuter.JavaProjectType = TestNGExecution.eJavaProjectType.Regular;
 
             //Act
-            testNgExecuter.JavaProjectBinPath = @"C:\Users\menik\eclipse-workspace\Learn-TestNG\bin\";
+            testNgExecuter.JavaProjectBinPath = "\"C:\\Users\\menik\\eclipse-workspace\\Learn-TestNG\\bin\\\"";
             testNgExecuter.TestngXmlPath = @"src\Calculator\testng.xml";
 
             //Assert                  
