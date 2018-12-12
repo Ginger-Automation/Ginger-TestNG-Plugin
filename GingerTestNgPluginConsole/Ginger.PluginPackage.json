@@ -2,7 +2,7 @@
   "Id": "TestNG",
   "Version": "1.0.0",
   "ProjectUrl": "https://github.com/Ginger-Automation/Ginger-TestNG-Plugin",
-  "Description": "PACT",
+  "Description": "Allow integrating TestNG testing flows with Ginger flows including sending input values to TestNG flows and parsing it execution results.",
   "Summary": "TestNg Integration For Ginger",
   "StartupDLL": "GingerTestNgPluginConsole.dll"
 }
