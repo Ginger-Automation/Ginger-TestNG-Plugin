@@ -604,22 +604,22 @@ namespace GingerTestNgPluginConsole
 
         public void Execute()
         {
-            General.AddInfoToConsole("############################################ Execution Started");            
-            General.AddInfoToConsole("# Validating Configurations");
+            General.AddInfoToConsole("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Execution Started %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");            
+            General.AddInfoToConsole("############################# Validating / Preparing Execution Configurations");
             if (!ValidateAndPrepareConfigs())
             {
                 return;
             }
 
             //prepare the customized xml
-            General.AddInfoToConsole("# Prepare TestNG Xml for Execution");
+            General.AddInfoToConsole("############################# Prepare TestNG Xml for Execution");
             if (!PrepareTestNGXmlForExecution())
             {
                 return;
             }
 
             //prepare the command 
-            General.AddInfoToConsole("# Prepare Command for Execution");
+            General.AddInfoToConsole("############################# Prepare Execution Command");
             CommandElements command = null;
             try
             {
@@ -643,6 +643,8 @@ namespace GingerTestNgPluginConsole
                         }
                         break;
                 }
+
+                General.AddInfoToConsoleAndAction(GingerAction, string.Format("Full Command: '{0}'", command.FullCommand));
             }
             catch(Exception ex)
             {
@@ -653,20 +655,20 @@ namespace GingerTestNgPluginConsole
             if (command != null)
             {
                 //execute the command
-                General.AddInfoToConsole("### Starting Actual Execution");
+                General.AddInfoToConsole("############################# Executing Command");                
                 if (ExecuteCommand(command))
                 {
                     //parse output
                     if (ParseConsoleOutputs)
                     {
-                        General.AddInfoToConsole("### Parsing Command Outputs");
+                        General.AddInfoToConsole("############################# Parsing Command Outputs");
                         ParseCommandOutput();
                     }
 
                     //parse report
                     if (ParseTestngResultsXml)
                     {
-                        General.AddInfoToConsole("### Parsing TestNG Results XML");
+                        General.AddInfoToConsole("############################# Parsing TestNG Results XML");
                         //parse the TestNG output result XML 
                         string testNgReportPath = Path.Combine(TestngResultsXmlFolderPath, "testng-results.xml");
                         General.AddInfoToConsoleAndAction(GingerAction, String.Format("TestNG Results XML full path: '{0}'", testNgReportPath));
@@ -687,7 +689,7 @@ namespace GingerTestNgPluginConsole
                 General.AddErrorToConsoleAndAction(GingerAction, "No command found to exeucte");
             }
 
-            General.AddInfoToConsole("############################################ Execution Ended");
+            General.AddInfoToConsole("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Execution Ended %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
         }
 
         private bool PrepareTestNGXmlForExecution()
@@ -698,11 +700,11 @@ namespace GingerTestNgPluginConsole
                 switch (ExecutionMode)
                 {
                     case eExecutionMode.XML:
-                    case eExecutionMode.FreeCommand:
-                        General.AddInfoToConsole("Create Custom TestNG Xml for Execution");
+                    case eExecutionMode.FreeCommand:                        
                         //Parameters
                         if (TestNgSuiteXMLObj != null && TestngXmlParametersToOverwrite != null && TestngXmlParametersToOverwrite.Count > 0)
                         {
+                            General.AddInfoToConsole("Create Custom TestNG Xml for Execution");
                             customizedSuiteXML = new TestNGSuiteXML(TestngXmlPath);
                             customizedSuiteXML.OverrideXMLParameters(TestngXmlParametersToOverwrite);                            
                         }
@@ -874,8 +876,6 @@ namespace GingerTestNgPluginConsole
         {
             try
             {
-                General.AddInfoToConsoleAndAction(GingerAction, string.Format("Executed command: '{0}'", commandVals.FullCommand));
-
                 Process process = new Process();
                 if (commandVals.WorkingFolder != null)
                 {
