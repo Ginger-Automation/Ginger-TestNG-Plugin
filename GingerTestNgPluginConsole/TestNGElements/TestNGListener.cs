@@ -4,9 +4,8 @@ using System.Text;
 
 namespace GingerTestNgPlugin
 {
-    public class NGParameter
+    public class TestNGListener
     {
-        public string Name;
-        public string Value;
+        public string ClassName;
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Amdocs.Ginger.Plugin.Core;
-using StandAloneActions;
 using System;
 
 namespace GingerTestNgPluginConsole
@@ -9,13 +8,12 @@ namespace GingerTestNgPluginConsole
         static void Main(string[] args)
         {
             Console.WriteLine("Starting Ginger TestNg Plugin");
-            
-            GingerNodeStarter.StartNode(new TestNgService(), "TestNg Service 1");
 
-            Console.ReadKey();
-           
+            using (GingerNodeStarter gingerNodeStarter = new GingerNodeStarter())
+            {               
+                gingerNodeStarter.StartNode("TestNG Execution Service", new TestNGExecuterService());
+                gingerNodeStarter.Listen();
+            }
         }
-
-
     }
 }

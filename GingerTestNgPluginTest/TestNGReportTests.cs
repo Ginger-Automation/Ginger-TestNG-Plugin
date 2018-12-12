@@ -12,7 +12,7 @@ namespace GingerTestNgPluginTest
         {
             string ReportXMl = TestResources.GetTestResourcesFile(@"Test-Results.xml");
 
-           TestNGReport Parser = TestNGReport.LoadfromXMl(ReportXMl);
+           //TestNGReport Parser = TestNGReport.LoadfromXMl(ReportXMl);
 
         }
 
