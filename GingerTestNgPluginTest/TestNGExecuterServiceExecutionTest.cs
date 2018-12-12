@@ -19,7 +19,7 @@ namespace GingerTestNgPluginTest
 
             //Act
             service.ExecuteTestNGXML(GA, OverwriteJavaHomePath:@"C:\Program Files\Java\jdk1.8.0_191\bin\java.exe", JavaProjectBinPath:@"C:\Users\menik\eclipse-workspace\Learn-TestNG\bin", JavaProjectResourcesPath:@"C:\Users\menik\.p2\pool\plugins\*",
-                                   TestngXmlPath:@"C:\Users\menik\eclipse-workspace\Learn-TestNG\src\Groups\testng.xml", TestngXmlParametersToOverride:null, OverwriteOriginalTestngXML:false,
+                                   TestngXmlPath:@"C:\Users\menik\eclipse-workspace\Learn-TestNG\src\Groups\testng.xml", TestngXmlParametersToOverwrite:null, OverwriteOriginalTestngXml:false,
                                    ParseConsoleOutputs:false, FailActionDueToConsoleErrors:false,
                                    ParseTestngResultsXml:true, OverwriteTestngResultsXmlDefaultFolderPath: null, FailActionDueToTestngResultsXmlFailures: false);
 
@@ -36,7 +36,7 @@ namespace GingerTestNgPluginTest
 
             //Act
             service.ExecuteMavenProjectTestNGXML(GA, OverwriteMavenHomePath: @"C:\Program Files (x86)\apache-maven-3.5.3\bin\mvn.cmd", MavenProjectFolderPath: @"C:\TestNG_WORKSPACE\PBG Flows\order_capture_test", PerformMavenInstall:true, 
-                                   TestngXmlPath: @"C:\TestNG_WORKSPACE\PBG Flows\CustomeXMLs\Dynamic Device from CouchBase.xml",TestngXmlParametersToOverride: null, OverwriteOriginalTestngXML:false,
+                                   TestngXmlPath: @"C:\TestNG_WORKSPACE\PBG Flows\CustomeXMLs\Dynamic Device from CouchBase.xml",TestngXmlParametersToOverwrite: null, OverwriteOriginalTestngXml:false,
                                    ParseConsoleOutputs: false, FailActionDueToConsoleErrors: false,
                                    ParseTestngResultsXml: true, OverwriteTestngResultsXmlDefaultFolderPath: null, FailActionDueToTestngResultsXmlFailures: true);
 
@@ -57,7 +57,7 @@ namespace GingerTestNgPluginTest
 
             //Act
             service.ExecuteTestNGXML(GA, OverwriteJavaHomePath: @"C:\Program Files\Java\jdk1.8.0_191\bin\java.exe", JavaProjectBinPath: @"C:\Users\menik\eclipse-workspace\Learn-TestNG\bin", JavaProjectResourcesPath: @"C:\Users\menik\.p2\pool\plugins\*",
-                                   TestngXmlPath: @"C:\Users\menik\eclipse-workspace\Learn-TestNG\src\Calculator\testng.xml", TestngXmlParametersToOverride: paramsToOveride, OverwriteOriginalTestngXML: false,
+                                   TestngXmlPath: @"C:\Users\menik\eclipse-workspace\Learn-TestNG\src\Calculator\testng.xml", TestngXmlParametersToOverwrite: paramsToOveride, OverwriteOriginalTestngXml: false,
                                    ParseConsoleOutputs: false, FailActionDueToConsoleErrors: false,
                                    ParseTestngResultsXml: true, OverwriteTestngResultsXmlDefaultFolderPath: null, FailActionDueToTestngResultsXmlFailures: true);
 
@@ -75,7 +75,7 @@ namespace GingerTestNgPluginTest
             //Act
             service.ExecuteMavenFreeCommand(GA, OverwriteMavenHomePath: @"C:\Program Files (x86)\apache-maven-3.5.3\bin\mvn.cmd", MavenProjectFolderPath: @"C:\TestNG_WORKSPACE\PBG Flows\order_capture_test",
                                    FreeCommandArguments: "clean install test -Dsurefire.suiteXmlFiles=\"C:\\TestNG_WORKSPACE\\PBG Flows\\CustomeXMLs\\Dynamic Device from CouchBase.xml\"",
-                                   TestngXmlPath: null, TestngXmlParametersToOverride: null, OverwriteOriginalTestngXML: false,
+                                   TestngXmlPath: null, TestngXmlParametersToOverwrite: null, OverwriteOriginalTestngXml: false,
                                    ParseConsoleOutputs: false, FailActionDueToConsoleErrors: false,
                                    ParseTestngResultsXml: true, OverwriteTestngResultsXmlDefaultFolderPath: null, FailActionDueToTestngResultsXmlFailures: true);
 
@@ -98,7 +98,30 @@ namespace GingerTestNgPluginTest
             //Act
             service.ExecuteMavenFreeCommand(GA, OverwriteMavenHomePath: @"C:\Program Files (x86)\apache-maven-3.5.3\bin\mvn.cmd", MavenProjectFolderPath: @"C:\TestNG_WORKSPACE\PBG Flows\order_capture_test",
                                    FreeCommandArguments: @"clean install test -Dsurefire.suiteXmlFiles="+"\"C:\\TestNG_WORKSPACE\\PBG Flows\\CustomeXMLs\\Dynamic Device from CouchBase.xml\"",
-                                   TestngXmlPath: @"C:\TestNG_WORKSPACE\PBG Flows\CustomeXMLs\Dynamic Device from CouchBase.xml", TestngXmlParametersToOverride: paramsToOveride, OverwriteOriginalTestngXML: false,
+                                   TestngXmlPath: @"C:\TestNG_WORKSPACE\PBG Flows\CustomeXMLs\Dynamic Device from CouchBase.xml", TestngXmlParametersToOverwrite: paramsToOveride, OverwriteOriginalTestngXml: false,
+                                   ParseConsoleOutputs: false, FailActionDueToConsoleErrors: false,
+                                   ParseTestngResultsXml: true, OverwriteTestngResultsXmlDefaultFolderPath: null, FailActionDueToTestngResultsXmlFailures: true);
+
+            //Assert           
+            Assert.AreEqual((GA.Output != null && GA.Output.OutputValues.Count > 0), true, "Execution Output values found");
+        }
+
+        [TestMethod]
+        public void MavenFreeCommandXmlParametersOverrideExecutionTest2()
+        {
+            //Arrange
+            TestNGExecuterService service = new TestNGExecuterService();
+            GingerAction GA = new GingerAction();
+
+            List<TestNGTestParameter> paramsToOveride = new List<TestNGTestParameter>();
+            paramsToOveride.Add(new TestNGTestParameter() { Name = "scid", ParentNodeName = "Dynamic Device from DB", Value = "55" });
+            paramsToOveride.Add(new TestNGTestParameter() { Name = "customerSubType", ParentNodeName = "Create UserIndividualCC", Value = "66" });
+            paramsToOveride.Add(new TestNGTestParameter() { Name = "executionLevel", Value = "77" });
+
+            //Act
+            service.ExecuteMavenFreeCommand(GA, OverwriteMavenHomePath: @"C:\Program Files (x86)\apache-maven-3.5.3\bin\mvn.cmd", MavenProjectFolderPath: @"C:\TestNG_WORKSPACE\PBG Flows\order_capture_test",
+                                   FreeCommandArguments: @"clean install test -Dsurefire.suiteXmlFiles=src/test/resources/fit/flowSuites/ShortCouchBase.xml",
+                                   TestngXmlPath: @"src/test/resources/fit/flowSuites/ShortCouchBase.xml", TestngXmlParametersToOverwrite: paramsToOveride, OverwriteOriginalTestngXml: false,
                                    ParseConsoleOutputs: false, FailActionDueToConsoleErrors: false,
                                    ParseTestngResultsXml: true, OverwriteTestngResultsXmlDefaultFolderPath: null, FailActionDueToTestngResultsXmlFailures: true);
 
@@ -121,7 +144,7 @@ namespace GingerTestNgPluginTest
 
             //Act
             service.ExecuteTestNGXML(GA, OverwriteJavaHomePath: @"C:\Program Files\Java\jdk1.8.0_191\bin\java.exe", JavaProjectBinPath: @"C:\Users\menik\eclipse-workspace\Learn-TestNG\bin", JavaProjectResourcesPath: @"C:\Users\menik\.p2\pool\plugins\*",
-                                   TestngXmlPath: @"C:\Users\menik\eclipse-workspace\Learn-TestNG\src\Calculator\testng.xml", TestngXmlParametersToOverride: paramsToOveride, OverwriteOriginalTestngXML:false,
+                                   TestngXmlPath: @"C:\Users\menik\eclipse-workspace\Learn-TestNG\src\Calculator\testng.xml", TestngXmlParametersToOverwrite: paramsToOveride, OverwriteOriginalTestngXml:false,
                                    ParseConsoleOutputs: true, FailActionDueToConsoleErrors: false,
                                    ParseTestngResultsXml: true, OverwriteTestngResultsXmlDefaultFolderPath: null, FailActionDueToTestngResultsXmlFailures: true);
 

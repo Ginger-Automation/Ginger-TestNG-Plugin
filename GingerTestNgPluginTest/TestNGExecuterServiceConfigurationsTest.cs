@@ -232,5 +232,37 @@ namespace GingerTestNgPluginTest
             //Assert                  
             Assert.IsTrue(testNgExecuter.TestngXmlPath == @"C:\TestNG_WORKSPACE\PBG Flows\order_capture_test\src\test\resources\fit\flowSuites\Dynamic Device from CouchBase.xml", "Relative TestngXmlPath been converted to full path");
         }
+
+        [TestMethod]
+        public void RelativeTestngResultsXmlFolderPathWithJavaTest()
+        {
+            //Arrange
+            TestNGExecution testNgExecuter = new TestNGExecution();
+            testNgExecuter.ExecuterType = TestNGExecution.eExecuterType.Java;
+            testNgExecuter.JavaProjectType = TestNGExecution.eJavaProjectType.Regular;
+
+            //Act
+            testNgExecuter.JavaProjectBinPath = @"C:\Users\menik\eclipse-workspace\Learn-TestNG\bin";
+            testNgExecuter.TestngResultsXmlFolderPath = @"\report";
+
+            //Assert                  
+            Assert.IsTrue(testNgExecuter.TestngResultsXmlFolderPath == @"C:\Users\menik\eclipse-workspace\Learn-TestNG\report", "Relative TestngResultsXmlFolderPath been converted to full path");
+        }
+
+        [TestMethod]
+        public void RelativeTestngResultsXmlFolderPathWithMavenTest()
+        {
+            //Arrange
+            TestNGExecution testNgExecuter = new TestNGExecution();
+            testNgExecuter.ExecuterType = TestNGExecution.eExecuterType.Maven;
+            testNgExecuter.JavaProjectType = TestNGExecution.eJavaProjectType.Maven;
+
+            //Act
+            testNgExecuter.MavenProjectFolderPath = @"C:\TestNG_WORKSPACE\PBG Flows\order_capture_test";
+            testNgExecuter.TestngResultsXmlFolderPath = @"\report";
+
+            //Assert                  
+            Assert.IsTrue(testNgExecuter.TestngResultsXmlFolderPath == @"C:\TestNG_WORKSPACE\PBG Flows\order_capture_test\report", "Relative TestngResultsXmlFolderPath been converted to full path");
+        }
     }
 }

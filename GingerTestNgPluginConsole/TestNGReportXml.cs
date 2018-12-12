@@ -217,14 +217,14 @@ namespace GingerTestNgPluginConsole
                                         gingerAction.AddOutput(string.Format("{0}\\{1}-Error Message", testReport.Name, methodReport.Name), methodReport.ExecutionException.Message, string.Format("{0}\\{1}\\{2}", suiteReport.Name, testReport.Name, classReport.Name));
                                         if (AddFailuresToActionErrors && methodReport.ExecutionStatus == eTestExecutionStatus.FAIL)
                                         {
-                                            gingerAction.AddError(string.Format("The Test method '{0}\\{1}' failed with the error: '{2}'", testReport.Name, methodReport.Name, methodReport.ExecutionException.Message));
+                                            General.AddErrorToConsoleAndAction(gingerAction, string.Format("The Test method '{0}\\{1}' failed with the error: '{2}'", testReport.Name, methodReport.Name, methodReport.ExecutionException.Message));
                                         }
                                     }
                                     else
                                     {
                                         if (AddFailuresToActionErrors && methodReport.ExecutionStatus == eTestExecutionStatus.FAIL)
                                         {
-                                            gingerAction.AddError(string.Format("The Test method '{0}\\{1}' failed", testReport.Name, methodReport.Name));
+                                            General.AddErrorToConsoleAndAction(gingerAction, string.Format("The Test method '{0}\\{1}' failed", testReport.Name, methodReport.Name));
                                         }
                                     }
                                 }
@@ -235,7 +235,7 @@ namespace GingerTestNgPluginConsole
             }
             catch (Exception ex)
             {
-                gingerAction.AddError(string.Format("Failed to parse the TestNG output report at path: '{0}' due to the Error '{1}'", ReportXmlFilePath, ex.Message));
+                General.AddErrorToConsoleAndAction(gingerAction, string.Format("Failed to parse the TestNG output report at path: '{0}' due to the Error '{1}'", ReportXmlFilePath, ex.Message));
             }
         }
     }
