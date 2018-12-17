@@ -26,7 +26,5 @@ steps:
   condition: succeededOrFailed()
   inputs:
     testRunner: VSTest
-    testResultsFiles: '**/*.trx 
-
-- task: PublishBuildArtifacts@1
-
+    testResultsFiles: '**/*.trx'
+    failOnStandardError: 'true'
