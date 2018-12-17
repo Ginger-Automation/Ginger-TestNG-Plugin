@@ -23,11 +23,10 @@ steps:
       failOnStandardError: 'true'
 
 - task: PublishTestResults@2
-  condition: succeeded()
+  condition: succeededOrFailed()
   inputs:
     testRunner: VSTest
-    testResultsFiles: '**/*.trx'
-    failOnStandardError: 'true'
+    testResultsFiles: '**/*.trx 
 
 - task: PublishBuildArtifacts@1
 
