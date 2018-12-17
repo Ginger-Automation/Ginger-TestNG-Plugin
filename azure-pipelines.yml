@@ -24,6 +24,7 @@ steps:
   inputs:
     testRunner: VSTest
     testResultsFiles: '**/*.trx'
+    failOnStandardError: 'true'
 
 - task: PublishBuildArtifacts@1
 
