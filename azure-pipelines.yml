@@ -9,6 +9,8 @@ trigger:
 pool:
   vmImage: 'VS2017-Win2016'
 
+- script: dotnet restore 
+
 steps:
 - script: |
     dotnet build --configuration $(buildConfiguration)
