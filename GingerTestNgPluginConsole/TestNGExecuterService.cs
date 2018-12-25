@@ -98,6 +98,48 @@ namespace GingerTestNgPluginConsole
             testNgExecuter.Execute();
         }
 
+        /// <summary>
+        /// Execute Java fully customized command
+        /// </summary>
+        /// <param name="GA"></param>
+        /// <param name="OverwriteMavenHomePath"></param>
+        /// <param name="MavenProjectFolderPath"></param>
+        /// <param name="FreeCommandArguments"></param>
+        /// <param name="CommandParametersToOverride"></param>
+        /// <param name="ParseConsoleOutputs"></param>
+        /// <param name="FailActionDueToConsoleErrors"></param>
+        /// <param name="ParseTestngResultsXml"></param>
+        /// <param name="OverwriteTestngResultsXmlDefaultFolderPath"></param>
+        /// <param name="FailActionDueToTestngResultsFailures"></param>
+        [GingerAction("ExecuteJavaFreeCommand", "Execute Java Free Command")]
+        public void ExecuteJavaFreeCommand(IGingerAction GA, string OverwriteJavaHomePath, string JavaWorkingFolderPath, string FreeCommandArguments,
+                       string TestngXmlPath, List<TestNGTestParameter> TestngXmlParametersToOverwrite, bool OverwriteOriginalTestngXml,
+                       bool ParseConsoleOutputs, bool FailActionDueToConsoleErrors,
+                       bool ParseTestngResultsXml, string OverwriteTestngResultsXmlDefaultFolderPath, bool FailActionDueToTestngResultsXmlFailures)
+        {
+            //Set execution configurations
+            TestNGExecution testNgExecuter = new TestNGExecution();
+            testNgExecuter.ExecuterType = TestNGExecution.eExecuterType.Java;
+            testNgExecuter.JavaProjectType = TestNGExecution.eJavaProjectType.Regular;
+            testNgExecuter.ExecutionMode = TestNGExecution.eExecutionMode.FreeCommand;
+            testNgExecuter.GingerAction = GA;
+
+            testNgExecuter.JavaExeFullPath = OverwriteJavaHomePath;
+            testNgExecuter.JavaWorkingFolder = JavaWorkingFolderPath;
+            testNgExecuter.FreeCommandArguments = FreeCommandArguments;
+
+            testNgExecuter.TestngXmlPath = TestngXmlPath;
+            testNgExecuter.TestngXmlParametersToOverwrite = TestngXmlParametersToOverwrite;
+            testNgExecuter.OverwriteOriginalTestngXml = OverwriteOriginalTestngXml;
+
+            testNgExecuter.ParseConsoleOutputs = ParseConsoleOutputs;
+            testNgExecuter.FailActionDueToConsoleErrors = FailActionDueToConsoleErrors;
+            testNgExecuter.ParseTestngResultsXml = ParseTestngResultsXml;
+            testNgExecuter.TestngResultsXmlFolderPath = OverwriteTestngResultsXmlDefaultFolderPath;
+            testNgExecuter.FailActionDueToTestngResultsXmlFailures = FailActionDueToTestngResultsXmlFailures;
+
+            testNgExecuter.Execute();
+        }
 
         /// <summary>
         /// Execute Maven fully customized command
