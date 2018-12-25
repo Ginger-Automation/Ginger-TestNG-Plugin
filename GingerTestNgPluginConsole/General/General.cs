@@ -1,6 +1,7 @@
 ﻿using Amdocs.Ginger.Plugin.Core;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace GingerTestNgPluginConsole
@@ -56,6 +57,28 @@ namespace GingerTestNgPluginConsole
             }
 
             return customStr;
+        }
+
+        public static bool OutputParamExist(GingerAction GA, string paramName, string paramValue = null)
+        {
+            IGingerActionOutputValue val = null;
+            if (paramValue == null)
+            {
+                val = GA.Output.OutputValues.Where(x => x.Param == paramName).FirstOrDefault();
+            }
+            else
+            {
+                val = GA.Output.OutputValues.Where(x => x.Param == paramName && x.Value.ToString() == paramValue).FirstOrDefault();
+            }
+
+            if (val == null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
     }
 }

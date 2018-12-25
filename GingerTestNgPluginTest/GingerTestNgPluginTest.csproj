@@ -68,90 +68,6 @@
     <None Update="TestResources\JavaTestNG\src\Calculator\testng.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="TestResources\JavaTestNG\test-output\bullet_point.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="TestResources\JavaTestNG\test-output\CalculatorTests\test1.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="TestResources\JavaTestNG\test-output\CalculatorTests\test1.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="TestResources\JavaTestNG\test-output\collapseall.gif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="TestResources\JavaTestNG\test-output\emailable-report.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="TestResources\JavaTestNG\test-output\failed.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="TestResources\JavaTestNG\test-output\index.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="TestResources\JavaTestNG\test-output\jquery-1.7.1.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="TestResources\JavaTestNG\test-output\junitreports\TEST-Calculator.CalculatorTests.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="TestResources\JavaTestNG\test-output\navigator-bullet.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="TestResources\JavaTestNG\test-output\old\CalculatorTests\classes.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="TestResources\JavaTestNG\test-output\old\CalculatorTests\groups.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="TestResources\JavaTestNG\test-output\old\CalculatorTests\index.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="TestResources\JavaTestNG\test-output\old\CalculatorTests\main.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="TestResources\JavaTestNG\test-output\old\CalculatorTests\methods-alphabetical.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="TestResources\JavaTestNG\test-output\old\CalculatorTests\methods-not-run.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="TestResources\JavaTestNG\test-output\old\CalculatorTests\methods.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="TestResources\JavaTestNG\test-output\old\CalculatorTests\reporter-output.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="TestResources\JavaTestNG\test-output\old\CalculatorTests\test1.properties">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="TestResources\JavaTestNG\test-output\old\CalculatorTests\testng.xml.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="TestResources\JavaTestNG\test-output\old\CalculatorTests\toc.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="TestResources\JavaTestNG\test-output\old\index.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="TestResources\JavaTestNG\test-output\passed.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="TestResources\JavaTestNG\test-output\skipped.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="TestResources\JavaTestNG\test-output\testng-reports.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="TestResources\JavaTestNG\test-output\testng-reports.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="TestResources\JavaTestNG\test-output\testng-results.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="TestResources\JavaTestNG\test-output\testng.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="TestResources\MavenTestNG\.classpath">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -170,7 +86,7 @@
     <None Update="TestResources\MavenTestNG\src\main\java\com\Calculator\testng.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="TestResources\Test-Results.xml">
+    <None Update="TestResources\testng-results.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="TestResources\TestNGxml.xml">

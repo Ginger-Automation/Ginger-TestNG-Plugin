@@ -33,9 +33,9 @@ namespace GingerTestNgPluginTest
             //Assert     
             Assert.AreEqual((GA.Errors == null || GA.Errors.Count() == 0), true, "No Execution Errors validation");
             Assert.AreEqual((GA.Output != null && GA.Output.OutputValues.Count > 0), true, "Execution Output values found validation");           
-            Assert.AreEqual(OutputParamExist(GA, "CalculatorTests- Suite Start Time"), true, "TestNg Report XML Suite details Parsing validation");
-            Assert.AreEqual(OutputParamExist(GA, @"test1\testMoltiple-Test Status", "PASS"), true, "TestNg Report XML Test 1 Status Parsing validation");
-            Assert.AreEqual(OutputParamExist(GA, @"test1\testSum-Test Status", "PASS"), true, "TestNg Report XML Test 2 Status Parsing validation");
+            Assert.AreEqual(General.OutputParamExist(GA, "CalculatorTests- Suite Start Time"), true, "TestNg Report XML Suite details Parsing validation");
+            Assert.AreEqual(General.OutputParamExist(GA, @"test1\testMoltiple-Test Status", "PASS"), true, "TestNg Report XML Test 1 Status Parsing validation");
+            Assert.AreEqual(General.OutputParamExist(GA, @"test1\testSum-Test Status", "PASS"), true, "TestNg Report XML Test 2 Status Parsing validation");
         }
 
         [TestMethod]
@@ -58,12 +58,12 @@ namespace GingerTestNgPluginTest
             //Assert              
             Assert.AreEqual((GA.Errors == null || GA.Errors.Count() == 0), true, "No Execution Errors validation");
             Assert.AreEqual((GA.Output != null && GA.Output.OutputValues.Count > 0), true, "Execution Output values found validation");
-            Assert.AreEqual(OutputParamExist(GA, "Multipliy Result", "30"), true, "Console Multipliy Output captured validation");
-            Assert.AreEqual(OutputParamExist(GA, "Sum Result", "11"), true, "Console Sum Output captured validation");
-            Assert.AreEqual(OutputParamExist(GA, "Total Passed Test Methods", "2"), true, "TestNg Report XML Statistics Parsing validation");
-            Assert.AreEqual(OutputParamExist(GA, "CalculatorTests- Suite Start Time"), true, "TestNg Report XML Suite details Parsing validation");
-            Assert.AreEqual(OutputParamExist(GA, @"test1\testMoltiple-Test Status", "PASS"), true, "TestNg Report XML Test 1 Status Parsing validation");
-            Assert.AreEqual(OutputParamExist(GA, @"test1\testSum-Test Status", "PASS"), true, "TestNg Report XML Test 2 Status Parsing validation");
+            Assert.AreEqual(General.OutputParamExist(GA, "Multipliy Result", "30"), true, "Console Multipliy Output captured validation");
+            Assert.AreEqual(General.OutputParamExist(GA, "Sum Result", "11"), true, "Console Sum Output captured validation");
+            Assert.AreEqual(General.OutputParamExist(GA, "Total Passed Test Methods", "2"), true, "TestNg Report XML Statistics Parsing validation");
+            Assert.AreEqual(General.OutputParamExist(GA, "CalculatorTests- Suite Start Time"), true, "TestNg Report XML Suite details Parsing validation");
+            Assert.AreEqual(General.OutputParamExist(GA, @"test1\testMoltiple-Test Status", "PASS"), true, "TestNg Report XML Test 1 Status Parsing validation");
+            Assert.AreEqual(General.OutputParamExist(GA, @"test1\testSum-Test Status", "PASS"), true, "TestNg Report XML Test 2 Status Parsing validation");
         }
 
 
@@ -87,12 +87,12 @@ namespace GingerTestNgPluginTest
             //Assert              
             Assert.AreEqual((GA.Errors == null || GA.Errors.Count() == 0), true, "No Execution Errors validation");
             Assert.AreEqual((GA.Output != null && GA.Output.OutputValues.Count > 0), true, "Execution Output values found validation");
-            Assert.AreEqual(OutputParamExist(GA, "Multipliy Result", "21"), true, "Console Multipliy Output captured validation");
-            Assert.AreEqual(OutputParamExist(GA, "Sum Result", "10"), true, "Console Sum Output captured validation");
-            Assert.AreEqual(OutputParamExist(GA, "Total Passed Test Methods", "2"), true, "TestNg Report XML Statistics Parsing validation");
-            Assert.AreEqual(OutputParamExist(GA, "CalculatorTests- Suite Start Time"), true, "TestNg Report XML Suite details Parsing validation");
-            Assert.AreEqual(OutputParamExist(GA, @"test1\testMoltiple-Test Status", "PASS"), true, "TestNg Report XML Test 1 Status Parsing validation");
-            Assert.AreEqual(OutputParamExist(GA, @"test1\testSum-Test Status", "PASS"), true, "TestNg Report XML Test 2 Status Parsing validation");
+            Assert.AreEqual(General.OutputParamExist(GA, "Multipliy Result", "21"), true, "Console Multipliy Output captured validation");
+            Assert.AreEqual(General.OutputParamExist(GA, "Sum Result", "10"), true, "Console Sum Output captured validation");
+            Assert.AreEqual(General.OutputParamExist(GA, "Total Passed Test Methods", "2"), true, "TestNg Report XML Statistics Parsing validation");
+            Assert.AreEqual(General.OutputParamExist(GA, "CalculatorTests- Suite Start Time"), true, "TestNg Report XML Suite details Parsing validation");
+            Assert.AreEqual(General.OutputParamExist(GA, @"test1\testMoltiple-Test Status", "PASS"), true, "TestNg Report XML Test 1 Status Parsing validation");
+            Assert.AreEqual(General.OutputParamExist(GA, @"test1\testSum-Test Status", "PASS"), true, "TestNg Report XML Test 2 Status Parsing validation");
         }
 
         [TestMethod]
@@ -116,12 +116,12 @@ namespace GingerTestNgPluginTest
             Assert.AreEqual((GA.Errors == null || GA.Errors.Count() == 0), true, "No Execution Errors validation");
             Assert.AreEqual(GA.ExInfo.Contains(string.Format("TestNG XML path: '{0}'", TestResources.GetTestResourcesFile(@"JavaTestNG\bin\Calculator\testng.xml"))), true, "Using original TestNG XML validation");
             Assert.AreEqual((GA.Output != null && GA.Output.OutputValues.Count > 0), true, "Execution Output values found validation");
-            Assert.AreEqual(OutputParamExist(GA, "Multipliy Result", "90"), true, "Console Multipliy Output captured validation");
-            Assert.AreEqual(OutputParamExist(GA, "Sum Result", "19"), true, "Console Sum Output captured validation");
-            Assert.AreEqual(OutputParamExist(GA, "Total Passed Test Methods", "2"), true, "TestNg Report XML Statistics Parsing validation");
-            Assert.AreEqual(OutputParamExist(GA, "CalculatorTests- Suite Start Time"), true, "TestNg Report XML Suite details Parsing validation");
-            Assert.AreEqual(OutputParamExist(GA, @"test1\testMoltiple-Test Status", "PASS"), true, "TestNg Report XML Test 1 Status Parsing validation");
-            Assert.AreEqual(OutputParamExist(GA, @"test1\testSum-Test Status", "PASS"), true, "TestNg Report XML Test 2 Status Parsing validation");
+            Assert.AreEqual(General.OutputParamExist(GA, "Multipliy Result", "90"), true, "Console Multipliy Output captured validation");
+            Assert.AreEqual(General.OutputParamExist(GA, "Sum Result", "19"), true, "Console Sum Output captured validation");
+            Assert.AreEqual(General.OutputParamExist(GA, "Total Passed Test Methods", "2"), true, "TestNg Report XML Statistics Parsing validation");
+            Assert.AreEqual(General.OutputParamExist(GA, "CalculatorTests- Suite Start Time"), true, "TestNg Report XML Suite details Parsing validation");
+            Assert.AreEqual(General.OutputParamExist(GA, @"test1\testMoltiple-Test Status", "PASS"), true, "TestNg Report XML Test 1 Status Parsing validation");
+            Assert.AreEqual(General.OutputParamExist(GA, @"test1\testSum-Test Status", "PASS"), true, "TestNg Report XML Test 2 Status Parsing validation");
         }
 
         [TestMethod]
@@ -141,9 +141,9 @@ namespace GingerTestNgPluginTest
             //Assert     
             Assert.AreEqual((GA.Errors == null || GA.Errors.Count() == 0), true, "No Execution Errors validation");
             Assert.AreEqual((GA.Output != null && GA.Output.OutputValues.Count > 0), true, "Execution Output values found validation");
-            Assert.AreEqual(OutputParamExist(GA, "CalculatorTests- Suite Start Time"), true, "TestNg Report XML Suite details Parsing validation");
-            Assert.AreEqual(OutputParamExist(GA, @"test1\testMoltiple-Test Status", "PASS"), true, "TestNg Report XML Test 1 Status Parsing validation");
-            Assert.AreEqual(OutputParamExist(GA, @"test1\testSum-Test Status", "PASS"), true, "TestNg Report XML Test 2 Status Parsing validation");
+            Assert.AreEqual(General.OutputParamExist(GA, "CalculatorTests- Suite Start Time"), true, "TestNg Report XML Suite details Parsing validation");
+            Assert.AreEqual(General.OutputParamExist(GA, @"test1\testMoltiple-Test Status", "PASS"), true, "TestNg Report XML Test 1 Status Parsing validation");
+            Assert.AreEqual(General.OutputParamExist(GA, @"test1\testSum-Test Status", "PASS"), true, "TestNg Report XML Test 2 Status Parsing validation");
         }
 
         [TestMethod]
@@ -167,12 +167,12 @@ namespace GingerTestNgPluginTest
             //Assert                      
             Assert.AreEqual((GA.Errors == null || GA.Errors.Count() == 0), true, "No Execution Errors validation");
             Assert.AreEqual((GA.Output != null && GA.Output.OutputValues.Count > 0), true, "Execution Output values found validation");
-            Assert.AreEqual(OutputParamExist(GA, "Multipliy Result", "28"), true, "Console Multipliy Output captured validation");
-            Assert.AreEqual(OutputParamExist(GA, "Sum Result", "11"), true, "Console Sum Output captured validation");
-            Assert.AreEqual(OutputParamExist(GA, "Total Passed Test Methods", "2"), true, "TestNg Report XML Statistics Parsing validation");
-            Assert.AreEqual(OutputParamExist(GA, "CalculatorTests- Suite Start Time"), true, "TestNg Report XML Suite details Parsing validation");
-            Assert.AreEqual(OutputParamExist(GA, @"test1\testMoltiple-Test Status", "PASS"), true, "TestNg Report XML Test 1 Status Parsing validation");
-            Assert.AreEqual(OutputParamExist(GA, @"test1\testSum-Test Status", "PASS"), true, "TestNg Report XML Test 2 Status Parsing validation");
+            Assert.AreEqual(General.OutputParamExist(GA, "Multipliy Result", "28"), true, "Console Multipliy Output captured validation");
+            Assert.AreEqual(General.OutputParamExist(GA, "Sum Result", "11"), true, "Console Sum Output captured validation");
+            Assert.AreEqual(General.OutputParamExist(GA, "Total Passed Test Methods", "2"), true, "TestNg Report XML Statistics Parsing validation");
+            Assert.AreEqual(General.OutputParamExist(GA, "CalculatorTests- Suite Start Time"), true, "TestNg Report XML Suite details Parsing validation");
+            Assert.AreEqual(General.OutputParamExist(GA, @"test1\testMoltiple-Test Status", "PASS"), true, "TestNg Report XML Test 1 Status Parsing validation");
+            Assert.AreEqual(General.OutputParamExist(GA, @"test1\testSum-Test Status", "PASS"), true, "TestNg Report XML Test 2 Status Parsing validation");
         }
 
         [TestMethod]
@@ -191,9 +191,9 @@ namespace GingerTestNgPluginTest
             //Assert     
             Assert.AreEqual((GA.Errors == null || GA.Errors.Count() == 0), true, "No Execution Errors validation");
             Assert.AreEqual((GA.Output != null && GA.Output.OutputValues.Count > 0), true, "Execution Output values found validation");
-            Assert.AreEqual(OutputParamExist(GA, "CalculatorTests- Suite Start Time"), true, "TestNg Report XML Suite details Parsing validation");
-            Assert.AreEqual(OutputParamExist(GA, @"test1\testMoltiple-Test Status", "PASS"), true, "TestNg Report XML Test 1 Status Parsing validation");
-            Assert.AreEqual(OutputParamExist(GA, @"test1\testSum-Test Status", "PASS"), true, "TestNg Report XML Test 2 Status Parsing validation");
+            Assert.AreEqual(General.OutputParamExist(GA, "CalculatorTests- Suite Start Time"), true, "TestNg Report XML Suite details Parsing validation");
+            Assert.AreEqual(General.OutputParamExist(GA, @"test1\testMoltiple-Test Status", "PASS"), true, "TestNg Report XML Test 1 Status Parsing validation");
+            Assert.AreEqual(General.OutputParamExist(GA, @"test1\testSum-Test Status", "PASS"), true, "TestNg Report XML Test 2 Status Parsing validation");
         }
 
         [TestMethod] 
@@ -213,9 +213,9 @@ namespace GingerTestNgPluginTest
             //Assert     
             Assert.AreEqual((GA.Errors == null || GA.Errors.Count() == 0), true, "No Execution Errors validation");
             Assert.AreEqual((GA.Output != null && GA.Output.OutputValues.Count > 0), true, "Execution Output values found validation");
-            Assert.AreEqual(OutputParamExist(GA, "CalculatorTests- Suite Start Time"), true, "TestNg Report XML Suite details Parsing validation");
-            Assert.AreEqual(OutputParamExist(GA, @"test1\testMoltiple-Test Status", "PASS"), true, "TestNg Report XML Test 1 Status Parsing validation");
-            Assert.AreEqual(OutputParamExist(GA, @"test1\testSum-Test Status", "PASS"), true, "TestNg Report XML Test 2 Status Parsing validation");
+            Assert.AreEqual(General.OutputParamExist(GA, "CalculatorTests- Suite Start Time"), true, "TestNg Report XML Suite details Parsing validation");
+            Assert.AreEqual(General.OutputParamExist(GA, @"test1\testMoltiple-Test Status", "PASS"), true, "TestNg Report XML Test 1 Status Parsing validation");
+            Assert.AreEqual(General.OutputParamExist(GA, @"test1\testSum-Test Status", "PASS"), true, "TestNg Report XML Test 2 Status Parsing validation");
         }
 
         [TestMethod]
@@ -239,12 +239,12 @@ namespace GingerTestNgPluginTest
             //Assert                      
             Assert.AreEqual((GA.Errors == null || GA.Errors.Count() == 0), true, "No Execution Errors validation");
             Assert.AreEqual((GA.Output != null && GA.Output.OutputValues.Count > 0), true, "Execution Output values found validation");
-            Assert.AreEqual(OutputParamExist(GA, "Multipliy Result", "20"), true, "Console Multipliy Output captured validation");
-            Assert.AreEqual(OutputParamExist(GA, "Sum Result", "9"), true, "Console Sum Output captured validation");
-            Assert.AreEqual(OutputParamExist(GA, "Total Passed Test Methods", "2"), true, "TestNg Report XML Statistics Parsing validation");
-            Assert.AreEqual(OutputParamExist(GA, "CalculatorTests- Suite Start Time"), true, "TestNg Report XML Suite details Parsing validation");
-            Assert.AreEqual(OutputParamExist(GA, @"test1\testMoltiple-Test Status", "PASS"), true, "TestNg Report XML Test 1 Status Parsing validation");
-            Assert.AreEqual(OutputParamExist(GA, @"test1\testSum-Test Status", "PASS"), true, "TestNg Report XML Test 2 Status Parsing validation");
+            Assert.AreEqual(General.OutputParamExist(GA, "Multipliy Result", "20"), true, "Console Multipliy Output captured validation");
+            Assert.AreEqual(General.OutputParamExist(GA, "Sum Result", "9"), true, "Console Sum Output captured validation");
+            Assert.AreEqual(General.OutputParamExist(GA, "Total Passed Test Methods", "2"), true, "TestNg Report XML Statistics Parsing validation");
+            Assert.AreEqual(General.OutputParamExist(GA, "CalculatorTests- Suite Start Time"), true, "TestNg Report XML Suite details Parsing validation");
+            Assert.AreEqual(General.OutputParamExist(GA, @"test1\testMoltiple-Test Status", "PASS"), true, "TestNg Report XML Test 1 Status Parsing validation");
+            Assert.AreEqual(General.OutputParamExist(GA, @"test1\testSum-Test Status", "PASS"), true, "TestNg Report XML Test 2 Status Parsing validation");
         }
 
         [TestMethod]
@@ -268,36 +268,16 @@ namespace GingerTestNgPluginTest
             //Assert                      
             Assert.AreEqual((GA.Errors == null || GA.Errors.Count() == 0), true, "No Execution Errors validation");
             Assert.AreEqual((GA.Output != null && GA.Output.OutputValues.Count > 0), true, "Execution Output values found validation");
-            Assert.AreEqual(OutputParamExist(GA, "Multipliy Result", "42"), true, "Console Multipliy Output captured validation");
-            Assert.AreEqual(OutputParamExist(GA, "Sum Result", "13"), true, "Console Sum Output captured validation");
-            Assert.AreEqual(OutputParamExist(GA, "Total Passed Test Methods", "2"), true, "TestNg Report XML Statistics Parsing validation");
-            Assert.AreEqual(OutputParamExist(GA, "CalculatorTests- Suite Start Time"), true, "TestNg Report XML Suite details Parsing validation");
-            Assert.AreEqual(OutputParamExist(GA, @"test1\testMoltiple-Test Status", "PASS"), true, "TestNg Report XML Test 1 Status Parsing validation");
-            Assert.AreEqual(OutputParamExist(GA, @"test1\testSum-Test Status", "PASS"), true, "TestNg Report XML Test 2 Status Parsing validation");
+            Assert.AreEqual(General.OutputParamExist(GA, "Multipliy Result", "42"), true, "Console Multipliy Output captured validation");
+            Assert.AreEqual(General.OutputParamExist(GA, "Sum Result", "13"), true, "Console Sum Output captured validation");
+            Assert.AreEqual(General.OutputParamExist(GA, "Total Passed Test Methods", "2"), true, "TestNg Report XML Statistics Parsing validation");
+            Assert.AreEqual(General.OutputParamExist(GA, "CalculatorTests- Suite Start Time"), true, "TestNg Report XML Suite details Parsing validation");
+            Assert.AreEqual(General.OutputParamExist(GA, @"test1\testMoltiple-Test Status", "PASS"), true, "TestNg Report XML Test 1 Status Parsing validation");
+            Assert.AreEqual(General.OutputParamExist(GA, @"test1\testSum-Test Status", "PASS"), true, "TestNg Report XML Test 2 Status Parsing validation");
         }
 
 
-        private bool OutputParamExist(GingerAction GA, string paramName, string paramValue=null)
-        {
-            IGingerActionOutputValue val = null;
-            if (paramValue == null)
-            {
-                val = GA.Output.OutputValues.Where(x => x.Param == paramName).FirstOrDefault();
-            }
-            else
-            {
-                val = GA.Output.OutputValues.Where(x => x.Param == paramName && x.Value.ToString() == paramValue).FirstOrDefault();
-            }
 
-            if (val == null)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
 
     }
 }
