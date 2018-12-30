@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using Amdocs.Ginger.Plugin.Core;
+using System.Runtime.InteropServices;
 
 namespace GingerTestNgPluginConsole
 {
@@ -42,7 +43,10 @@ namespace GingerTestNgPluginConsole
                 }
                 else
                 {
-                    ReportXmlFilePath = Path.GetFullPath(ReportXmlFilePath);
+                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                    {
+                        ReportXmlFilePath = Path.GetFullPath(ReportXmlFilePath);
+                    }
                     if (File.Exists(ReportXmlFilePath) == false)
                     {
                         LoadError = String.Format("Failed to find the TestNG Report XML file at: '{0}'", ReportXmlFilePath);

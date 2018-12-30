@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Xml;
 
 namespace GingerTestNgPluginConsole
@@ -69,7 +70,10 @@ namespace GingerTestNgPluginConsole
                 }
                 else
                 {
-                    XmlFilePath = Path.GetFullPath(XmlFilePath);
+                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                    {
+                        XmlFilePath = Path.GetFullPath(XmlFilePath);
+                    }
                     if (File.Exists(XmlFilePath) == false)
                     {
                         LoadError = String.Format("Failed to find the TestNG XML file at: '{0}'", XmlFilePath);

@@ -27,10 +27,10 @@ namespace GingerTestNgPluginTest
             testNgExecuter.JavaExeFullPath = null;
 
             //Assert           
-            Assert.IsTrue(testNgExecuter.JavaExeFullPath != null, "JavaExeFullPath is not Null");
-            Assert.IsTrue(Path.GetDirectoryName(testNgExecuter.JavaExeFullPath).ToLower().Contains(@"\bin"), "JavaExeFullPath pointing to bin folder");
-            Assert.IsTrue(Path.GetFileName(testNgExecuter.JavaExeFullPath).ToLower() == "java.exe", "JavaExeFullPath pointing to java.exe file");
-            Assert.IsTrue(File.Exists(testNgExecuter.JavaExeFullPath), "JavaExeFullPath pointing to java.exe file which exist");
+            Assert.IsTrue(testNgExecuter.JavaExeFullPath != null, string.Format("JavaExeFullPath- '{0}'-  is not Null", testNgExecuter.JavaExeFullPath));
+            Assert.IsTrue(Path.GetDirectoryName(testNgExecuter.JavaExeFullPath).ToLower().Contains(@"bin"), string.Format("JavaExeFullPath- '{0}'-  pointing to bin folder", testNgExecuter.JavaExeFullPath) );
+            Assert.IsTrue(Path.GetFileName(testNgExecuter.JavaExeFullPath).ToLower().Contains("java"), string.Format("JavaExeFullPath- '{0}'- pointing to java.exe file", testNgExecuter.JavaExeFullPath) );
+            Assert.IsTrue(File.Exists(testNgExecuter.JavaExeFullPath), string.Format("JavaExeFullPath- '{0}'- pointing to java.exe file which exist", testNgExecuter.JavaExeFullPath) );
         }
 
         [TestMethod]
@@ -46,7 +46,7 @@ namespace GingerTestNgPluginTest
             testNgExecuter.JavaExeFullPath = "\"C:\\Program Files\\Java\\jdk1.8.0_191\"";
 
             //Assert                  
-            Assert.IsTrue(testNgExecuter.JavaExeFullPath == @"C:\Program Files\Java\jdk1.8.0_191\bin\java.exe", "JavaExeFullPath pointing to bin\\java.exe file");
+            Assert.IsTrue(General.CompareWithoutSleshSensitivity(testNgExecuter.JavaExeFullPath, @"C:\Program Files\Java\jdk1.8.0_191\bin\java", General.eCompareType.Contains), string.Format("JavaExeFullPath '{0}' pointing to bin\\java file", testNgExecuter.JavaExeFullPath));
         }
 
         [TestMethod]
@@ -62,8 +62,8 @@ namespace GingerTestNgPluginTest
             testNgExecuter.JavaProjectBinPath = @"C:\Users\menik\eclipse-workspace\Learn-TestNG";
 
             //Assert           
-            Assert.IsTrue(testNgExecuter.JavaProjectBinPath.ToLower().Contains(@"\bin"), "JavaProjectBinPath pointing to bin folder");
-            Assert.IsTrue(testNgExecuter.JavaProjectBinPath == @"C:\Users\menik\eclipse-workspace\Learn-TestNG\bin", "JavaProjectBinPath pointing to bin folder");
+            Assert.IsTrue(testNgExecuter.JavaProjectBinPath.ToLower().Contains(@"bin"), "JavaProjectBinPath pointing to bin folder");
+            Assert.IsTrue(General.CompareWithoutSleshSensitivity(testNgExecuter.JavaProjectBinPath, @"C:\Users\menik\eclipse-workspace\Learn-TestNG\bin", General.eCompareType.Equal), "JavaProjectBinPath pointing to bin folder");
         }
 
         [TestMethod]
@@ -79,8 +79,8 @@ namespace GingerTestNgPluginTest
             testNgExecuter.JavaProjectResourcesPath = @"C:\TestNG\";
 
             //Assert           
-            Assert.IsTrue(Path.GetFileName(testNgExecuter.JavaProjectResourcesPath).ToLower() == "*", "JavaProjectResourcesPath having *");
-            Assert.IsTrue(testNgExecuter.JavaProjectResourcesPath == @"C:\TestNG\*", "JavaProjectResourcesPath having *");
+            Assert.IsTrue(Path.GetFileName(testNgExecuter.JavaProjectResourcesPath).ToLower() == "*", string.Format("JavaProjectResourcesPath '{0}' having *", testNgExecuter.JavaProjectResourcesPath));
+            Assert.IsTrue(General.CompareWithoutSleshSensitivity(testNgExecuter.JavaProjectResourcesPath, @"C:\TestNG\*", General.eCompareType.Equal), string.Format("JavaProjectResourcesPath '{0}' having path with *", testNgExecuter.JavaProjectResourcesPath));
         }
 
         /// <summary>
@@ -100,9 +100,9 @@ namespace GingerTestNgPluginTest
 
             //Assert           
             Assert.IsTrue(testNgExecuter.MavenCmdFullPath != null, "MavenCmdFullPath is not Null");
-            Assert.IsTrue(Path.GetDirectoryName(testNgExecuter.MavenCmdFullPath).ToLower().Contains(@"\bin"), "MavenCmdFullPath pointing to bin folder");
-            Assert.IsTrue(Path.GetFileName(testNgExecuter.MavenCmdFullPath).ToLower() == "mvn.cmd", "MavenCmdFullPath pointing to java.exe file");
-            Assert.IsTrue(File.Exists(testNgExecuter.MavenCmdFullPath), "MavenCmdFullPath pointing to mvn.cmd file which exist");
+            Assert.IsTrue(Path.GetDirectoryName(testNgExecuter.MavenCmdFullPath).ToLower().Contains(@"bin"), "MavenCmdFullPath pointing to bin folder");
+            Assert.IsTrue(Path.GetFileName(testNgExecuter.MavenCmdFullPath).ToLower().Contains("mvn"), "MavenCmdFullPath pointing to java.exe file");
+            Assert.IsTrue(File.Exists(testNgExecuter.MavenCmdFullPath), "MavenCmdFullPath pointing to mvn file which exist");
         }
 
         [TestMethod]
@@ -118,7 +118,7 @@ namespace GingerTestNgPluginTest
             testNgExecuter.MavenCmdFullPath = @"C:\TestNG\PBG Flows\apache-maven-3.5.3";
 
             //Assert           
-            Assert.IsTrue(testNgExecuter.MavenCmdFullPath == @"C:\TestNG\PBG Flows\apache-maven-3.5.3\bin\mvn.cmd", "MavenCmdFullPath pointing to bin\\mvn.cmd file");
+            Assert.IsTrue(General.CompareWithoutSleshSensitivity(testNgExecuter.MavenCmdFullPath, @"C:\TestNG\PBG Flows\apache-maven-3.5.3\bin\mvn", General.eCompareType.Contains), "MavenCmdFullPath pointing to bin\\mvn.cmd file");
         }
 
         [TestMethod]
@@ -166,7 +166,7 @@ namespace GingerTestNgPluginTest
             testNgExecuter.TestngXmlPath = "\"\\src\\Calculator\\testng.xml\"";
 
             //Assert                  
-            Assert.IsTrue(testNgExecuter.TestngXmlPath == @"C:\Users\menik\eclipse-workspace\Learn-TestNG\src\Calculator\testng.xml", "Relative TestngXmlPath been converted to full path");
+            Assert.IsTrue(General.CompareWithoutSleshSensitivity(testNgExecuter.TestngXmlPath, @"C:\Users\menik\eclipse-workspace\Learn-TestNG\src\Calculator\testng.xml", General.eCompareType.Equal), string.Format("Relative TestngXmlPath '{0}' been converted to full path", testNgExecuter.TestngXmlPath));
         }
 
         [TestMethod]
@@ -182,7 +182,7 @@ namespace GingerTestNgPluginTest
             testNgExecuter.TestngXmlPath = @"src\Calculator\testng.xml";
 
             //Assert                  
-            Assert.IsTrue(testNgExecuter.TestngXmlPath == @"C:\Users\menik\eclipse-workspace\Learn-TestNG\src\Calculator\testng.xml", "Relative TestngXmlPath been converted to full path");
+            Assert.IsTrue(General.CompareWithoutSleshSensitivity(testNgExecuter.TestngXmlPath, @"C:\Users\menik\eclipse-workspace\Learn-TestNG\src\Calculator\testng.xml", General.eCompareType.Equal), "Relative TestngXmlPath been converted to full path");
         }
 
         [TestMethod]
@@ -198,7 +198,7 @@ namespace GingerTestNgPluginTest
             testNgExecuter.TestngXmlPath = @"src\Calculator\testng.xml";
 
             //Assert                  
-            Assert.IsTrue(testNgExecuter.TestngXmlPath == @"C:\Users\menik\eclipse-workspace\Learn-TestNG\src\Calculator\testng.xml", "Relative TestngXmlPath been converted to full path");
+            Assert.IsTrue(General.CompareWithoutSleshSensitivity(testNgExecuter.TestngXmlPath, @"C:\Users\menik\eclipse-workspace\Learn-TestNG\src\Calculator\testng.xml", General.eCompareType.Equal), "Relative TestngXmlPath been converted to full path");
         }
 
         [TestMethod]
@@ -214,7 +214,7 @@ namespace GingerTestNgPluginTest
             testNgExecuter.TestngXmlPath = @"\src\test\resources\fit\flowSuites\Dynamic Device from CouchBase.xml";
 
             //Assert                  
-            Assert.IsTrue(testNgExecuter.TestngXmlPath == @"C:\TestNG_WORKSPACE\PBG Flows\order_capture_test\src\test\resources\fit\flowSuites\Dynamic Device from CouchBase.xml", "Relative TestngXmlPath been converted to full path");
+            Assert.IsTrue(General.CompareWithoutSleshSensitivity(testNgExecuter.TestngXmlPath, @"C:\TestNG_WORKSPACE\PBG Flows\order_capture_test\src\test\resources\fit\flowSuites\Dynamic Device from CouchBase.xml", General.eCompareType.Equal), "Relative TestngXmlPath been converted to full path");
         }
 
         [TestMethod]
@@ -230,7 +230,7 @@ namespace GingerTestNgPluginTest
             testNgExecuter.TestngXmlPath = @"src\test\resources\fit\flowSuites\Dynamic Device from CouchBase.xml";
 
             //Assert                  
-            Assert.IsTrue(testNgExecuter.TestngXmlPath == @"C:\TestNG_WORKSPACE\PBG Flows\order_capture_test\src\test\resources\fit\flowSuites\Dynamic Device from CouchBase.xml", "Relative TestngXmlPath been converted to full path");
+            Assert.IsTrue(General.CompareWithoutSleshSensitivity(testNgExecuter.TestngXmlPath, @"C:\TestNG_WORKSPACE\PBG Flows\order_capture_test\src\test\resources\fit\flowSuites\Dynamic Device from CouchBase.xml", General.eCompareType.Equal), "Relative TestngXmlPath been converted to full path");
         }
 
         [TestMethod]
@@ -246,7 +246,7 @@ namespace GingerTestNgPluginTest
             testNgExecuter.TestngResultsXmlFolderPath = @"\report";
 
             //Assert                  
-            Assert.IsTrue(testNgExecuter.TestngResultsXmlFolderPath == @"C:\Users\menik\eclipse-workspace\Learn-TestNG\report", "Relative TestngResultsXmlFolderPath been converted to full path");
+            Assert.IsTrue(General.CompareWithoutSleshSensitivity(testNgExecuter.TestngResultsXmlFolderPath,  @"C:\Users\menik\eclipse-workspace\Learn-TestNG\report", General.eCompareType.Equal), "Relative TestngResultsXmlFolderPath been converted to full path");
         }
 
         [TestMethod]
@@ -262,7 +262,7 @@ namespace GingerTestNgPluginTest
             testNgExecuter.TestngResultsXmlFolderPath = @"\report";
 
             //Assert                  
-            Assert.IsTrue(testNgExecuter.TestngResultsXmlFolderPath == @"C:\TestNG_WORKSPACE\PBG Flows\order_capture_test\report", "Relative TestngResultsXmlFolderPath been converted to full path");
+            Assert.IsTrue(General.CompareWithoutSleshSensitivity(testNgExecuter.TestngResultsXmlFolderPath, @"C:\TestNG_WORKSPACE\PBG Flows\order_capture_test\report", General.eCompareType.Equal), "Relative TestngResultsXmlFolderPath been converted to full path");
         }
     }
 }
