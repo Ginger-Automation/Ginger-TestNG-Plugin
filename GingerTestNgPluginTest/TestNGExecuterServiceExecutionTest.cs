@@ -4,6 +4,7 @@ using GingerTestNgPlugin;
 using GingerTestNgPluginConsole;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace GingerTestNgPluginTest
@@ -25,8 +26,8 @@ namespace GingerTestNgPluginTest
             GingerAction GA = new GingerAction();
 
             //Act
-            service.ExecuteTestNGXML(GA, OverwriteJavaHomePath:null, JavaProjectBinPath: TestResources.GetTestResourcesFolder(@"JavaTestNG\bin"), JavaProjectResourcesPath: TestResources.GetTestResourcesFolder(@"JavaTestNG\Resources"),
-                                   TestngXmlPath: TestResources.GetTestResourcesFile(@"JavaTestNG\bin\Calculator\testng.xml"), TestngXmlParametersToOverwrite:null, OverwriteOriginalTestngXml:false,
+            service.ExecuteTestNGXML(GA, OverwriteJavaHomePath:null, JavaProjectBinPath: Path.Combine(TestResources.GetTestResourcesFolder(@"JavaTestNG"), "bin"), JavaProjectResourcesPath: Path.Combine(TestResources.GetTestResourcesFolder("JavaTestNG"), "Resources"),
+                                   TestngXmlPath: Path.Combine(TestResources.GetTestResourcesFolder("JavaTestNG"), "bin", "Calculator", "testng.xml"), TestngXmlParametersToOverwrite:null, OverwriteOriginalTestngXml:false,
                                    ParseConsoleOutputs:false, FailActionDueToConsoleErrors:false,
                                    ParseTestngResultsXml:true, OverwriteTestngResultsXmlDefaultFolderPath: null, FailActionDueToTestngResultsXmlFailures: true);
 
@@ -50,8 +51,8 @@ namespace GingerTestNgPluginTest
             paramsToOveride.Add(new TestNGTestParameter() { Name = "Num2", Value = "6" });
 
             //Act
-            service.ExecuteTestNGXML(GA, OverwriteJavaHomePath: null, JavaProjectBinPath: TestResources.GetTestResourcesFolder(@"JavaTestNG\bin"), JavaProjectResourcesPath: TestResources.GetTestResourcesFolder(@"JavaTestNG\Resources"),
-                                   TestngXmlPath: TestResources.GetTestResourcesFile(@"JavaTestNG\bin\Calculator\testng.xml"), TestngXmlParametersToOverwrite: paramsToOveride, OverwriteOriginalTestngXml: false,
+            service.ExecuteTestNGXML(GA, OverwriteJavaHomePath: null, JavaProjectBinPath: Path.Combine(TestResources.GetTestResourcesFolder("JavaTestNG"),"bin"), JavaProjectResourcesPath: Path.Combine(TestResources.GetTestResourcesFolder("JavaTestNG"),"Resources"),
+                                   TestngXmlPath: Path.Combine(TestResources.GetTestResourcesFolder("JavaTestNG"),"bin", "Calculator", "testng.xml"), TestngXmlParametersToOverwrite: paramsToOveride, OverwriteOriginalTestngXml: false,
                                    ParseConsoleOutputs: true, FailActionDueToConsoleErrors: false,
                                    ParseTestngResultsXml: true, OverwriteTestngResultsXmlDefaultFolderPath: null, FailActionDueToTestngResultsXmlFailures: true);
 
@@ -79,8 +80,8 @@ namespace GingerTestNgPluginTest
             paramsToOveride.Add(new TestNGTestParameter() { Name = "Num2", Value = "3" });
 
             //Act
-            service.ExecuteTestNGXML(GA, OverwriteJavaHomePath: null, JavaProjectBinPath: TestResources.GetTestResourcesFolder(@"JavaTestNG\bin"), JavaProjectResourcesPath: TestResources.GetTestResourcesFolder(@"JavaTestNG\Resources"),
-                                   TestngXmlPath: TestResources.GetTestResourcesFile(@"JavaTestNG\bin\Calculator\testng.xml"), TestngXmlParametersToOverwrite: paramsToOveride, OverwriteOriginalTestngXml: false,
+            service.ExecuteTestNGXML(GA, OverwriteJavaHomePath: null, JavaProjectBinPath: Path.Combine(TestResources.GetTestResourcesFolder("JavaTestNG"),"bin"), JavaProjectResourcesPath: Path.Combine(TestResources.GetTestResourcesFolder("JavaTestNG"),"Resources"),
+                                   TestngXmlPath: Path.Combine(TestResources.GetTestResourcesFolder("JavaTestNG"), "bin", "Calculator", "testng.xml"), TestngXmlParametersToOverwrite: paramsToOveride, OverwriteOriginalTestngXml: false,
                                    ParseConsoleOutputs: true, FailActionDueToConsoleErrors: true,
                                    ParseTestngResultsXml: true, OverwriteTestngResultsXmlDefaultFolderPath: null, FailActionDueToTestngResultsXmlFailures: true);
 
@@ -107,8 +108,8 @@ namespace GingerTestNgPluginTest
             paramsToOveride.Add(new TestNGTestParameter() { Name = "Num2", Value = "10" });
 
             //Act
-            service.ExecuteTestNGXML(GA, OverwriteJavaHomePath: null, JavaProjectBinPath: TestResources.GetTestResourcesFolder(@"JavaTestNG\bin"), JavaProjectResourcesPath: TestResources.GetTestResourcesFolder(@"JavaTestNG\Resources"),
-                                   TestngXmlPath: TestResources.GetTestResourcesFile(@"JavaTestNG\bin\Calculator\testng.xml"), TestngXmlParametersToOverwrite: paramsToOveride, OverwriteOriginalTestngXml: true,
+            service.ExecuteTestNGXML(GA, OverwriteJavaHomePath: null, JavaProjectBinPath: Path.Combine(TestResources.GetTestResourcesFolder("JavaTestNG"),"bin"), JavaProjectResourcesPath: Path.Combine(TestResources.GetTestResourcesFolder("JavaTestNG"),"Resources"),
+                                   TestngXmlPath: Path.Combine(TestResources.GetTestResourcesFolder("JavaTestNG"), "bin", "Calculator", "testng.xml"), TestngXmlParametersToOverwrite: paramsToOveride, OverwriteOriginalTestngXml: true,
                                    ParseConsoleOutputs: true, FailActionDueToConsoleErrors: true,
                                    ParseTestngResultsXml: true, OverwriteTestngResultsXmlDefaultFolderPath: null, FailActionDueToTestngResultsXmlFailures: true);
 
@@ -133,7 +134,7 @@ namespace GingerTestNgPluginTest
 
             //Act
             service.ExecuteJavaFreeCommand(GA, OverwriteJavaHomePath: null, JavaWorkingFolderPath: TestResources.GetTestResourcesFolder(@"JavaTestNG"),
-                                   FreeCommandArguments: string.Format("java -cp \"{0};{1}\\*\" org.testng.TestNG \"src\\Calculator\\testng.xml\"", TestResources.GetTestResourcesFolder(@"JavaTestNG\bin"), TestResources.GetTestResourcesFolder(@"JavaTestNG\Resources")),
+                                   FreeCommandArguments: string.Format("java -cp \"{0};{1}\" org.testng.TestNG \"{2}\"", Path.Combine(TestResources.GetTestResourcesFolder("JavaTestNG"),"bin"), Path.Combine(TestResources.GetTestResourcesFolder("JavaTestNG"),"Resources","*"), Path.Combine("src","Calculator","testng.xml")),
                                    TestngXmlPath: null, TestngXmlParametersToOverwrite: null, OverwriteOriginalTestngXml: false,
                                    ParseConsoleOutputs: false, FailActionDueToConsoleErrors: false,
                                    ParseTestngResultsXml: true, OverwriteTestngResultsXmlDefaultFolderPath: TestResources.GetTestResourcesFolder(@"JavaTestNG\test-output"), FailActionDueToTestngResultsXmlFailures: true);
@@ -159,7 +160,7 @@ namespace GingerTestNgPluginTest
 
             //Act
             service.ExecuteJavaFreeCommand(GA, OverwriteJavaHomePath: null, JavaWorkingFolderPath: TestResources.GetTestResourcesFolder(@"JavaTestNG"),
-                                   FreeCommandArguments: string.Format("java -cp \"{0};{1}\\*\" org.testng.TestNG \"src\\Calculator\\testng.xml\"", TestResources.GetTestResourcesFolder(@"JavaTestNG\bin"), TestResources.GetTestResourcesFolder(@"JavaTestNG\Resources")),
+                                   FreeCommandArguments: string.Format("java -cp \"{0};{1}\" org.testng.TestNG \"{2}\"", Path.Combine(TestResources.GetTestResourcesFolder("JavaTestNG"), "bin"), Path.Combine(TestResources.GetTestResourcesFolder("JavaTestNG"), "Resources", "*"), Path.Combine("src", "Calculator", "testng.xml")),
                                    TestngXmlPath: @"src\Calculator\testng.xml", TestngXmlParametersToOverwrite: paramsToOveride, OverwriteOriginalTestngXml: false,
                                    ParseConsoleOutputs: true, FailActionDueToConsoleErrors: false,
                                    ParseTestngResultsXml: true, OverwriteTestngResultsXmlDefaultFolderPath: TestResources.GetTestResourcesFolder(@"JavaTestNG\test-output"), FailActionDueToTestngResultsXmlFailures: true);

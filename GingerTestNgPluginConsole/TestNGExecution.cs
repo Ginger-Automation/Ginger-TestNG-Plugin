@@ -457,26 +457,26 @@ namespace GingerTestNgPluginConsole
 
             if (ExecuterType == eExecuterType.Java)
             {
-                if (Path.GetFileName(JavaExeFullPath).ToLower() != "java.exe" || File.Exists(JavaExeFullPath) == false)
+                if (Path.GetFileName(JavaExeFullPath).ToLower().Contains("java") == false || File.Exists(JavaExeFullPath) == false)
                 {
-                    General.AddErrorToConsoleAndAction(GingerAction, String.Format("Failed to find java.exe file at: '{0}'", JavaExeFullPath));
+                    General.AddErrorToConsoleAndAction(GingerAction, String.Format("Failed to find Java Executor file at: '{0}'", JavaExeFullPath));
                     return false;
                 }
                 else
                 {
-                    General.AddInfoToConsoleAndAction(GingerAction, String.Format("Path of java.exe file: '{0}'", JavaExeFullPath));
+                    General.AddInfoToConsoleAndAction(GingerAction, String.Format("Path of Java Executor file: '{0}'", JavaExeFullPath));
                 }
             }
             else//Maven Executer
             {
-                if (Path.GetFileName(MavenCmdFullPath).ToLower() != "mvn.cmd" || File.Exists(MavenCmdFullPath) == false)
+                if (Path.GetFileName(MavenCmdFullPath).ToLower().Contains("mvn") == false || File.Exists(MavenCmdFullPath) == false)
                 {
-                    General.AddErrorToConsoleAndAction(GingerAction, String.Format("Failed to find mvn.cmd file at: '{0}'", MavenCmdFullPath));
+                    General.AddErrorToConsoleAndAction(GingerAction, String.Format("Failed to find MVN Executor file at: '{0}'", MavenCmdFullPath));
                     return false;
                 }
                 else
                 {
-                    General.AddInfoToConsoleAndAction(GingerAction, String.Format("Path of mvn.cmd file: '{0}'", MavenCmdFullPath));
+                    General.AddInfoToConsoleAndAction(GingerAction, String.Format("Path of MVN Executor file: '{0}'", MavenCmdFullPath));
                 }
             }
 
@@ -842,7 +842,14 @@ namespace GingerTestNgPluginConsole
             command.ExecuterFilePath = string.Format("\"{0}\"", JavaExeFullPath);
 
             //class path
-            command.Arguments = string.Format(" -cp \"{0}\";\"{1}\"", JavaProjectBinPath, JavaProjectResourcesPath);
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                command.Arguments = string.Format(" -cp \"{0}\";\"{1}\"", JavaProjectBinPath, JavaProjectResourcesPath);
+            }
+            else//Linux
+            {
+                command.Arguments = string.Format(" -cp \"{0}\":\"{1}\"", JavaProjectBinPath, JavaProjectResourcesPath);
+            }
 
             //testng test arguments
             command.Arguments += " org.testng.TestNG";

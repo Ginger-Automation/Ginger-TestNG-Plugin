@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace GingerTestNgPluginConsole
@@ -20,7 +21,14 @@ namespace GingerTestNgPluginConsole
                 }
                 else
                 {
-                    return string.Format("{0}>{1} {2}", WorkingFolder, ExecuterFilePath, Arguments);
+                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                    {
+                        return string.Format("{0}>{1} {2}", WorkingFolder, ExecuterFilePath, Arguments);
+                    }
+                    else//Linux
+                    {
+                        return string.Format("[user@server {0}]$ {1} {2}", WorkingFolder, ExecuterFilePath, Arguments);
+                    }
                 }
             }
         }
