@@ -3,6 +3,7 @@ using GingerTestHelper;
 using GingerTestNgPlugin;
 using GingerTestNgPluginConsole;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
 
 namespace GingerTestNgPluginTest
 {
@@ -50,8 +51,8 @@ namespace GingerTestNgPluginTest
             Assert.AreEqual(General.OutputParamExist(GA, "Total Failed Test Methods", "1"), true, "Output Value- 'Total Failed Test Methods' validation");
             Assert.AreEqual(General.OutputParamExist(GA, "Total Skipped Test Methods", "14"), true, "Output Value- 'Total Skipped Test Methods' validation");
             Assert.AreEqual(General.OutputParamExist(GA, "Total Ignored Test Methods", "83"), true, "Output Value- 'Total Ignored Test Methods' validation");
-            Assert.AreEqual(General.OutputParamExist(GA, "Dynamic Accessory from Search- Suite Start Time", "03-Dec-18 3:03:19 PM"), true, "Output Value- 'Dynamic Accessory from Search- Suite Start Time' validation");
-            Assert.AreEqual(General.OutputParamExist(GA, "Dynamic Accessory from Search- Suite Finish Time", "03-Dec-18 3:03:40 PM"), true, "Output Value- 'Dynamic Accessory from Search- Suite Finish Time' validation");
+            Assert.AreEqual(GA.Output.OutputValues.Where(x => x.Param == "Dynamic Accessory from Search- Suite Start Time").First().Value.ToString().Contains("19"), true, string.Format("Output Value- 'Dynamic Accessory from Search- Suite Start Time' validation, value:'{0}'", GA.Output.OutputValues.Where(x => x.Param == "Dynamic Accessory from Search- Suite Start Time").First().Value));
+            Assert.AreEqual(GA.Output.OutputValues.Where(x => x.Param == "Dynamic Accessory from Search- Suite Finish Time").First().Value.ToString().Contains("40"), true, "Output Value- 'Dynamic Accessory from Search- Suite Finish Time' validation");
             Assert.AreEqual(General.OutputParamExist(GA, "Dynamic Accessory from Search- Suite Duration (MS)", "21069"), true, "Output Value- 'Dynamic Accessory from Search- Suite Duration (MS)' validation");
             Assert.AreEqual(General.OutputParamExist(GA, "Automation_Setup\\initialAutomationSetup-Test Status", "PASS"), true, "Output Value- PASS test validation");
             Assert.AreEqual(General.OutputParamExist(GA, "Dynamic Accessory from Search\\selectProductOfferingDynamic-Test Status", "SKIP"), true, "Output Value- SKIP test validation");

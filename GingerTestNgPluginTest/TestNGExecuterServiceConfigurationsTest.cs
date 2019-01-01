@@ -246,7 +246,7 @@ namespace GingerTestNgPluginTest
             testNgExecuter.TestngResultsXmlFolderPath = @"\report";
 
             //Assert                  
-            Assert.IsTrue(General.CompareWithoutSleshSensitivity(testNgExecuter.TestngResultsXmlFolderPath,  @"C:\Users\menik\eclipse-workspace\Learn-TestNG\report", General.eCompareType.Equal), "Relative TestngResultsXmlFolderPath been converted to full path");
+            Assert.IsTrue(General.CompareWithoutSleshSensitivity(testNgExecuter.TestngResultsXmlFolderPath,  @"C:\Users\menik\eclipse-workspace\Learn-TestNG\report", General.eCompareType.Equal), string.Format("Relative TestngResultsXmlFolderPath been converted to full path: '{0}'", testNgExecuter.TestngResultsXmlFolderPath));
         }
 
         [TestMethod]

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace GingerTestNgPluginConsole
@@ -117,6 +118,21 @@ namespace GingerTestNgPluginConsole
                 counter++;
             }
             return false;
+        }
+
+        public static string GetOSFoldersSeperator()
+        {
+            string foldersSeperator;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                foldersSeperator = ";";
+            }
+            else//Linux
+            {
+                foldersSeperator = ":";
+            }
+
+            return foldersSeperator;
         }
     }
 }

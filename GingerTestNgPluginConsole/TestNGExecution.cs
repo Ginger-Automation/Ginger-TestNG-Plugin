@@ -319,7 +319,6 @@ namespace GingerTestNgPluginConsole
                 {
                     try
                     {
-
                         mTestNGOutputReportFolderPath = General.TrimRelativeSleshes(mTestNGOutputReportFolderPath);                        
                         if (Path.IsPathRooted(mTestNGOutputReportFolderPath) == false)//relative path provided
                         {
@@ -327,7 +326,9 @@ namespace GingerTestNgPluginConsole
                             {
                                 if (string.IsNullOrEmpty(JavaProjectBinPath) == false)
                                 {
-                                    mTestNGOutputReportFolderPath = Path.Combine(Path.GetDirectoryName(JavaProjectBinPath.TrimEnd(new char[] { '\\', '/' })), mTestNGOutputReportFolderPath);
+                                    string folderPath = Path.GetDirectoryName(JavaProjectBinPath.TrimEnd(new char[] { '\\', '/' }));
+                                    folderPath = folderPath.Replace(@"\bin", "");//needed when running from Linux
+                                    mTestNGOutputReportFolderPath = Path.Combine(folderPath, mTestNGOutputReportFolderPath);
                                 }
                             }
                             else //Maven
@@ -367,7 +368,7 @@ namespace GingerTestNgPluginConsole
                     {
                         if (Directory.Exists(MavenProjectFolderPath))
                         {
-                            mTestNGOutputReportFolderPath = Path.Combine(MavenProjectFolderPath, @"target\surefire-reports");
+                            mTestNGOutputReportFolderPath = Path.Combine(MavenProjectFolderPath, "target", "surefire-reports");
                             if (Directory.Exists(mTestNGOutputReportFolderPath) == false)
                             {
                                 Directory.CreateDirectory(mTestNGOutputReportFolderPath);
@@ -405,7 +406,7 @@ namespace GingerTestNgPluginConsole
                                 if (string.IsNullOrEmpty(JavaProjectBinPath) == false)
                                 {
                                     string folderPath = Path.GetDirectoryName(JavaProjectBinPath.TrimEnd(new char[] { '\\', '/' }));
-                                    folderPath = folderPath.Replace(@"\bin", "");
+                                    folderPath = folderPath.Replace(@"\bin", "");//needed when running from Linux
                                     mTestngXmlPath = Path.Combine(folderPath, mTestngXmlPath);
                                 }
                                 else
@@ -839,17 +840,13 @@ namespace GingerTestNgPluginConsole
         {
             CommandElements command = new CommandElements();
 
-            command.ExecuterFilePath = string.Format("\"{0}\"", JavaExeFullPath);
+            //if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            //{
+            //    command.WorkingFolder = Path.GetDirectoryName(JavaExeFullPath);
+            //}
 
-            //class path
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                command.Arguments = string.Format(" -cp \"{0}\";\"{1}\"", JavaProjectBinPath, JavaProjectResourcesPath);
-            }
-            else//Linux
-            {
-                command.Arguments = string.Format(" -cp \"{0}\":\"{1}\"", JavaProjectBinPath, JavaProjectResourcesPath);
-            }
+            command.ExecuterFilePath = string.Format("\"{0}\"", JavaExeFullPath);
+            command.Arguments = string.Format(" -cp \"{0}\"{1}\"{2}\"", JavaProjectBinPath, General.GetOSFoldersSeperator(), JavaProjectResourcesPath);
 
             //testng test arguments
             command.Arguments += " org.testng.TestNG";
@@ -951,52 +948,27 @@ namespace GingerTestNgPluginConsole
             return command;
         }
 
-        private string OverrideCommandParameters()
-        {
-            //foreach (CommandParameter cmdParam in CommandParametersToOverride)
-            //{
-            //    string fullParamName = cmdParam.Name.Trim();
-            //    if (!string.IsNullOrEmpty(fullParamName))
-            //    {
-            //        if (fullParamName.IndexOf("-D") != 0)
-            //        {
-            //            fullParamName = string.Format("-D{0}", fullParamName);
-            //        }
-            //    }
-
-            //    try
-            //    {
-            //        Match match = Regex.Match(FreeCommandArguments, string.Format("/{0}=\"([]+)\"/", fullParamName));
-            //        if (match.Success)
-            //        {
-            //            // Finally, we get the Group value and display it.
-            //            string key = match.Groups[1].Value;
-            //            Console.WriteLine(key);
-            //        }
-            //    }
-            //    catch (Exception ex)
-            //    {
-
-            //    }
-            //}
-
-            return FreeCommandArguments;
-        }
-
         private bool ExecuteCommand(CommandElements commandVals)
         {
             try
             {
                 Process process = new Process();
-                if (commandVals.WorkingFolder != null)
+
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 {
-                    process.StartInfo.WorkingDirectory = commandVals.WorkingFolder;
+                    process.StartInfo.FileName = commandVals.ExecuterFilePath;
+                    process.StartInfo.Arguments = commandVals.Arguments;
                 }
-                process.StartInfo.FileName = commandVals.ExecuterFilePath;               
-                process.StartInfo.Arguments = commandVals.Arguments;
+                else//Linux
+                {
+                    var escapedExecuter = commandVals.ExecuterFilePath.Replace("\"", "\\\"");
+                    var escapedArgs = commandVals.Arguments.Replace("\"", "\\\"");                   
+                    process.StartInfo.FileName = "/bin/bash";
+                    process.StartInfo.Arguments = $"-c \"{escapedExecuter} {escapedArgs}\"";
+                }
 
                 process.StartInfo.CreateNoWindow = true;
-                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.UseShellExecute = false;                
                 process.StartInfo.RedirectStandardOutput = true;
                 process.StartInfo.RedirectStandardError = true;
                 mCommandOutputBuffer = string.Empty;
@@ -1005,6 +977,7 @@ namespace GingerTestNgPluginConsole
                 process.ErrorDataReceived += (proc, outLine) => { AddCommandOutputError(outLine.Data); };
                 process.Exited += Process_Exited;
 
+                Stopwatch stopwatch = Stopwatch.StartNew();
                 process.Start();
                 
                 process.BeginOutputReadLine();
@@ -1012,8 +985,9 @@ namespace GingerTestNgPluginConsole
 
                 int maxWaitingTime = 1000 * 60 * 60;//1 hour
                 process.WaitForExit(maxWaitingTime);
+                stopwatch.Stop();
 
-                if (process.TotalProcessorTime.TotalMilliseconds >= maxWaitingTime)
+                if (stopwatch.ElapsedMilliseconds >= maxWaitingTime)
                 {
                     General.AddErrorToConsoleAndAction(GingerAction, string.Format("Command processing timeout has reached!"));
                     return false;
