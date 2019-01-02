@@ -749,7 +749,7 @@ namespace GingerTestNgPluginConsole
                 //execute the command
                 General.AddInfoToConsole("############################# Executing Command");                
                 if (ExecuteCommand(command))
-                {
+                {                    
                     //parse output
                     if (ParseConsoleOutputs)
                     {
@@ -984,7 +984,9 @@ namespace GingerTestNgPluginConsole
                 process.BeginErrorReadLine();
 
                 int maxWaitingTime = 1000 * 60 * 60;//1 hour
+                General.AddInfoToConsole("--Staring process");
                 process.WaitForExit(maxWaitingTime);
+                General.AddInfoToConsole("--Process done");
                 stopwatch.Stop();
 
                 if (stopwatch.ElapsedMilliseconds >= maxWaitingTime)
@@ -992,13 +994,17 @@ namespace GingerTestNgPluginConsole
                     General.AddErrorToConsoleAndAction(GingerAction, string.Format("Command processing timeout has reached!"));
                     return false;
                 }
-
+                
                 return true;
             }
             catch (Exception ex)
             {
                 General.AddErrorToConsoleAndAction(GingerAction, string.Format("Failed to execute the command, Error is: '{0}'", ex.Message));
                 return false;
+            }
+            finally
+            {
+                General.AddInfoToConsole("--Exiting execute command");
             }
         }
 

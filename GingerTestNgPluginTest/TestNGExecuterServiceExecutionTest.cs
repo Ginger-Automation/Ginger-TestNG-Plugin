@@ -204,7 +204,7 @@ namespace GingerTestNgPluginTest
 
             //Act
             service.ExecuteMavenProjectTestNGXML(GA, OverwriteMavenHomePath: null, MavenProjectFolderPath: TestResources.GetTestResourcesFolder(@"MavenTestNG"), PerformMavenInstall:true, 
-                                   TestngXmlPath: TestResources.GetTestResourcesFile(@"MavenTestNG\src\main\java\com\Calculator\testng.xml"), TestngXmlParametersToOverwrite: null, OverwriteOriginalTestngXml:false,
+                                   TestngXmlPath: Path.Combine(TestResources.GetTestResourcesFolder("MavenTestNG"),"src","main","java","com","Calculator","testng.xml"), TestngXmlParametersToOverwrite: null, OverwriteOriginalTestngXml:false,
                                    ParseConsoleOutputs: false, FailActionDueToConsoleErrors: false,
                                    ParseTestngResultsXml: true, OverwriteTestngResultsXmlDefaultFolderPath: null, FailActionDueToTestngResultsXmlFailures: true);
 
@@ -252,7 +252,7 @@ namespace GingerTestNgPluginTest
             //Act
             service.ExecuteMavenFreeCommand(GA, OverwriteMavenHomePath: null, MavenProjectFolderPath: TestResources.GetTestResourcesFolder(@"MavenTestNG"),
                                    FreeCommandArguments: "clean install test -DsuiteXmlFile=\"src/main/java/com/Calculator/testng.xml\"",
-                                   TestngXmlPath: TestResources.GetTestResourcesFile(@"MavenTestNG\src\main\java\com\Calculator\testng.xml"), TestngXmlParametersToOverwrite: paramsToOveride, OverwriteOriginalTestngXml: false,
+                                   TestngXmlPath: Path.Combine(TestResources.GetTestResourcesFolder("MavenTestNG"), "src","main","java","com","Calculator","testng.xml"), TestngXmlParametersToOverwrite: paramsToOveride, OverwriteOriginalTestngXml: false,
                                    ParseConsoleOutputs: true, FailActionDueToConsoleErrors: false,
                                    ParseTestngResultsXml: true, OverwriteTestngResultsXmlDefaultFolderPath: null, FailActionDueToTestngResultsXmlFailures: true);
 
@@ -281,7 +281,7 @@ namespace GingerTestNgPluginTest
             //Act
             service.ExecuteMavenFreeCommand(GA, OverwriteMavenHomePath: null, MavenProjectFolderPath: TestResources.GetTestResourcesFolder(@"MavenTestNG"),
                                    FreeCommandArguments: "clean install test -DsuiteXmlFile=\"src/main/java/com/Calculator/testng.xml\"",
-                                   TestngXmlPath: TestResources.GetTestResourcesFile(@"MavenTestNG\src\main\java\com\Calculator\testng.xml"), TestngXmlParametersToOverwrite: paramsToOveride, OverwriteOriginalTestngXml: true,
+                                   TestngXmlPath: Path.Combine(TestResources.GetTestResourcesFolder("MavenTestNG"), "src", "main", "java", "com", "Calculator", "testng.xml"), TestngXmlParametersToOverwrite: paramsToOveride, OverwriteOriginalTestngXml: true,
                                    ParseConsoleOutputs: true, FailActionDueToConsoleErrors: false,
                                    ParseTestngResultsXml: true, OverwriteTestngResultsXmlDefaultFolderPath: null, FailActionDueToTestngResultsXmlFailures: true);
 
