@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Ginger.Plugin.Core" Version="3.0.3" />
+    <PackageReference Include="Ginger.Plugin.Core" Version="3.0.5" />
     <PackageReference Include="GingerTestHelper" Version="1.0.4" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="1.3.2" />
@@ -20,7 +20,73 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="TestResources\Test-Results.xml">
+    <None Update="TestResources\JavaTestNG\.classpath">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="TestResources\JavaTestNG\.project">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="TestResources\JavaTestNG\bin\Calculator\Calculator.class">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="TestResources\JavaTestNG\bin\Calculator\CalculatorTests.class">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="TestResources\JavaTestNG\bin\Calculator\testng.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="TestResources\JavaTestNG\Resources\ant-1.7.0.jar">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="TestResources\JavaTestNG\Resources\ant-launcher-1.7.0.jar">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="TestResources\JavaTestNG\Resources\bsh-2.0b4.jar">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="TestResources\JavaTestNG\Resources\hamcrest-core-1.1.jar">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="TestResources\JavaTestNG\Resources\jcommander-1.48.jar">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="TestResources\JavaTestNG\Resources\junit-4.10.jar">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="TestResources\JavaTestNG\Resources\snakeyaml-1.15.jar">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="TestResources\JavaTestNG\Resources\testng-6.9.9.jar">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="TestResources\JavaTestNG\src\Calculator\Calculator.java">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="TestResources\JavaTestNG\src\Calculator\CalculatorTests.java">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="TestResources\JavaTestNG\src\Calculator\testng.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="TestResources\MavenTestNG\.classpath">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="TestResources\MavenTestNG\.project">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="TestResources\MavenTestNG\pom.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="TestResources\MavenTestNG\src\main\java\com\Calculator\Calculator.java">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="TestResources\MavenTestNG\src\main\java\com\Calculator\CalculatorTests.java">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="TestResources\MavenTestNG\src\main\java\com\Calculator\testng.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="TestResources\testng-results.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="TestResources\TestNGxml.xml">

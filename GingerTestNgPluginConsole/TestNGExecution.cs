@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -84,21 +85,52 @@ namespace GingerTestNgPluginConsole
                     }
                     if (!string.IsNullOrEmpty(mJavaExeFullPath))
                     {
-                        if (Path.GetFullPath(mJavaExeFullPath).ToLower().Contains("bin") == false)
+                        if (General.CompareWithoutSleshSensitivity(mJavaExeFullPath.ToLower(), @"\bin", General.eCompareType.Contains) == false)
                         {
                             mJavaExeFullPath = Path.Combine(mJavaExeFullPath, "bin");
                         }
-                        if (Path.GetFullPath(mJavaExeFullPath).ToLower().Contains("java.exe") == false)
+                        if (Path.GetFileName(mJavaExeFullPath).ToLower().Contains("java") == false)
                         {
-                            mJavaExeFullPath = Path.Combine(mJavaExeFullPath, "java.exe");
+                            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                            {
+                                mJavaExeFullPath = Path.Combine(mJavaExeFullPath, "java.exe");
+                            }
+                            else//linux
+                            {
+                                mJavaExeFullPath = Path.Combine(mJavaExeFullPath, "java");
+                            }
                         }
 
-                        mJavaExeFullPath = Path.GetFullPath(mJavaExeFullPath);
+                        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                        {
+                            mJavaExeFullPath = Path.GetFullPath(mJavaExeFullPath);
+                        }
                     }                    
                 }
                 catch (Exception ex)
                 {
                     General.AddInfoToConsoleAndAction(GingerAction, string.Format("Failed to init the java.exe file path, Error: '{0}'", ex.Message));
+                }
+            }
+        }
+
+        string mJavaWorkingFolder = null;
+        public string JavaWorkingFolder
+        {
+            get
+            {
+                return mJavaWorkingFolder;
+            }
+            set
+            {
+                mJavaWorkingFolder = value;
+                mJavaWorkingFolder = General.TrimApostrophes(mJavaWorkingFolder);
+                if (!string.IsNullOrEmpty(mJavaWorkingFolder))
+                {
+                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                    {
+                        mJavaWorkingFolder = Path.GetFullPath(mJavaWorkingFolder);
+                    }
                 }
             }
         }
@@ -116,10 +148,14 @@ namespace GingerTestNgPluginConsole
                 mJavaProjectResourcesPath = General.TrimApostrophes(mJavaProjectResourcesPath);
                 if (!string.IsNullOrEmpty(mJavaProjectResourcesPath))
                 {
-                    mJavaProjectResourcesPath = Path.GetFullPath(mJavaProjectResourcesPath);
+                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                    {
+                        mJavaProjectResourcesPath = Path.GetFullPath(mJavaProjectResourcesPath);
+                    }
 
                     if (mJavaProjectResourcesPath.Contains('*') == false)
                     {
+                        mJavaProjectResourcesPath = General.TrimEndSleshes(mJavaProjectResourcesPath);
                         mJavaProjectResourcesPath = Path.Combine(mJavaProjectResourcesPath, "*");
                     }
                 }                
@@ -139,14 +175,20 @@ namespace GingerTestNgPluginConsole
                 mJavaProjectBinFolderPath = General.TrimApostrophes(mJavaProjectBinFolderPath);
                 if (!string.IsNullOrEmpty(mJavaProjectBinFolderPath))
                 {
-                    mJavaProjectBinFolderPath = Path.GetFullPath(mJavaProjectBinFolderPath);                   
+                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                    {
+                        mJavaProjectBinFolderPath = Path.GetFullPath(mJavaProjectBinFolderPath);
+                    }
                     mJavaProjectBinFolderPath = General.TrimEndSleshes(mJavaProjectBinFolderPath);
                     if (Path.GetFileName(mJavaProjectBinFolderPath).ToLower() != "bin")
                     {
                         mJavaProjectBinFolderPath = Path.Combine(mJavaProjectBinFolderPath, "bin");
                     }
 
-                    mJavaProjectBinFolderPath = Path.GetFullPath(mJavaProjectBinFolderPath);
+                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                    {
+                        mJavaProjectBinFolderPath = Path.GetFullPath(mJavaProjectBinFolderPath);
+                    }
                 }
                 
             }
@@ -170,19 +212,33 @@ namespace GingerTestNgPluginConsole
                     if (string.IsNullOrEmpty(mMavenCmdFullPath))
                     {
                         mMavenCmdFullPath = Environment.GetEnvironmentVariable("MAVEN_HOME");
+                        if (string.IsNullOrEmpty(mMavenCmdFullPath))
+                        {
+                            mMavenCmdFullPath = Environment.GetEnvironmentVariable("M2_HOME");
+                        }
                     }
                     if (!string.IsNullOrEmpty(mMavenCmdFullPath))
                     {
-                        if (Path.GetFullPath(mMavenCmdFullPath).ToLower().Contains(@"\bin") == false)
+                        if (General.CompareWithoutSleshSensitivity(mMavenCmdFullPath.ToLower(),@"\bin",General.eCompareType.Contains) == false)
                         {
                             mMavenCmdFullPath = Path.Combine(mMavenCmdFullPath, @"bin");
                         }
-                        if (Path.GetFullPath(mMavenCmdFullPath).ToLower().Contains(@"\mvn.cmd") == false)
-                        {
-                            mMavenCmdFullPath = Path.Combine(mMavenCmdFullPath, @"mvn.cmd");
+                        if (Path.GetFileName(mMavenCmdFullPath).ToLower().Contains(@"mvn") == false)
+                        {                            
+                            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                            {
+                                mMavenCmdFullPath = Path.Combine(mMavenCmdFullPath, @"mvn.cmd");
+                            }
+                            else//linux
+                            {
+                                mMavenCmdFullPath = Path.Combine(mMavenCmdFullPath, @"mvn");
+                            }
                         }
 
-                        mMavenCmdFullPath = Path.GetFullPath(mMavenCmdFullPath);
+                        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                        {
+                            mMavenCmdFullPath = Path.GetFullPath(mMavenCmdFullPath);
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -205,7 +261,10 @@ namespace GingerTestNgPluginConsole
                 mMavenProjectFolderPath = General.TrimApostrophes(mMavenProjectFolderPath);
                 if (!string.IsNullOrEmpty(mMavenProjectFolderPath))
                 {
-                    mMavenProjectFolderPath = Path.GetFullPath(mMavenProjectFolderPath);
+                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                    {
+                        mMavenProjectFolderPath = Path.GetFullPath(mMavenProjectFolderPath);
+                    }
                 }
             }
         }
@@ -260,7 +319,6 @@ namespace GingerTestNgPluginConsole
                 {
                     try
                     {
-
                         mTestNGOutputReportFolderPath = General.TrimRelativeSleshes(mTestNGOutputReportFolderPath);                        
                         if (Path.IsPathRooted(mTestNGOutputReportFolderPath) == false)//relative path provided
                         {
@@ -268,7 +326,9 @@ namespace GingerTestNgPluginConsole
                             {
                                 if (string.IsNullOrEmpty(JavaProjectBinPath) == false)
                                 {
-                                    mTestNGOutputReportFolderPath = Path.Combine(Path.GetDirectoryName(JavaProjectBinPath.TrimEnd(new char[] { '\\', '/' })), mTestNGOutputReportFolderPath);
+                                    string folderPath = Path.GetDirectoryName(JavaProjectBinPath.TrimEnd(new char[] { '\\', '/' }));
+                                    folderPath = folderPath.Replace(@"\bin", "");//needed when running from Linux
+                                    mTestNGOutputReportFolderPath = Path.Combine(folderPath, mTestNGOutputReportFolderPath);
                                 }
                             }
                             else //Maven
@@ -282,7 +342,10 @@ namespace GingerTestNgPluginConsole
                         }
                         else
                         {
-                            mTestNGOutputReportFolderPath = Path.GetFullPath(mTestNGOutputReportFolderPath);
+                            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                            {
+                                mTestNGOutputReportFolderPath = Path.GetFullPath(mTestNGOutputReportFolderPath);
+                            }
                         }
                         
                         if (!Directory.Exists(mTestNGOutputReportFolderPath))
@@ -305,7 +368,7 @@ namespace GingerTestNgPluginConsole
                     {
                         if (Directory.Exists(MavenProjectFolderPath))
                         {
-                            mTestNGOutputReportFolderPath = Path.Combine(MavenProjectFolderPath, @"target\surefire-reports");
+                            mTestNGOutputReportFolderPath = Path.Combine(MavenProjectFolderPath, "target", "surefire-reports");
                             if (Directory.Exists(mTestNGOutputReportFolderPath) == false)
                             {
                                 Directory.CreateDirectory(mTestNGOutputReportFolderPath);
@@ -342,7 +405,16 @@ namespace GingerTestNgPluginConsole
                             {
                                 if (string.IsNullOrEmpty(JavaProjectBinPath) == false)
                                 {
-                                    mTestngXmlPath = Path.Combine(Path.GetDirectoryName(JavaProjectBinPath.TrimEnd(new char[] { '\\', '/' })), mTestngXmlPath);
+                                    string folderPath = Path.GetDirectoryName(JavaProjectBinPath.TrimEnd(new char[] { '\\', '/' }));
+                                    folderPath = folderPath.Replace(@"\bin", "");//needed when running from Linux
+                                    mTestngXmlPath = Path.Combine(folderPath, mTestngXmlPath);
+                                }
+                                else
+                                {
+                                    if (string.IsNullOrEmpty(JavaWorkingFolder) == false)
+                                    {
+                                        mTestngXmlPath = Path.Combine(JavaWorkingFolder, mTestngXmlPath);
+                                    }
                                 }
                             }
                             else //Maven
@@ -386,26 +458,26 @@ namespace GingerTestNgPluginConsole
 
             if (ExecuterType == eExecuterType.Java)
             {
-                if (Path.GetFileName(JavaExeFullPath).ToLower() != "java.exe" || File.Exists(JavaExeFullPath) == false)
+                if (Path.GetFileName(JavaExeFullPath).ToLower().Contains("java") == false || File.Exists(JavaExeFullPath) == false)
                 {
-                    General.AddErrorToConsoleAndAction(GingerAction, String.Format("Failed to find java.exe file at: '{0}'", JavaExeFullPath));
+                    General.AddErrorToConsoleAndAction(GingerAction, String.Format("Failed to find Java Executor file at: '{0}'", JavaExeFullPath));
                     return false;
                 }
                 else
                 {
-                    General.AddInfoToConsoleAndAction(GingerAction, String.Format("Path of java.exe file: '{0}'", JavaExeFullPath));
+                    General.AddInfoToConsoleAndAction(GingerAction, String.Format("Path of Java Executor file: '{0}'", JavaExeFullPath));
                 }
             }
             else//Maven Executer
             {
-                if (Path.GetFileName(MavenCmdFullPath).ToLower() != "mvn.cmd" || File.Exists(MavenCmdFullPath) == false)
+                if (Path.GetFileName(MavenCmdFullPath).ToLower().Contains("mvn") == false || File.Exists(MavenCmdFullPath) == false)
                 {
-                    General.AddErrorToConsoleAndAction(GingerAction, String.Format("Failed to find mvn.cmd file at: '{0}'", MavenCmdFullPath));
+                    General.AddErrorToConsoleAndAction(GingerAction, String.Format("Failed to find MVN Executor file at: '{0}'", MavenCmdFullPath));
                     return false;
                 }
                 else
                 {
-                    General.AddInfoToConsoleAndAction(GingerAction, String.Format("Path of mvn.cmd file: '{0}'", MavenCmdFullPath));
+                    General.AddInfoToConsoleAndAction(GingerAction, String.Format("Path of MVN Executor file: '{0}'", MavenCmdFullPath));
                 }
             }
 
@@ -494,6 +566,22 @@ namespace GingerTestNgPluginConsole
                     break;
 
                 case eExecutionMode.FreeCommand:
+                    if (JavaProjectType == eJavaProjectType.Regular)
+                    {
+                        if (!string.IsNullOrEmpty(JavaWorkingFolder))
+                        {
+                            if (Directory.Exists(JavaWorkingFolder) == false)
+                            {
+                                General.AddErrorToConsoleAndAction(GingerAction, String.Format("Failed to find the Java Working folder at: '{0}'", JavaWorkingFolder));
+                                return false;
+                            }
+                            else
+                            {
+                                General.AddInfoToConsoleAndAction(GingerAction, String.Format("Java Working folder path: '{0}'", JavaWorkingFolder));
+                            }
+                        }
+                    }
+
                     if (string.IsNullOrEmpty(FreeCommandArguments.Trim()))
                     {
                         General.AddErrorToConsoleAndAction(GingerAction, String.Format("Provided Free Command Arguments are not valid: '{0}'", FreeCommandArguments));
@@ -604,7 +692,7 @@ namespace GingerTestNgPluginConsole
 
         public void Execute()
         {
-            General.AddInfoToConsole("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Execution Started %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");            
+            General.AddInfoToConsole("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Execution Started %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");            
             General.AddInfoToConsole("############################# Validating / Preparing Execution Configurations");
             if (!ValidateAndPrepareConfigs())
             {
@@ -637,9 +725,13 @@ namespace GingerTestNgPluginConsole
                         break;
 
                     case eExecutionMode.FreeCommand:
-                        if (ExecuterType == eExecuterType.Maven)
+                        if (JavaProjectType == eJavaProjectType.Regular)
                         {
-                            command = PrepareMavenFreeCommand();
+                            command = PrepareFreeCommand();
+                        }
+                        else//Maven
+                        {
+                            command = PrepareFreeCommand();
                         }
                         break;
                 }
@@ -657,7 +749,7 @@ namespace GingerTestNgPluginConsole
                 //execute the command
                 General.AddInfoToConsole("############################# Executing Command");                
                 if (ExecuteCommand(command))
-                {
+                {                    
                     //parse output
                     if (ParseConsoleOutputs)
                     {
@@ -689,7 +781,7 @@ namespace GingerTestNgPluginConsole
                 General.AddErrorToConsoleAndAction(GingerAction, "No command found to exeucte");
             }
 
-            General.AddInfoToConsole("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Execution Ended %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+            General.AddInfoToConsole("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Execution Ended %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
         }
 
         private bool PrepareTestNGXmlForExecution()
@@ -748,10 +840,13 @@ namespace GingerTestNgPluginConsole
         {
             CommandElements command = new CommandElements();
 
-            command.ExecuterFilePath = string.Format("\"{0}\"", JavaExeFullPath);
+            //if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            //{
+            //    command.WorkingFolder = Path.GetDirectoryName(JavaExeFullPath);
+            //}
 
-            //class path
-            command.Arguments = string.Format(" -cp \"{0}\";\"{1}\"", JavaProjectBinPath, JavaProjectResourcesPath);
+            command.ExecuterFilePath = string.Format("\"{0}\"", JavaExeFullPath);
+            command.Arguments = string.Format(" -cp \"{0}\"{1}\"{2}\"", JavaProjectBinPath, General.GetOSFoldersSeperator(), JavaProjectResourcesPath);
 
             //testng test arguments
             command.Arguments += " org.testng.TestNG";
@@ -788,18 +883,23 @@ namespace GingerTestNgPluginConsole
             return command;
         }
 
-        private CommandElements PrepareMavenFreeCommand()
+        private CommandElements PrepareFreeCommand()
         {
             CommandElements command = new CommandElements();
 
-            command.WorkingFolder = MavenProjectFolderPath;
-            command.ExecuterFilePath = string.Format("\"{0}\"", MavenCmdFullPath); 
-
-            ////command parameters ovveride
-            //if (CommandParametersToOverride != null && CommandParametersToOverride.Count > 0)
-            //{
-            //    commandArgsToExecute = string.Format(" {0}", OverrideCommandParameters());
-            //}
+            if (JavaProjectType == eJavaProjectType.Regular)
+            {
+                if(string.IsNullOrEmpty(JavaWorkingFolder) == false)
+                {
+                    command.WorkingFolder = JavaWorkingFolder;
+                }
+                command.ExecuterFilePath = string.Format("\"{0}\"", JavaExeFullPath);
+            }
+            else//maven
+            {
+                command.WorkingFolder = MavenProjectFolderPath;
+                command.ExecuterFilePath = string.Format("\"{0}\"", MavenCmdFullPath);
+            }             
 
             if(OverwriteOriginalTestngXml == false && TestngXmlParametersToOverwrite != null && TestngXmlParametersToOverwrite.Count > 0)
             {
@@ -817,6 +917,14 @@ namespace GingerTestNgPluginConsole
                     while (leftIndx > 0 && FreeCommandArguments[leftIndx-1] != '=')
                     {
                         leftIndx--;
+                    }
+                    if (leftIndx <=0)//'=' not found so probably used the TestNG command like "org.testng.TestNG src/test/resources/fit/testng.xml"
+                    {
+                        leftIndx = fileNameIndx;
+                        while (leftIndx > 0 && FreeCommandArguments.Substring(leftIndx-8, 8).ToUpper() != ".TESTNG ")
+                        {
+                            leftIndx--;
+                        }
                     }
 
                     if (rightIndx > leftIndx && rightIndx >0 && leftIndx>0)
@@ -840,52 +948,32 @@ namespace GingerTestNgPluginConsole
             return command;
         }
 
-        private string OverrideCommandParameters()
-        {
-            //foreach (CommandParameter cmdParam in CommandParametersToOverride)
-            //{
-            //    string fullParamName = cmdParam.Name.Trim();
-            //    if (!string.IsNullOrEmpty(fullParamName))
-            //    {
-            //        if (fullParamName.IndexOf("-D") != 0)
-            //        {
-            //            fullParamName = string.Format("-D{0}", fullParamName);
-            //        }
-            //    }
-
-            //    try
-            //    {
-            //        Match match = Regex.Match(FreeCommandArguments, string.Format("/{0}=\"([]+)\"/", fullParamName));
-            //        if (match.Success)
-            //        {
-            //            // Finally, we get the Group value and display it.
-            //            string key = match.Groups[1].Value;
-            //            Console.WriteLine(key);
-            //        }
-            //    }
-            //    catch (Exception ex)
-            //    {
-
-            //    }
-            //}
-
-            return FreeCommandArguments;
-        }
-
         private bool ExecuteCommand(CommandElements commandVals)
         {
             try
             {
                 Process process = new Process();
+
                 if (commandVals.WorkingFolder != null)
                 {
                     process.StartInfo.WorkingDirectory = commandVals.WorkingFolder;
                 }
-                process.StartInfo.FileName = commandVals.ExecuterFilePath;               
-                process.StartInfo.Arguments = commandVals.Arguments;
+
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    process.StartInfo.FileName = commandVals.ExecuterFilePath;
+                    process.StartInfo.Arguments = commandVals.Arguments;
+                }
+                else//Linux
+                {
+                    var escapedExecuter = commandVals.ExecuterFilePath.Replace("\"", "\\\"");
+                    var escapedArgs = commandVals.Arguments.Replace("\"", "\\\"");                   
+                    process.StartInfo.FileName = "/bin/bash";
+                    process.StartInfo.Arguments = $"-c \"{escapedExecuter} {escapedArgs}\"";
+                }
 
                 process.StartInfo.CreateNoWindow = true;
-                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.UseShellExecute = false;                
                 process.StartInfo.RedirectStandardOutput = true;
                 process.StartInfo.RedirectStandardError = true;
                 mCommandOutputBuffer = string.Empty;
@@ -894,26 +982,34 @@ namespace GingerTestNgPluginConsole
                 process.ErrorDataReceived += (proc, outLine) => { AddCommandOutputError(outLine.Data); };
                 process.Exited += Process_Exited;
 
+                General.AddInfoToConsole("--Staring process");
+                Stopwatch stopwatch = Stopwatch.StartNew();               
                 process.Start();
                 
                 process.BeginOutputReadLine();
                 process.BeginErrorReadLine();
-
                 int maxWaitingTime = 1000 * 60 * 60;//1 hour
+                
                 process.WaitForExit(maxWaitingTime);
+                General.AddInfoToConsole("--Process done");
+                stopwatch.Stop();
 
-                if (process.TotalProcessorTime.TotalMilliseconds >= maxWaitingTime)
+                if (stopwatch.ElapsedMilliseconds >= maxWaitingTime)
                 {
                     General.AddErrorToConsoleAndAction(GingerAction, string.Format("Command processing timeout has reached!"));
                     return false;
                 }
-
+                
                 return true;
             }
             catch (Exception ex)
             {
                 General.AddErrorToConsoleAndAction(GingerAction, string.Format("Failed to execute the command, Error is: '{0}'", ex.Message));
                 return false;
+            }
+            finally
+            {
+                General.AddInfoToConsole("--Exiting execute command");
             }
         }
 
