@@ -216,8 +216,31 @@ namespace GingerTestNgPluginTest
             Assert.AreEqual(General.OutputParamExist(GA, @"test1\testSum-Test Status", "PASS"), true, "TestNg Report XML Test 2 Status Parsing validation");
         }
 
+        [TestMethod]
+        public void MavenTestngXmlExecutionWithConsoleOutputParsingTest()
+        {
+            //Arrange
+            TestNGExecuterService service = new TestNGExecuterService();
+            GingerAction GA = new GingerAction();
+
+            //Act
+            service.ExecuteMavenProjectTestNGXML(GA, OverwriteMavenHomePath: null, MavenProjectFolderPath: TestResources.GetTestResourcesFolder(@"MavenTestNG"), PerformMavenInstall: true,
+                                   TestngXmlPath: Path.Combine(TestResources.GetTestResourcesFolder("MavenTestNG"), "src", "main", "java", "com", "Calculator", "testng.xml"), TestngXmlParametersToOverwrite: null, OverwriteOriginalTestngXml: false,
+                                   ParseConsoleOutputs: true, FailActionDueToConsoleErrors: false,
+                                   ParseTestngResultsXml: true, OverwriteTestngResultsXmlDefaultFolderPath: null, FailActionDueToTestngResultsXmlFailures: true);
+
+            //Assert     
+            Assert.AreEqual((GA.Errors == null || GA.Errors.Count() == 0), true, "No Execution Errors validation");
+            Assert.AreEqual((GA.Output != null && GA.Output.OutputValues.Count > 0), true, "Execution Output values found validation");
+            Assert.AreEqual(General.OutputParamExist(GA, "Multipliy Result"), true, "Console Multipliy Output captured validation");
+            Assert.AreEqual(General.OutputParamExist(GA, "Sum Result"), true, "Console Sum Output captured validation");
+            Assert.AreEqual(General.OutputParamExist(GA, "CalculatorTests- Suite Start Time"), true, "TestNg Report XML Suite details Parsing validation");
+            Assert.AreEqual(General.OutputParamExist(GA, @"test1\testMoltiple-Test Status", "PASS"), true, "TestNg Report XML Test 1 Status Parsing validation");
+            Assert.AreEqual(General.OutputParamExist(GA, @"test1\testSum-Test Status", "PASS"), true, "TestNg Report XML Test 2 Status Parsing validation");
+        }
+
         [TestMethod] 
-        public void SimpleMavenFreeCommandExecutionTest()
+        public void MavenFreeCommandExecutionTest()
         {
             //Arrange
             TestNGExecuterService service = new TestNGExecuterService();

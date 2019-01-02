@@ -954,6 +954,11 @@ namespace GingerTestNgPluginConsole
             {
                 Process process = new Process();
 
+                if (commandVals.WorkingFolder != null)
+                {
+                    process.StartInfo.WorkingDirectory = commandVals.WorkingFolder;
+                }
+
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 {
                     process.StartInfo.FileName = commandVals.ExecuterFilePath;
@@ -977,14 +982,14 @@ namespace GingerTestNgPluginConsole
                 process.ErrorDataReceived += (proc, outLine) => { AddCommandOutputError(outLine.Data); };
                 process.Exited += Process_Exited;
 
-                Stopwatch stopwatch = Stopwatch.StartNew();
+                General.AddInfoToConsole("--Staring process");
+                Stopwatch stopwatch = Stopwatch.StartNew();               
                 process.Start();
                 
                 process.BeginOutputReadLine();
                 process.BeginErrorReadLine();
-
                 int maxWaitingTime = 1000 * 60 * 60;//1 hour
-                General.AddInfoToConsole("--Staring process");
+                
                 process.WaitForExit(maxWaitingTime);
                 General.AddInfoToConsole("--Process done");
                 stopwatch.Stop();
