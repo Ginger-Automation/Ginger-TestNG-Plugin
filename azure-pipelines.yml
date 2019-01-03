@@ -13,9 +13,9 @@ jobs:
     vmImage: 'Ubuntu 16.04'
   steps:
   - script: |
-    dotnet build
-    dotnet test GingerTestNgPluginTest --configuration $(buildConfiguration) --logger trx
-    dotnet publish --configuration $(buildConfiguration) --output $BUILD_ARTIFACTSTAGINGDIRECTORY
+      dotnet build
+      dotnet test GingerTestNgPluginTest --configuration $(buildConfiguration) --logger trx
+      dotnet publish --configuration $(buildConfiguration) --output $BUILD_ARTIFACTSTAGINGDIRECTORY
   
   - task: PublishTestResults@2
     condition: succeededOrFailed()
