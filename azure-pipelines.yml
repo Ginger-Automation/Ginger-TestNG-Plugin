@@ -12,7 +12,7 @@ jobs:
   pool:
     vmImage: 'Ubuntu 16.04'
   steps:
-  - script:|
+  - script: |
     dotnet build
     dotnet test GingerTestNgPluginTest --configuration $(buildConfiguration) --logger trx
     dotnet publish --configuration $(buildConfiguration) --output $BUILD_ARTIFACTSTAGINGDIRECTORY
