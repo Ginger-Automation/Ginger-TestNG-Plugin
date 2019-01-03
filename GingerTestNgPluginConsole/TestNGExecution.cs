@@ -967,8 +967,8 @@ namespace GingerTestNgPluginConsole
                 else//Linux
                 {
                     var escapedExecuter = commandVals.ExecuterFilePath.Replace("\"", "\\\"");
-                    var escapedArgs = commandVals.Arguments.Replace("\"", "\\\"");                   
-                    process.StartInfo.FileName = "/bin/bash";
+                    var escapedArgs = commandVals.Arguments.Replace("\"", "\\\"");
+                    process.StartInfo.FileName = "bash";//" / bin/bash";
                     process.StartInfo.Arguments = $"-c \"{escapedExecuter} {escapedArgs}\"";
                 }
 
