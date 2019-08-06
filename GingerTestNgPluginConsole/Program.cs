@@ -10,8 +10,15 @@ namespace GingerTestNgPluginConsole
             Console.WriteLine("Starting Ginger TestNg Plugin");
 
             using (GingerNodeStarter gingerNodeStarter = new GingerNodeStarter())
-            {               
-                gingerNodeStarter.StartNode("TestNG Execution Service", new TestNGExecuterService());
+            {
+                if (args.Length > 0)
+                {
+                    gingerNodeStarter.StartFromConfigFile(args[0]);
+                }
+                else
+                {
+                    gingerNodeStarter.StartNode("TestNG Execution Service", new TestNGExecuterService());
+                }
                 gingerNodeStarter.Listen();
             }
         }
