@@ -28,15 +28,6 @@
     <None Update="TestResources\JavaTestNG\.project">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="TestResources\JavaTestNG\bin\Calculator\Calculator.class">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="TestResources\JavaTestNG\bin\Calculator\CalculatorTests.class">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="TestResources\JavaTestNG\bin\Calculator\testng.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="TestResources\JavaTestNG\Resources\ant-1.7.0.jar">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

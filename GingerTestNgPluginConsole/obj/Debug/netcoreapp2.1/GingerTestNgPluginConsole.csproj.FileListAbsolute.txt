@@ -30,3 +30,15 @@ C:\Users\yaronwe\Source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\bin
 C:\Users\yaronwe\Source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\bin\Debug\netcoreapp2.1\GingerCoreNET.dll
 C:\Users\yaronwe\Source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\obj\Debug\netcoreapp2.1\GingerTestNgPluginConsole.csproj.CopyComplete
 C:\Users\yaronwe\Source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\bin\Debug\netcoreapp2.1\Ginger.PluginPackage.Actions.json
+C:\Users\menik\Source\Repos\Ginger-Automation\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\bin\Debug\netcoreapp2.1\Ginger.PluginPackage.json
+C:\Users\menik\Source\Repos\Ginger-Automation\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\bin\Debug\netcoreapp2.1\GingerTestNgPluginConsole.deps.json
+C:\Users\menik\Source\Repos\Ginger-Automation\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\bin\Debug\netcoreapp2.1\GingerTestNgPluginConsole.runtimeconfig.json
+C:\Users\menik\Source\Repos\Ginger-Automation\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\bin\Debug\netcoreapp2.1\GingerTestNgPluginConsole.runtimeconfig.dev.json
+C:\Users\menik\Source\Repos\Ginger-Automation\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\bin\Debug\netcoreapp2.1\GingerTestNgPluginConsole.dll
+C:\Users\menik\Source\Repos\Ginger-Automation\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\bin\Debug\netcoreapp2.1\GingerTestNgPluginConsole.pdb
+C:\Users\menik\Source\Repos\Ginger-Automation\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\obj\Debug\netcoreapp2.1\GingerTestNgPluginConsole.csprojAssemblyReference.cache
+C:\Users\menik\Source\Repos\Ginger-Automation\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\obj\Debug\netcoreapp2.1\GingerTestNgPluginConsole.csproj.CoreCompileInputs.cache
+C:\Users\menik\Source\Repos\Ginger-Automation\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\obj\Debug\netcoreapp2.1\GingerTestNgPluginConsole.AssemblyInfoInputs.cache
+C:\Users\menik\Source\Repos\Ginger-Automation\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\obj\Debug\netcoreapp2.1\GingerTestNgPluginConsole.AssemblyInfo.cs
+C:\Users\menik\Source\Repos\Ginger-Automation\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\obj\Debug\netcoreapp2.1\GingerTestNgPluginConsole.dll
+C:\Users\menik\Source\Repos\Ginger-Automation\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\obj\Debug\netcoreapp2.1\GingerTestNgPluginConsole.pdb
