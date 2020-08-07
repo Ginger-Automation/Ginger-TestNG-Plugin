@@ -84,9 +84,9 @@ namespace GingerTestNgPluginConsole
                 SuiteXml = new XmlDocument();
                 SuiteXml.LoadXml(System.IO.File.ReadAllText(XmlFilePath));
 
-                if (XmlDocumentType.Contains(@"http://testng.org/testng-1.0.dtd") == false)
+                if (XmlDocumentType.Contains(@"testng.org") == false)
                 {
-                    LoadError = String.Format("Failed to load the TestNG XML because it type is not '{0}'", @"http://testng.org/testng-1.0.dtd");
+                    LoadError = String.Format("Failed to load the TestNG XML because it type is not '{0}'", @"testng.org");
                     return false;
                 }
 
