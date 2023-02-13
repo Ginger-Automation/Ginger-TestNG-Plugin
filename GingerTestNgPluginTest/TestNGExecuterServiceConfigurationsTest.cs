@@ -59,11 +59,11 @@ namespace GingerTestNgPluginTest
             testNgExecuter.ExecutionMode = TestNGExecution.eExecutionMode.XML;
 
             //Act
-            testNgExecuter.JavaProjectBinPath = @"C:\Users\menik\eclipse-workspace\Learn-TestNG";
+            testNgExecuter.JavaProjectBinPath = @"C:\Users\test\eclipse-workspace\Learn-TestNG";
 
             //Assert           
             Assert.IsTrue(testNgExecuter.JavaProjectBinPath.ToLower().Contains(@"bin"), "JavaProjectBinPath pointing to bin folder");
-            Assert.IsTrue(General.CompareWithoutSleshSensitivity(testNgExecuter.JavaProjectBinPath, @"C:\Users\menik\eclipse-workspace\Learn-TestNG\bin", General.eCompareType.Equal), "JavaProjectBinPath pointing to bin folder");
+            Assert.IsTrue(General.CompareWithoutSleshSensitivity(testNgExecuter.JavaProjectBinPath, @"C:\Users\test\eclipse-workspace\Learn-TestNG\bin", General.eCompareType.Equal), "JavaProjectBinPath pointing to bin folder");
         }
 
         [TestMethod]
@@ -115,10 +115,10 @@ namespace GingerTestNgPluginTest
             testNgExecuter.ExecutionMode = TestNGExecution.eExecutionMode.XML;
 
             //Act
-            testNgExecuter.MavenCmdFullPath = @"C:\TestNG\PBG Flows\apache-maven-3.5.3";
+            testNgExecuter.MavenCmdFullPath = @"C:\test\PBG Flows\apache-maven-3.5.3";
 
             //Assert           
-            Assert.IsTrue(General.CompareWithoutSleshSensitivity(testNgExecuter.MavenCmdFullPath, @"C:\TestNG\PBG Flows\apache-maven-3.5.3\bin\mvn", General.eCompareType.Contains), "MavenCmdFullPath pointing to bin\\mvn.cmd file");
+            Assert.IsTrue(General.CompareWithoutSleshSensitivity(testNgExecuter.MavenCmdFullPath, @"C:\test\PBG Flows\apache-maven-3.5.3\bin\mvn", General.eCompareType.Contains), "MavenCmdFullPath pointing to bin\\mvn.cmd file");
         }
 
         [TestMethod]
@@ -162,11 +162,11 @@ namespace GingerTestNgPluginTest
             testNgExecuter.JavaProjectType = TestNGExecution.eJavaProjectType.Regular;
 
             //Act
-            testNgExecuter.JavaProjectBinPath = @"C:\Users\menik\eclipse-workspace\Learn-TestNG\bin";
+            testNgExecuter.JavaProjectBinPath = @"C:\Users\test\eclipse-workspace\Learn-TestNG\bin";
             testNgExecuter.TestngXmlPath = "\"\\src\\Calculator\\testng.xml\"";
 
             //Assert                  
-            Assert.IsTrue(General.CompareWithoutSleshSensitivity(testNgExecuter.TestngXmlPath, @"C:\Users\menik\eclipse-workspace\Learn-TestNG\src\Calculator\testng.xml", General.eCompareType.Equal), string.Format("Relative TestngXmlPath '{0}' been converted to full path", testNgExecuter.TestngXmlPath));
+            Assert.IsTrue(General.CompareWithoutSleshSensitivity(testNgExecuter.TestngXmlPath, @"C:\Users\test\eclipse-workspace\Learn-TestNG\src\Calculator\testng.xml", General.eCompareType.Equal), string.Format("Relative TestngXmlPath '{0}' been converted to full path", testNgExecuter.TestngXmlPath));
         }
 
         [TestMethod]
@@ -178,11 +178,11 @@ namespace GingerTestNgPluginTest
             testNgExecuter.JavaProjectType = TestNGExecution.eJavaProjectType.Regular;
 
             //Act
-            testNgExecuter.JavaProjectBinPath = @"C:\Users\menik\eclipse-workspace\Learn-TestNG";
-            testNgExecuter.TestngXmlPath = @"src\Calculator\testng.xml";
+            testNgExecuter.JavaProjectBinPath = @"C:\Users\test\eclipse-workspace\Learn-TestNG";
+            testNgExecuter.TestngXmlPath = @"src\test\testng.xml";
 
             //Assert                  
-            Assert.IsTrue(General.CompareWithoutSleshSensitivity(testNgExecuter.TestngXmlPath, @"C:\Users\menik\eclipse-workspace\Learn-TestNG\src\Calculator\testng.xml", General.eCompareType.Equal), "Relative TestngXmlPath been converted to full path");
+            Assert.IsTrue(General.CompareWithoutSleshSensitivity(testNgExecuter.TestngXmlPath, @"C:\Users\test\eclipse-workspace\Learn-TestNG\src\test\testng.xml", General.eCompareType.Equal), "Relative TestngXmlPath been converted to full path");
         }
 
         [TestMethod]
@@ -194,11 +194,11 @@ namespace GingerTestNgPluginTest
             testNgExecuter.JavaProjectType = TestNGExecution.eJavaProjectType.Regular;
 
             //Act
-            testNgExecuter.JavaProjectBinPath = "\"C:\\Users\\menik\\eclipse-workspace\\Learn-TestNG\\bin\\\"";
-            testNgExecuter.TestngXmlPath = @"src\Calculator\testng.xml";
+            testNgExecuter.JavaProjectBinPath = "\"C:\\Users\\test\\eclipse-workspace\\Learn-TestNG\\bin\\\"";
+            testNgExecuter.TestngXmlPath = @"src\test\testng.xml";
 
             //Assert                  
-            Assert.IsTrue(General.CompareWithoutSleshSensitivity(testNgExecuter.TestngXmlPath, @"C:\Users\menik\eclipse-workspace\Learn-TestNG\src\Calculator\testng.xml", General.eCompareType.Equal), "Relative TestngXmlPath been converted to full path");
+            Assert.IsTrue(General.CompareWithoutSleshSensitivity(testNgExecuter.TestngXmlPath, @"C:\Users\test\eclipse-workspace\Learn-TestNG\src\test\testng.xml", General.eCompareType.Equal), "Relative TestngXmlPath been converted to full path");
         }
 
         [TestMethod]
@@ -210,11 +210,11 @@ namespace GingerTestNgPluginTest
             testNgExecuter.JavaProjectType = TestNGExecution.eJavaProjectType.Maven;
 
             //Act
-            testNgExecuter.MavenProjectFolderPath = @"C:\TestNG_WORKSPACE\PBG Flows\order_capture_test";
+            testNgExecuter.MavenProjectFolderPath = @"C:\test\PBG Flows\order_capture_test";
             testNgExecuter.TestngXmlPath = @"\src\test\resources\fit\flowSuites\Dynamic Device from CouchBase.xml";
 
             //Assert                  
-            Assert.IsTrue(General.CompareWithoutSleshSensitivity(testNgExecuter.TestngXmlPath, @"C:\TestNG_WORKSPACE\PBG Flows\order_capture_test\src\test\resources\fit\flowSuites\Dynamic Device from CouchBase.xml", General.eCompareType.Equal), "Relative TestngXmlPath been converted to full path");
+            Assert.IsTrue(General.CompareWithoutSleshSensitivity(testNgExecuter.TestngXmlPath, @"C:\test\PBG Flows\order_capture_test\src\test\resources\fit\flowSuites\Dynamic Device from CouchBase.xml", General.eCompareType.Equal), "Relative TestngXmlPath been converted to full path");
         }
 
         [TestMethod]
@@ -226,11 +226,11 @@ namespace GingerTestNgPluginTest
             testNgExecuter.JavaProjectType = TestNGExecution.eJavaProjectType.Maven;
 
             //Act
-            testNgExecuter.MavenProjectFolderPath = @"C:\TestNG_WORKSPACE\PBG Flows\order_capture_test";
+            testNgExecuter.MavenProjectFolderPath = @"C:\test\PBG Flows\order_capture_test";
             testNgExecuter.TestngXmlPath = @"src\test\resources\fit\flowSuites\Dynamic Device from CouchBase.xml";
 
             //Assert                  
-            Assert.IsTrue(General.CompareWithoutSleshSensitivity(testNgExecuter.TestngXmlPath, @"C:\TestNG_WORKSPACE\PBG Flows\order_capture_test\src\test\resources\fit\flowSuites\Dynamic Device from CouchBase.xml", General.eCompareType.Equal), "Relative TestngXmlPath been converted to full path");
+            Assert.IsTrue(General.CompareWithoutSleshSensitivity(testNgExecuter.TestngXmlPath, @"C:\test\PBG Flows\order_capture_test\src\test\resources\fit\flowSuites\Dynamic Device from CouchBase.xml", General.eCompareType.Equal), "Relative TestngXmlPath been converted to full path");
         }
 
         [TestMethod]
@@ -242,11 +242,11 @@ namespace GingerTestNgPluginTest
             testNgExecuter.JavaProjectType = TestNGExecution.eJavaProjectType.Regular;
 
             //Act
-            testNgExecuter.JavaProjectBinPath = @"C:\Users\menik\eclipse-workspace\Learn-TestNG\bin";
+            testNgExecuter.JavaProjectBinPath = @"C:\Users\test\eclipse-workspace\Learn-TestNG\bin";
             testNgExecuter.TestngResultsXmlFolderPath = @"\report";
 
             //Assert                  
-            Assert.IsTrue(General.CompareWithoutSleshSensitivity(testNgExecuter.TestngResultsXmlFolderPath,  @"C:\Users\menik\eclipse-workspace\Learn-TestNG\report", General.eCompareType.Equal), string.Format("Relative TestngResultsXmlFolderPath been converted to full path: '{0}'", testNgExecuter.TestngResultsXmlFolderPath));
+            Assert.IsTrue(General.CompareWithoutSleshSensitivity(testNgExecuter.TestngResultsXmlFolderPath,  @"C:\Users\test\eclipse-workspace\Learn-TestNG\report", General.eCompareType.Equal), string.Format("Relative TestngResultsXmlFolderPath been converted to full path: '{0}'", testNgExecuter.TestngResultsXmlFolderPath));
         }
 
         [TestMethod]
@@ -258,11 +258,11 @@ namespace GingerTestNgPluginTest
             testNgExecuter.JavaProjectType = TestNGExecution.eJavaProjectType.Maven;
 
             //Act
-            testNgExecuter.MavenProjectFolderPath = @"C:\TestNG_WORKSPACE\PBG Flows\order_capture_test";
+            testNgExecuter.MavenProjectFolderPath = @"C:\test\PBG Flows\order_capture_test";
             testNgExecuter.TestngResultsXmlFolderPath = @"\report";
 
             //Assert                  
-            Assert.IsTrue(General.CompareWithoutSleshSensitivity(testNgExecuter.TestngResultsXmlFolderPath, @"C:\TestNG_WORKSPACE\PBG Flows\order_capture_test\report", General.eCompareType.Equal), "Relative TestngResultsXmlFolderPath been converted to full path");
+            Assert.IsTrue(General.CompareWithoutSleshSensitivity(testNgExecuter.TestngResultsXmlFolderPath, @"C:\test\PBG Flows\order_capture_test\report", General.eCompareType.Equal), "Relative TestngResultsXmlFolderPath been converted to full path");
         }
     }
 }
