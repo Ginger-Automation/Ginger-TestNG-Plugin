@@ -1,18 +1,37 @@
 {
   "version": 3,
   "targets": {
-    "net6.0": {
-      "Ginger.Plugin.Core/3.3.2": {
+    "net7.0": {
+      "Ginger.Plugin.Core/4.5.2": {
         "type": "package",
         "dependencies": {
-          "Newtonsoft.Json": "12.0.1",
-          "System.Reflection.DispatchProxy": "4.5.1"
+          "GingerUtils": "4.1.0",
+          "Newtonsoft.Json": "12.0.3",
+          "System.Drawing.Common": "6.0.0",
+          "System.Reflection.DispatchProxy": "4.7.1",
+          "System.Resources.Extensions": "4.7.1"
         },
         "compile": {
-          "lib/netstandard2.0/GingerPluginCore.dll": {}
+          "lib/net6.0/GingerPluginCore.dll": {},
+          "lib/net6.0/GingerUtils.dll": {}
         },
         "runtime": {
-          "lib/netstandard2.0/GingerPluginCore.dll": {}
+          "lib/net6.0/GingerPluginCore.dll": {},
+          "lib/net6.0/GingerUtils.dll": {}
+        }
+      },
+      "GingerUtils/4.1.0": {
+        "type": "package",
+        "dependencies": {
+          "Newtonsoft.Json": "12.0.3",
+          "System.Drawing.Common": "4.7.0",
+          "System.Resources.Extensions": "4.7.1"
+        },
+        "compile": {
+          "lib/netstandard2.0/GingerUtils.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/GingerUtils.dll": {}
         }
       },
       "Microsoft.NETCore.Platforms/1.1.0": {
@@ -33,13 +52,39 @@
           "lib/netstandard1.0/_._": {}
         }
       },
-      "Newtonsoft.Json/12.0.1": {
+      "Microsoft.Win32.SystemEvents/6.0.0": {
         "type": "package",
         "compile": {
-          "lib/netstandard2.0/Newtonsoft.Json.dll": {}
+          "lib/net6.0/Microsoft.Win32.SystemEvents.dll": {
+            "related": ".xml"
+          }
         },
         "runtime": {
-          "lib/netstandard2.0/Newtonsoft.Json.dll": {}
+          "lib/net6.0/Microsoft.Win32.SystemEvents.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "buildTransitive/netcoreapp3.1/_._": {}
+        },
+        "runtimeTargets": {
+          "runtimes/win/lib/net6.0/Microsoft.Win32.SystemEvents.dll": {
+            "assetType": "runtime",
+            "rid": "win"
+          }
+        }
+      },
+      "Newtonsoft.Json/12.0.3": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {
+            "related": ".xml"
+          }
         }
       },
       "System.Collections/4.3.0": {
@@ -50,7 +95,9 @@
           "System.Runtime": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.3/_._": {}
+          "ref/netstandard1.3/_._": {
+            "related": ".xml"
+          }
         }
       },
       "System.Diagnostics.Debug/4.3.0": {
@@ -61,7 +108,38 @@
           "System.Runtime": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.3/_._": {}
+          "ref/netstandard1.3/_._": {
+            "related": ".xml"
+          }
+        }
+      },
+      "System.Drawing.Common/6.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Win32.SystemEvents": "6.0.0"
+        },
+        "compile": {
+          "lib/net6.0/System.Drawing.Common.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/System.Drawing.Common.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "buildTransitive/netcoreapp3.1/_._": {}
+        },
+        "runtimeTargets": {
+          "runtimes/unix/lib/net6.0/System.Drawing.Common.dll": {
+            "assetType": "runtime",
+            "rid": "unix"
+          },
+          "runtimes/win/lib/net6.0/System.Drawing.Common.dll": {
+            "assetType": "runtime",
+            "rid": "win"
+          }
         }
       },
       "System.Globalization/4.3.0": {
@@ -72,7 +150,9 @@
           "System.Runtime": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.3/_._": {}
+          "ref/netstandard1.3/_._": {
+            "related": ".xml"
+          }
         }
       },
       "System.IO/4.3.0": {
@@ -85,7 +165,9 @@
           "System.Threading.Tasks": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.5/System.IO.dll": {}
+          "ref/netstandard1.5/System.IO.dll": {
+            "related": ".xml"
+          }
         }
       },
       "System.IO.FileSystem/4.3.0": {
@@ -101,7 +183,9 @@
           "System.Threading.Tasks": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.3/_._": {}
+          "ref/netstandard1.3/_._": {
+            "related": ".xml"
+          }
         }
       },
       "System.IO.FileSystem.Primitives/4.3.0": {
@@ -110,7 +194,9 @@
           "System.Runtime": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.3/_._": {}
+          "ref/netstandard1.3/_._": {
+            "related": ".xml"
+          }
         },
         "runtime": {
           "lib/netstandard1.3/System.IO.FileSystem.Primitives.dll": {}
@@ -126,16 +212,22 @@
           "System.Runtime": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.5/_._": {}
+          "ref/netstandard1.5/_._": {
+            "related": ".xml"
+          }
         }
       },
-      "System.Reflection.DispatchProxy/4.5.1": {
+      "System.Reflection.DispatchProxy/4.7.1": {
         "type": "package",
         "compile": {
-          "ref/netstandard2.0/System.Reflection.DispatchProxy.dll": {}
+          "ref/netstandard2.0/System.Reflection.DispatchProxy.dll": {
+            "related": ".xml"
+          }
         },
         "runtime": {
-          "lib/netcoreapp2.0/System.Reflection.DispatchProxy.dll": {}
+          "lib/netcoreapp2.0/System.Reflection.DispatchProxy.dll": {
+            "related": ".xml"
+          }
         }
       },
       "System.Reflection.Primitives/4.3.0": {
@@ -146,7 +238,22 @@
           "System.Runtime": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.0/_._": {}
+          "ref/netstandard1.0/_._": {
+            "related": ".xml"
+          }
+        }
+      },
+      "System.Resources.Extensions/4.7.1": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/System.Resources.Extensions.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.Resources.Extensions.dll": {
+            "related": ".xml"
+          }
         }
       },
       "System.Resources.ResourceManager/4.3.0": {
@@ -159,7 +266,9 @@
           "System.Runtime": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.0/_._": {}
+          "ref/netstandard1.0/_._": {
+            "related": ".xml"
+          }
         }
       },
       "System.Runtime/4.3.0": {
@@ -169,7 +278,9 @@
           "Microsoft.NETCore.Targets": "1.1.0"
         },
         "compile": {
-          "ref/netstandard1.5/System.Runtime.dll": {}
+          "ref/netstandard1.5/System.Runtime.dll": {
+            "related": ".xml"
+          }
         }
       },
       "System.Runtime.Extensions/4.3.0": {
@@ -180,7 +291,9 @@
           "System.Runtime": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.5/_._": {}
+          "ref/netstandard1.5/_._": {
+            "related": ".xml"
+          }
         }
       },
       "System.Runtime.Handles/4.3.0": {
@@ -191,7 +304,9 @@
           "System.Runtime": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.3/_._": {}
+          "ref/netstandard1.3/_._": {
+            "related": ".xml"
+          }
         }
       },
       "System.Runtime.InteropServices/4.3.0": {
@@ -216,7 +331,9 @@
           "System.Runtime": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.3/System.Text.Encoding.dll": {}
+          "ref/netstandard1.3/System.Text.Encoding.dll": {
+            "related": ".xml"
+          }
         }
       },
       "System.Text.Encoding.Extensions/4.3.0": {
@@ -228,7 +345,9 @@
           "System.Text.Encoding": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.3/_._": {}
+          "ref/netstandard1.3/_._": {
+            "related": ".xml"
+          }
         }
       },
       "System.Text.RegularExpressions/4.3.0": {
@@ -250,7 +369,9 @@
           "System.Threading.Tasks": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.3/_._": {}
+          "ref/netstandard1.3/_._": {
+            "related": ".xml"
+          }
         },
         "runtime": {
           "lib/netstandard1.3/System.Threading.dll": {}
@@ -264,7 +385,9 @@
           "System.Runtime": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.3/System.Threading.Tasks.dll": {}
+          "ref/netstandard1.3/System.Threading.Tasks.dll": {
+            "related": ".xml"
+          }
         }
       },
       "System.Threading.Tasks.Extensions/4.3.0": {
@@ -275,10 +398,14 @@
           "System.Threading.Tasks": "4.3.0"
         },
         "compile": {
-          "lib/netstandard1.0/_._": {}
+          "lib/netstandard1.0/_._": {
+            "related": ".xml"
+          }
         },
         "runtime": {
-          "lib/netstandard1.0/System.Threading.Tasks.Extensions.dll": {}
+          "lib/netstandard1.0/System.Threading.Tasks.Extensions.dll": {
+            "related": ".xml"
+          }
         }
       },
       "System.Xml.ReaderWriter/4.3.0": {
@@ -301,7 +428,9 @@
           "System.Threading.Tasks.Extensions": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.3/System.Xml.ReaderWriter.dll": {}
+          "ref/netstandard1.3/System.Xml.ReaderWriter.dll": {
+            "related": ".xml"
+          }
         },
         "runtime": {
           "lib/netstandard1.3/System.Xml.ReaderWriter.dll": {}
@@ -322,7 +451,9 @@
           "System.Xml.ReaderWriter": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.3/System.Xml.XmlDocument.dll": {}
+          "ref/netstandard1.3/System.Xml.XmlDocument.dll": {
+            "related": ".xml"
+          }
         },
         "runtime": {
           "lib/netstandard1.3/System.Xml.XmlDocument.dll": {}
@@ -331,16 +462,29 @@
     }
   },
   "libraries": {
-    "Ginger.Plugin.Core/3.3.2": {
-      "sha512": "gmdtU1RARrlUXhb4lKXFMEf9HeAhDq7pc8wuVgSLQt/JriwrUylbgb/tjyhPi4DUuvtjYlpc+4uiHIr1zwukRg==",
+    "Ginger.Plugin.Core/4.5.2": {
+      "sha512": "gwWUL/KynZ4Ui2DDXmhhzzO2PqeI/MK7vuY8RRARGeL0BLVRpgOL6R+q/o9C1I/nyLT6blFNjtQ4YBFc1WN2cA==",
       "type": "package",
-      "path": "ginger.plugin.core/3.3.2",
+      "path": "ginger.plugin.core/4.5.2",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "ginger.plugin.core.3.3.2.nupkg.sha512",
+        "ginger.plugin.core.4.5.2.nupkg.sha512",
         "ginger.plugin.core.nuspec",
-        "lib/netstandard2.0/GingerPluginCore.dll"
+        "lib/net6.0/GingerPluginCore.dll",
+        "lib/net6.0/GingerUtils.dll"
+      ]
+    },
+    "GingerUtils/4.1.0": {
+      "sha512": "EG7ZJqQ0e52BCZYEHemWDixFWPPC56B25mJqn5ek0uXkWJ2J7T8nmiE+JRsjUJcD95Wu41aDmQX4HGCI+sxAMQ==",
+      "type": "package",
+      "path": "gingerutils/4.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "gingerutils.4.1.0.nupkg.sha512",
+        "gingerutils.nuspec",
+        "lib/netstandard2.0/GingerUtils.dll"
       ]
     },
     "Microsoft.NETCore.Platforms/1.1.0": {
@@ -373,43 +517,64 @@
         "runtime.json"
       ]
     },
-    "Newtonsoft.Json/12.0.1": {
-      "sha512": "pBR3wCgYWZGiaZDYP+HHYnalVnPJlpP1q55qvVb+adrDHmFMDc1NAKio61xTwftK3Pw5h7TZJPJEEVMd6ty8rg==",
+    "Microsoft.Win32.SystemEvents/6.0.0": {
+      "sha512": "hqTM5628jSsQiv+HGpiq3WKBl2c8v1KZfby2J6Pr7pEPlK9waPdgEO6b8A/+/xn/yZ9ulv8HuqK71ONy2tg67A==",
       "type": "package",
-      "path": "newtonsoft.json/12.0.1",
+      "path": "microsoft.win32.systemevents/6.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "buildTransitive/netcoreapp2.0/Microsoft.Win32.SystemEvents.targets",
+        "buildTransitive/netcoreapp3.1/_._",
+        "lib/net461/Microsoft.Win32.SystemEvents.dll",
+        "lib/net461/Microsoft.Win32.SystemEvents.xml",
+        "lib/net6.0/Microsoft.Win32.SystemEvents.dll",
+        "lib/net6.0/Microsoft.Win32.SystemEvents.xml",
+        "lib/netcoreapp3.1/Microsoft.Win32.SystemEvents.dll",
+        "lib/netcoreapp3.1/Microsoft.Win32.SystemEvents.xml",
+        "lib/netstandard2.0/Microsoft.Win32.SystemEvents.dll",
+        "lib/netstandard2.0/Microsoft.Win32.SystemEvents.xml",
+        "microsoft.win32.systemevents.6.0.0.nupkg.sha512",
+        "microsoft.win32.systemevents.nuspec",
+        "runtimes/win/lib/net6.0/Microsoft.Win32.SystemEvents.dll",
+        "runtimes/win/lib/net6.0/Microsoft.Win32.SystemEvents.xml",
+        "runtimes/win/lib/netcoreapp3.1/Microsoft.Win32.SystemEvents.dll",
+        "runtimes/win/lib/netcoreapp3.1/Microsoft.Win32.SystemEvents.xml",
+        "useSharedDesignerContext.txt"
+      ]
+    },
+    "Newtonsoft.Json/12.0.3": {
+      "sha512": "6mgjfnRB4jKMlzHSl+VD+oUc1IebOZabkbyWj2RiTgWwYPPuaK1H97G1sHqGwPlS5npiF5Q0OrxN1wni2n5QWg==",
+      "type": "package",
+      "path": "newtonsoft.json/12.0.3",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "LICENSE.md",
         "lib/net20/Newtonsoft.Json.dll",
-        "lib/net20/Newtonsoft.Json.pdb",
         "lib/net20/Newtonsoft.Json.xml",
         "lib/net35/Newtonsoft.Json.dll",
-        "lib/net35/Newtonsoft.Json.pdb",
         "lib/net35/Newtonsoft.Json.xml",
         "lib/net40/Newtonsoft.Json.dll",
-        "lib/net40/Newtonsoft.Json.pdb",
         "lib/net40/Newtonsoft.Json.xml",
         "lib/net45/Newtonsoft.Json.dll",
-        "lib/net45/Newtonsoft.Json.pdb",
         "lib/net45/Newtonsoft.Json.xml",
         "lib/netstandard1.0/Newtonsoft.Json.dll",
-        "lib/netstandard1.0/Newtonsoft.Json.pdb",
         "lib/netstandard1.0/Newtonsoft.Json.xml",
         "lib/netstandard1.3/Newtonsoft.Json.dll",
-        "lib/netstandard1.3/Newtonsoft.Json.pdb",
         "lib/netstandard1.3/Newtonsoft.Json.xml",
         "lib/netstandard2.0/Newtonsoft.Json.dll",
-        "lib/netstandard2.0/Newtonsoft.Json.pdb",
         "lib/netstandard2.0/Newtonsoft.Json.xml",
         "lib/portable-net40+sl5+win8+wp8+wpa81/Newtonsoft.Json.dll",
-        "lib/portable-net40+sl5+win8+wp8+wpa81/Newtonsoft.Json.pdb",
         "lib/portable-net40+sl5+win8+wp8+wpa81/Newtonsoft.Json.xml",
         "lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.dll",
-        "lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.pdb",
         "lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.xml",
-        "newtonsoft.json.12.0.1.nupkg.sha512",
-        "newtonsoft.json.nuspec"
+        "newtonsoft.json.12.0.3.nupkg.sha512",
+        "newtonsoft.json.nuspec",
+        "packageIcon.png"
       ]
     },
     "System.Collections/4.3.0": {
@@ -546,6 +711,45 @@
         "ref/xamarinwatchos10/_._",
         "system.diagnostics.debug.4.3.0.nupkg.sha512",
         "system.diagnostics.debug.nuspec"
+      ]
+    },
+    "System.Drawing.Common/6.0.0": {
+      "sha512": "NfuoKUiP2nUWwKZN6twGqXioIe1zVD0RIj2t976A+czLHr2nY454RwwXs6JU9Htc6mwqL6Dn/nEL3dpVf2jOhg==",
+      "type": "package",
+      "path": "system.drawing.common/6.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "buildTransitive/netcoreapp2.0/System.Drawing.Common.targets",
+        "buildTransitive/netcoreapp3.1/_._",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net461/System.Drawing.Common.dll",
+        "lib/net461/System.Drawing.Common.xml",
+        "lib/net6.0/System.Drawing.Common.dll",
+        "lib/net6.0/System.Drawing.Common.xml",
+        "lib/netcoreapp3.1/System.Drawing.Common.dll",
+        "lib/netcoreapp3.1/System.Drawing.Common.xml",
+        "lib/netstandard2.0/System.Drawing.Common.dll",
+        "lib/netstandard2.0/System.Drawing.Common.xml",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "lib/xamarintvos10/_._",
+        "lib/xamarinwatchos10/_._",
+        "runtimes/unix/lib/net6.0/System.Drawing.Common.dll",
+        "runtimes/unix/lib/net6.0/System.Drawing.Common.xml",
+        "runtimes/unix/lib/netcoreapp3.1/System.Drawing.Common.dll",
+        "runtimes/unix/lib/netcoreapp3.1/System.Drawing.Common.xml",
+        "runtimes/win/lib/net6.0/System.Drawing.Common.dll",
+        "runtimes/win/lib/net6.0/System.Drawing.Common.xml",
+        "runtimes/win/lib/netcoreapp3.1/System.Drawing.Common.dll",
+        "runtimes/win/lib/netcoreapp3.1/System.Drawing.Common.xml",
+        "system.drawing.common.6.0.0.nupkg.sha512",
+        "system.drawing.common.nuspec",
+        "useSharedDesignerContext.txt"
       ]
     },
     "System.Globalization/4.3.0": {
@@ -853,27 +1057,33 @@
         "system.reflection.nuspec"
       ]
     },
-    "System.Reflection.DispatchProxy/4.5.1": {
-      "sha512": "FsYDYPmR2coa1BCo9mquY5A1hy5RSQq7ZJH3qaMoy3lCTUMZvB4lEFqX1i4XQINVjda4e7p2PN1DHk8AV3wfXw==",
+    "System.Reflection.DispatchProxy/4.7.1": {
+      "sha512": "C1sMLwIG6ILQ2bmOT4gh62V6oJlyF4BlHcVMrOoor49p0Ji2tA8QAoqyMcIhAdH6OHKJ8m7BU+r4LK2CUEOKqw==",
       "type": "package",
-      "path": "system.reflection.dispatchproxy/4.5.1",
+      "path": "system.reflection.dispatchproxy/4.7.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
+        "Icon.png",
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
         "lib/MonoAndroid10/_._",
         "lib/MonoTouch10/_._",
         "lib/net461/System.Reflection.DispatchProxy.dll",
+        "lib/net461/System.Reflection.DispatchProxy.xml",
         "lib/netcoreapp2.0/System.Reflection.DispatchProxy.dll",
+        "lib/netcoreapp2.0/System.Reflection.DispatchProxy.xml",
         "lib/netstandard1.3/System.Reflection.DispatchProxy.dll",
         "lib/netstandard2.0/System.Reflection.DispatchProxy.dll",
+        "lib/netstandard2.0/System.Reflection.DispatchProxy.xml",
         "lib/xamarinios10/_._",
         "lib/xamarinmac20/_._",
         "lib/xamarintvos10/_._",
         "lib/xamarinwatchos10/_._",
         "ref/MonoAndroid10/_._",
         "ref/MonoTouch10/_._",
+        "ref/net461/System.Reflection.DispatchProxy.dll",
+        "ref/net461/System.Reflection.DispatchProxy.xml",
         "ref/netstandard1.3/System.Reflection.DispatchProxy.dll",
         "ref/netstandard1.3/System.Reflection.DispatchProxy.xml",
         "ref/netstandard1.3/de/System.Reflection.DispatchProxy.xml",
@@ -896,7 +1106,7 @@
         "runtimes/aot/lib/netcore50/System.Reflection.DispatchProxy.dll",
         "runtimes/win-aot/lib/uap10.0.16299/System.Reflection.DispatchProxy.dll",
         "runtimes/win/lib/uap10.0.16299/System.Reflection.DispatchProxy.dll",
-        "system.reflection.dispatchproxy.4.5.1.nupkg.sha512",
+        "system.reflection.dispatchproxy.4.7.1.nupkg.sha512",
         "system.reflection.dispatchproxy.nuspec",
         "useSharedDesignerContext.txt",
         "version.txt"
@@ -957,6 +1167,26 @@
         "ref/xamarinwatchos10/_._",
         "system.reflection.primitives.4.3.0.nupkg.sha512",
         "system.reflection.primitives.nuspec"
+      ]
+    },
+    "System.Resources.Extensions/4.7.1": {
+      "sha512": "cuRdQps4IdpvMzgRrtKpXLckKXvc6XzgmTNQ75wf9snAITrfDK759ucS+US0gt1vmspTjCHKSCXgvp0ysfrjkA==",
+      "type": "package",
+      "path": "system.resources.extensions/4.7.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/net461/System.Resources.Extensions.dll",
+        "lib/net461/System.Resources.Extensions.xml",
+        "lib/netstandard2.0/System.Resources.Extensions.dll",
+        "lib/netstandard2.0/System.Resources.Extensions.xml",
+        "system.resources.extensions.4.7.1.nupkg.sha512",
+        "system.resources.extensions.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
       ]
     },
     "System.Resources.ResourceManager/4.3.0": {
@@ -1805,45 +2035,43 @@
     }
   },
   "projectFileDependencyGroups": {
-    "net6.0": [
-      "Ginger.Plugin.Core >= 3.3.2",
-      "Newtonsoft.Json >= 12.0.1",
+    "net7.0": [
+      "Ginger.Plugin.Core >= 4.5.2",
+      "Newtonsoft.Json >= 12.0.3",
       "System.Xml.XmlDocument >= 4.3.0"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\pravishe\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\mkale\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
-    "version": "1.1.1",
+    "version": "2.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\pravishe\\source\\repos\\Ginger-Automation\\Ginger-TestNG-Plugin\\GingerTestNgPluginConsole\\GingerTestNgPluginConsole.csproj",
+      "projectUniqueName": "C:\\Users\\mkale\\Source\\Repos\\Ginger-TestNG-Plugin\\GingerTestNgPluginConsole\\GingerTestNgPluginConsole.csproj",
       "projectName": "GingerTestNgPluginConsole",
-      "projectPath": "C:\\Users\\pravishe\\source\\repos\\Ginger-Automation\\Ginger-TestNG-Plugin\\GingerTestNgPluginConsole\\GingerTestNgPluginConsole.csproj",
-      "packagesPath": "C:\\Users\\pravishe\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\pravishe\\source\\repos\\Ginger-Automation\\Ginger-TestNG-Plugin\\GingerTestNgPluginConsole\\obj\\",
+      "projectPath": "C:\\Users\\mkale\\Source\\Repos\\Ginger-TestNG-Plugin\\GingerTestNgPluginConsole\\GingerTestNgPluginConsole.csproj",
+      "packagesPath": "C:\\Users\\mkale\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\mkale\\Source\\Repos\\Ginger-TestNG-Plugin\\GingerTestNgPluginConsole\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\pravishe\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\mkale\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
-        "net6.0"
+        "net7.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
-        "net6.0": {
-          "targetAlias": "net6.0",
+        "net7.0": {
+          "targetAlias": "net7.0",
           "projectReferences": {}
         }
       },
@@ -1854,16 +2082,16 @@
       }
     },
     "frameworks": {
-      "net6.0": {
-        "targetAlias": "net6.0",
+      "net7.0": {
+        "targetAlias": "net7.0",
         "dependencies": {
           "Ginger.Plugin.Core": {
             "target": "Package",
-            "version": "[3.3.2, )"
+            "version": "[4.5.2, )"
           },
           "Newtonsoft.Json": {
             "target": "Package",
-            "version": "[12.0.1, )"
+            "version": "[12.0.3, )"
           },
           "System.Xml.XmlDocument": {
             "target": "Package",
@@ -1876,7 +2104,8 @@
           "net47",
           "net471",
           "net472",
-          "net48"
+          "net48",
+          "net481"
         ],
         "assetTargetFallback": true,
         "warn": true,
@@ -1885,7 +2114,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.301\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
       }
     }
   }
