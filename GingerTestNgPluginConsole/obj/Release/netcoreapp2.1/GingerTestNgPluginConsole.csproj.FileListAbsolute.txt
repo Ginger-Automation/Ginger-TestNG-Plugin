@@ -29,3 +29,5 @@ C:\Users\yaronwe\Source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\obj
 C:\Users\yaronwe\Source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\bin\Release\netcoreapp2.1\GingerCoreNET.dll
 C:\Users\yaronwe\Source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\bin\Release\netcoreapp2.1\GingerCoreNET.pdb
 C:\Users\yaronwe\Source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\obj\Release\netcoreapp2.1\GingerTestNgPluginConsole.csproj.CopyComplete
+C:\Users\mkale\Source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\obj\Release\netcoreapp2.1\GingerTestNgPluginConsole.dll
+C:\Users\mkale\Source\Repos\Ginger-TestNG-Plugin\GingerTestNgPluginConsole\obj\Release\netcoreapp2.1\GingerTestNgPluginConsole.pdb
